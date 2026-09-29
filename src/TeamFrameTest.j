@@ -92,7 +92,7 @@ function GSTF_TestSpawn takes player tester, integer n, integer lvl, integer mod
     call SetPlayerAllianceStateBJ(p, tester, bj_ALLIANCE_ALLIED_VISION)
     call SetPlayerAllianceStateBJ(tester, p, bj_ALLIANCE_ALLIED_VISION)
     call SetHeroLevel(u, lvl, false)
-    set ult = GSTF_UltOf(t)
+    set ult = GSTF_SkillOf(t, 3)
     if mode >= 2 and ult != 0 then
         call SelectHeroSkill(u, ult)
     endif
