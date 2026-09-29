@@ -25,8 +25,8 @@ CHANGELOG.md 버전별 수정 내역
 | 파일 | 설명 |
 |---|---|
 | `maps/GS2vF_ver19.w3x` | 원본 (vF_8FKfix [R2 TEST +G5]) |
-| `maps/GS2vF_ver19_portraitfix.w3x` | 2.0 패치 초상화 버그 수정본 |
-| `maps/GS2vF_ver19_teamframe_test.w3x` | 초상화 수정본 + 팀원 현황 패널 (인게임 테스트용: 자동 시작, 자기 영웅도 표시, 테스트 명령어 `-gstest`/`-gskill`) |
+| `maps/GS2vF_ver19_fixed.w3x` | 버그 수정본 (2.0 초상화, 평화 기반 스킬 무적) — 다른 작업의 기준 맵 |
+| `maps/GS2vF_ver19_teamframe_test.w3x` | 수정본 + 팀원 현황 패널·모드 선택·영웅 선택판 (인게임 테스트용: 자동 시작, 자기 영웅도 표시, 테스트 명령어 `-gstest`/`-gskill`) |
 
 ## 팀원 현황 패널 (GSTF)
 
@@ -64,6 +64,9 @@ python extract.py ../maps/<맵>.w3x ../extracted
 
 # 2.0 초상화 버그 일괄 수정: 모델이 바뀐 영웅에 초상화 모델(upor)을 모델과 같게 설정
 python fix_portraits.py <입력>.w3x <출력>.w3x
+
+# 평화(Tranquility) 기반 스킬의 2레벨 이상 시전 시 1초 무적 제거
+python fix_tranquility.py <입력>.w3x <출력>.w3x
 ```
 
 - `w3x.py` — MPQ 아카이브 읽기/쓰기 (파일 교체 시 `(attributes)` CRC 갱신)
