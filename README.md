@@ -25,8 +25,21 @@ CHANGELOG.md 버전별 수정 내역
 | 파일 | 설명 |
 |---|---|
 | `maps/GS2vF_ver19.w3x` | 원본 (vF_8FKfix [R2 TEST +G5]) |
+| `maps/release/GS2vF_ver19_patch1.w3x` | **배포용** — 수정본 + 팀원 현황 패널 + 모드 선택 팝업 + 영웅 선택판 (테스트 기능 없음) |
 | `maps/GS2vF_ver19_fixed.w3x` | 버그 수정본 (2.0 초상화, 평화 기반 스킬 무적) — 다른 작업의 기준 맵 |
 | `maps/GS2vF_ver19_teamframe_test.w3x` | 수정본 + 팀원 현황 패널·모드 선택·영웅 선택판 (인게임 테스트용: 자동 시작, 자기 영웅도 표시, 테스트 명령어 `-gstest`/`-gskill`) |
+
+## 배포 맵 만들기
+
+```bash
+cd tools
+python teamframe.py gen ../maps/GS2vF_ver19_fixed.w3x
+python teamframe.py inject ../maps/GS2vF_ver19_fixed.w3x ../maps/release/<이름>.w3x --autostart --pickflow
+```
+
+배포 맵은 초기화 호출이 스크립트(main)에 직접 들어가 있어 그대로 실행됩니다.
+월드 에디터에서 열어 저장할 경우에는 맵 초기화 트리거에 사용자 지정 스크립트
+`call GSTF_Init()`, `call GSPF_Init()` 두 줄을 추가해야 합니다.
 
 ## 팀원 현황 패널 (GSTF)
 
