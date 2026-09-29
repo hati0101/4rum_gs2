@@ -32,6 +32,9 @@ MARKER = '//@@ULT_TABLE@@'
 PICK_TEMPLATE = os.path.join(ROOT, 'src', 'PickFlow.template.j')
 PICK_OUTPUT = os.path.join(ROOT, 'src', 'PickFlow.j')
 PICK_MARKER = '//@@PICK_TABLE@@'
+# shop name -> column order and label on the hero board (힘 / 민첩 / 지능)
+ATTR_ORDER = {'힘': 0, '기민': 1, '지식': 2}
+ATTR_LABEL = {'힘': '|cffff6060힘|r', '기민': '|cff60ff60민첩|r', '지식': '|cff60a0ff지능|r'}
 
 
 def ult_table(arc):
@@ -78,8 +81,9 @@ def pick_table(arc):
         var = re.search(r'\b(gg_unit_%s_\d+)\b' % re.escape(sid), script)
         if sold and var:
             name = str(resolve(u.get('unam', sid), strings)).strip().replace('의 정령', '')
-            shops.append((sold[0] not in guardian, sid, var.group(1), name, sold))
+            shops.append((sold[0] not in guardian, ATTR_ORDER.get(name, 9), sid, var.group(1), name, sold))
     shops.sort()
+    shops = [(s[0], s[2], s[3], ATTR_LABEL.get(s[4], s[4]), s[5]) for s in shops]
     heroes = [(g, h) for g, s in enumerate(shops) for h in s[4]]
     missing = [h for h in roster if h not in {h for _, h in heroes}]
     L = ['// 영웅 선택 보드 표 (tools/teamframe.py gen 으로 생성)',
@@ -101,10 +105,13 @@ def pick_table(arc):
     L += ['    endif', '    return null', 'endfunction', '',
           'function GSPF_GroupLabel takes integer g returns string']
     for g, s in enumerate(shops):
-        side = '|cffff7070다크니스|r' if s[0] else '|cff70b0ff가디언|r'
         L += ['    %s g == %d then' % ('if' if g == 0 else 'elseif', g),
-              '        return "%s\\n|cffffffff%s|r"' % (side, s[3])]
-    L += ['    endif', '    return ""', 'endfunction']
+              '        return "%s"' % s[3]]
+    L += ['    endif', '    return ""', 'endfunction', '',
+          'function GSPF_SideName takes integer s returns string',
+          '    if s == 0 then', '        return "|cff70b0ff가디언|r"', '    endif',
+          '    return "|cffff7070다크니스|r"', 'endfunction']
+    assert len(shops) == 6 and [s[0] for s in shops] == [False] * 3 + [True] * 3, 'expected 3 shops per side'
     return '\n'.join(L), len(heroes), len(shops), missing
 
 
