@@ -1,0 +1,4 @@
+*.w3x filter=lfs diff=lfs merge=lfs -text
+*.w3m filter=lfs diff=lfs merge=lfs -text
+# keep extracted game data byte-exact (CRLF etc.)
+extracted/** -text
