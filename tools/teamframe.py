@@ -1,8 +1,10 @@
 """Build and inject the GSTF team panel (src/TeamFrame.template.j).
 
 usage:
-  python teamframe.py gen <map.w3x>
-      writes src/TeamFrame.j (template + ultimate table generated from the map)
+  python teamframe.py gen <map.w3x> [--game "D:\\Warcraft III"]
+      writes src/TeamFrame.j (template + Q/W/E/R skill table) and src/PickFlow.j.
+      --game reads stock cooldowns from the installed game for passive detection;
+      without it, cooldown fields the map never set count as 0 (= passive).
   python teamframe.py inject <in.w3x> <out.w3x> [--autostart] [--show-self]
       appends src/TeamFrame.j to the map's custom script header, in both
       war3map.wct (what the World Editor loads) and war3map.j (what the game runs).
@@ -28,7 +30,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE = os.path.join(ROOT, 'src', 'TeamFrame.template.j')
 OUTPUT = os.path.join(ROOT, 'src', 'TeamFrame.j')
 TEST_CODE = os.path.join(ROOT, 'src', 'TeamFrameTest.j')
-MARKER = '//@@ULT_TABLE@@'
+MARKER = '//@@SKILL_TABLE@@'
 PICK_TEMPLATE = os.path.join(ROOT, 'src', 'PickFlow.template.j')
 PICK_OUTPUT = os.path.join(ROOT, 'src', 'PickFlow.j')
 PICK_MARKER = '//@@PICK_TABLE@@'
@@ -37,31 +39,34 @@ ATTR_ORDER = {'힘': 0, '기민': 1, '지식': 2}
 ATTR_LABEL = {'힘': '|cffff6060힘|r', '기민': '|cff60ff60민첩|r', '지식': '|cff60a0ff지능|r'}
 
 
-def ult_table(arc):
-    """JASS function mapping hero unit type -> ultimate ability id.
+def skill_jass(arc, game_dir=None):
+    """JASS: GSTF_SkillOf(unit type, slot 0..3 = Q W E R) and GSTF_IsPassive(ability).
 
-    Covers roster heroes and any other hero-type unit (alternate forms) whose
-    ability list contains one of the roster ultimates."""
-    ults = {}
-    for _, uid, hero, cands, _ in find_ults(arc):
-        if len(cands) == 1:
-            ults[uid] = (cands[0], hero)
-    ult_ids = {a for a, _ in ults.values()}
-    for uid, u in load_units(arc).items():
-        if uid in ults or not uid[0].isupper():
-            continue
-        habs = set(str(u.get('uhab', '')).split(','))
-        hit = sorted(habs & ult_ids)
-        if len(hit) == 1:
-            ults[uid] = (hit[0], '(형태) ' + uid)
-    lines = ['// 영웅 유닛 타입 -> 궁극기 (tools/teamframe.py gen 으로 생성)',
-             'function GSTF_UltOf takes integer t returns integer']
-    for n, (uid, (abil, hero)) in enumerate(ults.items()):
-        kw = 'if' if n == 0 else 'elseif'
-        lines.append("    %s t == '%s' then // %s" % (kw, uid, hero))
-        lines.append("        return '%s'" % abil)
-    lines += ['    endif', '    return 0', 'endfunction']
-    return '\n'.join(lines), len(ults)
+    Slots come from tools/skills.py (hotkeys in the skill text). The R slot is
+    checked against the ultimate table from tools/ults.py."""
+    from objdata import load_strings, resolve
+    from skills import skill_table
+    table = skill_table(arc, game_dir)
+    ults = {uid: c[0] for _, uid, _, c, _ in find_ults(arc) if len(c) == 1}
+    bad = [u for u in ults if u in table and table[u][3][1] != ults[u]]
+    assert not bad, 'R slot differs from ultimate table: %s' % bad
+    units, strings = load_units(arc), load_strings(arc)
+    L = ['// 영웅 유닛 타입 -> Q W E R 스킬 (tools/teamframe.py gen 으로 생성)',
+         'function GSTF_SkillOf takes integer t, integer s returns integer']
+    for n, (uid, row) in enumerate(table.items()):
+        name = str(resolve(units[uid].get('unam', uid), strings)).strip()
+        L.append("    %s t == '%s' then // %s" % ('if' if n == 0 else 'elseif', uid, name))
+        for k, (slot, abil, _) in enumerate(row[:3]):
+            L += ['        %s s == %d then' % ('if' if k == 0 else 'elseif', k), "            return '%s'" % abil]
+        L += ['        endif', "        return '%s'" % row[3][1]]
+    L += ['    endif', '    return 0', 'endfunction', '']
+    passive = sorted({abil for row in table.values() for _, abil, p in row if p})
+    L += ['// 쿨다운이 없는 스킬(패시브): 쿨다운 숫자 / 준비 표시 안 함',
+          'function GSTF_IsPassive takes integer a returns boolean']
+    for n, abil in enumerate(passive):
+        L += ["    %s a == '%s' then" % ('if' if n == 0 else 'elseif', abil), '        return true']
+    L += ['    endif', '    return false', 'endfunction']
+    return '\n'.join(L), len(table), len(passive), game_dir is not None
 
 
 def pick_table(arc):
@@ -115,14 +120,15 @@ def pick_table(arc):
     return '\n'.join(L), len(heroes), len(shops), missing
 
 
-def gen(map_path):
+def gen(map_path, game_dir=None):
     arc = Archive(map_path)
-    table, n = ult_table(arc)
+    table, n, n_passive, used_game = skill_jass(arc, game_dir)
     src = open(TEMPLATE, encoding='utf-8').read()
     assert MARKER in src
     with open(OUTPUT, 'w', encoding='utf-8', newline='\n') as f:
         f.write(src.replace(MARKER, table))
-    print('wrote %s (%d hero types)' % (OUTPUT, n))
+    print('wrote %s (%d hero types, %d passive skills%s)' % (
+        OUTPUT, n, n_passive, '' if used_game else ' - no --game: unset cooldowns count as 0'))
     table, n, shops, missing = pick_table(arc)
     src = open(PICK_TEMPLATE, encoding='utf-8').read()
     assert PICK_MARKER in src
@@ -199,8 +205,8 @@ def inject(src, dst, autostart, show_self=False, test=False, pickflow=False):
 
 if __name__ == '__main__':
     a = sys.argv[1:]
-    if len(a) == 2 and a[0] == 'gen':
-        gen(a[1])
+    if len(a) >= 2 and a[0] == 'gen':
+        gen(a[1], a[a.index('--game') + 1] if '--game' in a else None)
     elif len(a) >= 3 and a[0] == 'inject':
         inject(a[1], a[2], '--autostart' in a, '--show-self' in a, '--test' in a, '--pickflow' in a)
     else:

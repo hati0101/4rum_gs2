@@ -25,7 +25,8 @@ CHANGELOG.md 버전별 수정 내역
 | 파일 | 설명 |
 |---|---|
 | `maps/GS2vF_ver19.w3x` | 원본 (vF_8FKfix [R2 TEST +G5]) |
-| `maps/release/GS2vF_ver19_patch2.w3x` | **배포용 (최신)** — patch1 + 진행 투표 제거, 선택판 랜덤 버튼, -랜덤 버그 수정 |
+| `maps/release/GS2vF_ver19_patch3.w3x` | **배포용 (최신)** — patch2 + 팀원 패널 Q W E R 스킬·패시브·궁극기 강조·부활 시간 |
+| `maps/release/GS2vF_ver19_patch2.w3x` | 배포용 — patch1 + 진행 투표 제거, 선택판 랜덤 버튼, -랜덤 버그 수정 |
 | `maps/release/GS2vF_ver19_patch1.w3x` | 배포용 — 수정본 + 팀원 현황 패널 + 모드 선택 팝업 + 영웅 선택판 (테스트 기능 없음) |
 | `maps/GS2vF_ver19_fixed.w3x` | 버그 수정본 (2.0 초상화, 평화 기반 스킬 무적, -랜덤) — 다른 작업의 기준 맵 |
 | `maps/GS2vF_ver19_teamframe_test.w3x` | 수정본 + 팀원 현황 패널·모드 선택·영웅 선택판 (인게임 테스트용: 자동 시작, 자기 영웅도 표시, 테스트 명령어 `-gstest`/`-gskill`) |
