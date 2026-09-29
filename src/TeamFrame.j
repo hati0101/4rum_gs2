@@ -233,12 +233,12 @@ function GSTF_Create takes nothing returns nothing
         call BlzFrameSetScale(g, 0.8)
         call GSTF_PassText(g)
 
-        // 플레이어 이름
+        // 플레이어 이름 (Scale 0.8이면 크기·오프셋도 0.8배가 되므로 /0.8로 보정)
         set f = BlzCreateFrameByType("TEXT", "GSTF_Name", slot, "", i)
-        call BlzFrameSetSize(f, 0.044, 0.012)
-        call BlzFrameSetPoint(f, FRAMEPOINT_TOPLEFT, slot, FRAMEPOINT_TOPLEFT, 0.045, -0.006)
-        call BlzFrameSetTextAlignment(f, TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_LEFT)
         call BlzFrameSetScale(f, 0.8)
+        call BlzFrameSetSize(f, 0.044 / 0.8, 0.012 / 0.8)
+        call BlzFrameSetPoint(f, FRAMEPOINT_TOPLEFT, slot, FRAMEPOINT_TOPLEFT, 0.045 / 0.8, -0.006 / 0.8)
+        call BlzFrameSetTextAlignment(f, TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_LEFT)
         call GSTF_PassText(f)
 
         // 궁극기 아이콘 + 쿨다운 숫자 + 준비 표시(초록 점)
@@ -251,7 +251,7 @@ function GSTF_Create takes nothing returns nothing
         call GSTF_PassText(g)
         set g = BlzCreateFrameByType("BACKDROP", "GSTF_UltDot", f, "", i)
         call BlzFrameSetSize(g, 0.006, 0.006)
-        call BlzFrameSetPoint(g, FRAMEPOINT_CENTER, f, FRAMEPOINT_BOTTOMRIGHT, 0.0, 0.0)
+        call BlzFrameSetPoint(g, FRAMEPOINT_BOTTOMRIGHT, f, FRAMEPOINT_BOTTOMRIGHT, 0.0, 0.0)
         call BlzFrameSetTexture(g, "ReplaceableTextures\\TeamColor\\TeamColor06.blp", 0, true)
 
         // 체력 바
