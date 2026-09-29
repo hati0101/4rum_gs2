@@ -25,9 +25,19 @@ function GSTF_Gap takes nothing returns real
     return 0.005
 endfunction
 
-// 패널 윗변 높이 (상단 자원바 아래)
+// 패널 윗변 높이: 접힌 스코어보드(오른쪽 끝, y 0.533~0.551) 바로 아래
 function GSTF_Top takes nothing returns real
-    return 0.545
+    return 0.525
+endfunction
+
+// TEXT 프레임은 기본적으로 마우스를 잡아서 뒤쪽 클릭을 막음 -> 비활성화해서 클릭 통과
+// (비활성 글자색이 회색이 될 수 있어 색상 코드로 흰색 고정)
+function GSTF_PassText takes framehandle f returns nothing
+    call BlzFrameSetEnable(f, false)
+endfunction
+
+function GSTF_SetText takes string name, integer i, string s returns nothing
+    call BlzFrameSetText(BlzGetFrameByName(name, i), "|cffffffff" + s + "|r")
 endfunction
 
 //@@ULT_TABLE@@
@@ -59,6 +69,7 @@ function GSTF_Create takes nothing returns nothing
         call BlzFrameSetAllPoints(g, BlzGetFrameByName("GSTF_LvlBg", i))
         call BlzFrameSetTextAlignment(g, TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_CENTER)
         call BlzFrameSetScale(g, 0.8)
+        call GSTF_PassText(g)
 
         // 플레이어 이름
         set f = BlzCreateFrameByType("TEXT", "GSTF_Name", slot, "", i)
@@ -66,6 +77,7 @@ function GSTF_Create takes nothing returns nothing
         call BlzFrameSetPoint(f, FRAMEPOINT_TOPLEFT, slot, FRAMEPOINT_TOPLEFT, 0.045, -0.006)
         call BlzFrameSetTextAlignment(f, TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_LEFT)
         call BlzFrameSetScale(f, 0.8)
+        call GSTF_PassText(f)
 
         // 궁극기 아이콘 + 쿨다운 숫자 + 준비 표시(초록 점)
         set f = BlzCreateFrameByType("BACKDROP", "GSTF_Ult", slot, "", i)
@@ -74,6 +86,7 @@ function GSTF_Create takes nothing returns nothing
         set g = BlzCreateFrameByType("TEXT", "GSTF_UltCd", f, "", i)
         call BlzFrameSetAllPoints(g, f)
         call BlzFrameSetTextAlignment(g, TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_CENTER)
+        call GSTF_PassText(g)
         set g = BlzCreateFrameByType("BACKDROP", "GSTF_UltDot", f, "", i)
         call BlzFrameSetSize(g, 0.006, 0.006)
         call BlzFrameSetPoint(g, FRAMEPOINT_CENTER, f, FRAMEPOINT_BOTTOMRIGHT, 0.0, 0.0)
@@ -138,8 +151,8 @@ function GSTF_FillSlot takes integer i, player p, unit u returns nothing
     else
         call BlzFrameSetAlpha(icon, 255)
     endif
-    call BlzFrameSetText(BlzGetFrameByName("GSTF_Lvl", i), I2S(GetHeroLevel(u)))
-    call BlzFrameSetText(BlzGetFrameByName("GSTF_Name", i), GetPlayerName(p))
+    call GSTF_SetText("GSTF_Lvl", i, I2S(GetHeroLevel(u)))
+    call GSTF_SetText("GSTF_Name", i, GetPlayerName(p))
 
     set maxv = GetUnitState(u, UNIT_STATE_MAX_LIFE)
     if dead or maxv <= 0 then
@@ -169,7 +182,7 @@ function GSTF_FillSlot takes integer i, player p, unit u returns nothing
             set cd = BlzGetUnitAbilityCooldownRemaining(u, ult)
             if cd > 0.0 then
                 call BlzFrameSetAlpha(uf, 110)
-                call BlzFrameSetText(BlzGetFrameByName("GSTF_UltCd", i), I2S(R2I(cd) + 1))
+                call GSTF_SetText("GSTF_UltCd", i, I2S(R2I(cd) + 1))
             elseif dead or GetUnitState(u, UNIT_STATE_MANA) < BlzGetUnitAbilityManaCost(u, ult, lvl - 1) then
                 // 쿨은 돌았지만 사망/마나 부족
                 call BlzFrameSetAlpha(uf, 150)
@@ -205,7 +218,18 @@ function GSTF_Update takes nothing returns nothing
     local framehandle slot
 
     // 표시는 로컬 플레이어 기준 (프레임 조작만 하므로 디싱크 없음)
-    // 와이드 화면에서도 실제 오른쪽 끝에 붙임
+
+    // 스코어보드(udg_MB)를 펼치면 같은 자리를 덮으므로 패널을 숨김, 접으면 다시 표시
+    // (펼침/접힘은 플레이어마다 각자 화면 상태)
+    if udg_MB != null and IsMultiboardDisplayed(udg_MB) and not IsMultiboardMinimized(udg_MB) then
+        call BlzFrameSetVisible(root, false)
+        set lp = null
+        set root = null
+        return
+    endif
+    call BlzFrameSetVisible(root, true)
+
+    // 와이드 화면에서도 실제 오른쪽 끝에 붙임 (스코어보드도 화면 끝 기준)
     if h > 0 then
         set right = 0.4 + 0.3 * w / h
     endif
