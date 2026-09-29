@@ -345,10 +345,19 @@ function GSTF_FillSlot takes integer i, player p, unit u returns nothing
     set uf = null
 endfunction
 
+// 로컬 플레이어의 팀원인지: 슬롯 번호가 아니라 실제 동맹 상태로 판단
+// (-sp 팀 섞기, -동맹 등으로 동맹이 바뀌어도 그대로 따라감)
+function GSTF_IsTeammate takes player p, player lp returns boolean
+    if p == lp then
+        return GSTF_ShowSelf()
+    endif
+    return IsPlayerAlly(p, lp) and IsPlayerAlly(lp, p)
+endfunction
+
 function GSTF_Update takes nothing returns nothing
-    local integer lid = GetPlayerId(GetLocalPlayer())
-    local integer first
-    local integer pid
+    local player lp = GetLocalPlayer()
+    local player p
+    local integer pid = 0
     local integer k = 0
     local unit u
     local real w = I2R(BlzGetLocalClientWidth())
@@ -358,17 +367,6 @@ function GSTF_Update takes nothing returns nothing
     local framehandle slot
 
     // 표시는 로컬 플레이어 기준 (프레임 조작만 하므로 디싱크 없음)
-    if lid >= 1 and lid <= 5 then
-        set first = 1
-    elseif lid >= 7 and lid <= 11 then
-        set first = 7
-    else
-        call BlzFrameSetVisible(root, false)
-        set root = null
-        return
-    endif
-    call BlzFrameSetVisible(root, true)
-
     // 와이드 화면에서도 실제 오른쪽 끝에 붙임
     if h > 0 then
         set right = 0.4 + 0.3 * w / h
@@ -376,16 +374,18 @@ function GSTF_Update takes nothing returns nothing
     call BlzFrameClearAllPoints(root)
     call BlzFrameSetAbsPoint(root, FRAMEPOINT_TOPRIGHT, right - 0.004, GSTF_Top())
 
-    set pid = first
+    // 모든 플레이어 슬롯(0~11)을 훑어서, 영웅이 있고 동맹인 플레이어만 슬롯 순서대로 표시
+    // 영웅: udg_HeroPlayer[플레이어 번호] (선택/랜덤/-ap/스왑/교체 시 맵 트리거가 갱신)
     loop
-        exitwhen pid > first + 4
+        exitwhen pid > 11 or k > 4
+        set p = Player(pid)
         set u = udg_HeroPlayer[pid + 1]
-        if u != null and GetUnitTypeId(u) != 0 and (pid != lid or GSTF_ShowSelf()) then
+        if u != null and IsUnitType(u, UNIT_TYPE_HERO) and GSTF_IsTeammate(p, lp) then
             set slot = BlzGetFrameByName("GSTF_Slot", k)
             call BlzFrameClearAllPoints(slot)
             call BlzFrameSetPoint(slot, FRAMEPOINT_TOPRIGHT, root, FRAMEPOINT_TOPRIGHT, 0.0, -k * (GSTF_H() + GSTF_Gap()))
             call BlzFrameSetVisible(slot, true)
-            call GSTF_FillSlot(k, Player(pid), u)
+            call GSTF_FillSlot(k, p, u)
             set k = k + 1
         endif
         set pid = pid + 1
@@ -395,6 +395,8 @@ function GSTF_Update takes nothing returns nothing
         call BlzFrameSetVisible(BlzGetFrameByName("GSTF_Slot", k), false)
         set k = k + 1
     endloop
+    set lp = null
+    set p = null
     set u = null
     set root = null
     set slot = null
