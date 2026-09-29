@@ -26,7 +26,7 @@ CHANGELOG.md 버전별 수정 내역
 |---|---|
 | `maps/GS2vF_ver19.w3x` | 원본 (vF_8FKfix [R2 TEST +G5]) |
 | `maps/GS2vF_ver19_portraitfix.w3x` | 2.0 패치 초상화 버그 수정본 |
-| `maps/GS2vF_ver19_teamframe_test.w3x` | 초상화 수정본 + 팀원 현황 패널 (인게임 테스트용: 자동 시작, 자기 영웅도 표시) |
+| `maps/GS2vF_ver19_teamframe_test.w3x` | 초상화 수정본 + 팀원 현황 패널 (인게임 테스트용: 자동 시작, 자기 영웅도 표시, 테스트 명령어 `-gstest`/`-gskill`) |
 
 ## 팀원 현황 패널 (GSTF)
 
@@ -46,6 +46,11 @@ python teamframe.py inject ../maps/<맵>.w3x ../maps/<출력>.w3x          # 맵
 `inject`는 코드를 맵 사용자 지정 스크립트(헤더)에 넣습니다. 월드 에디터에서
 **맵 초기화 트리거 하나에 사용자 지정 스크립트 `call GSTF_Init()`** 를 추가해야 동작합니다.
 (`--autostart`는 트리거 없이 바로 테스트하기 위한 옵션이며, 에디터에서 다시 저장하면 사라집니다.)
+
+테스트 빌드: `inject ... --autostart --show-self --test`
+- `-gstest`: 내 팀 빈 슬롯 4곳에 같은 진영 영웅 생성 (Lv2 궁 미습득 / Lv4 체력·마나 감소 / Lv6 궁 준비 / Lv6 궁 쿨다운 30초), 채팅에 궁극기 이름·습득 여부 출력
+- `-gskill`: 봇1 처치 (사망 표시 확인)
+- 월드 에디터의 맵 테스트(Ctrl+F9)는 스크립트를 다시 만들어 자동 시작이 빠지므로, 게임에서 사용자 지정 게임으로 실행
 
 ## 도구
 

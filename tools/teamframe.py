@@ -11,6 +11,7 @@ usage:
       war3map.j on save, so a saved map needs a Map Initialization trigger with
       the custom script line `call GSTF_Init()`.
       --show-self lists the local player's own hero too (handy for solo tests).
+      --test adds src/TeamFrameTest.j (-gstest / -gskill bot commands); needs --autostart.
 """
 import os
 import re
@@ -24,6 +25,7 @@ from w3x import Archive
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE = os.path.join(ROOT, 'src', 'TeamFrame.template.j')
 OUTPUT = os.path.join(ROOT, 'src', 'TeamFrame.j')
+TEST_CODE = os.path.join(ROOT, 'src', 'TeamFrameTest.j')
 MARKER = '//@@ULT_TABLE@@'
 
 
@@ -68,7 +70,7 @@ def _eol(text):
     return '\r\n' if '\r\n' in text else '\n'
 
 
-def inject_j(j, code, autostart):
+def inject_j(j, code, autostart, test=False):
     eol = _eol(j)
     if 'function GSTF_Init' in j:
         raise SystemExit('war3map.j already contains GSTF')
@@ -80,7 +82,10 @@ def inject_j(j, code, autostart):
     j = j[:m.start()] + body + eol + eol + j[m.start():]
     if autostart:
         mm = re.search(r'function main takes nothing returns nothing.*?\n(endfunction)', j, re.S)
-        j = j[:mm.start(1)] + '    call GSTF_Init()' + eol + j[mm.start(1):]
+        calls = '    call GSTF_Init()' + eol
+        if test:
+            calls += '    call GSTF_TestInit()' + eol
+        j = j[:mm.start(1)] + calls + j[mm.start(1):]
     return j
 
 
@@ -101,20 +106,25 @@ def inject_wct(wct, code):
     return wct[:p] + struct.pack('<I', len(new)) + new + wct[p + 4 + n:]
 
 
-def inject(src, dst, autostart, show_self=False):
+def inject(src, dst, autostart, show_self=False, test=False):
     code = open(OUTPUT, encoding='utf-8').read().rstrip('\n')
     if show_self:
         old = 'function GSTF_ShowSelf takes nothing returns boolean\n    return false'
         assert old in code
         code = code.replace(old, old[:-5] + 'true')
+    if test:
+        if not autostart:
+            raise SystemExit('--test needs --autostart')
+        code += '\n\n' + open(TEST_CODE, encoding='utf-8').read().rstrip('\n')
     arc = Archive(src)
     j = arc.read('war3map.j').decode('utf-8')
     wct = arc.read('war3map.wct')
     arc.save_with_replacements(dst, {
-        'war3map.j': inject_j(j, code, autostart).encode('utf-8'),
+        'war3map.j': inject_j(j, code, autostart, test).encode('utf-8'),
         'war3map.wct': inject_wct(wct, code),
     })
-    print('wrote', dst, '(autostart)' if autostart else '')
+    flags = [f for f, on in (('autostart', autostart), ('show-self', show_self), ('test', test)) if on]
+    print('wrote', dst, '(%s)' % ', '.join(flags) if flags else '')
 
 
 if __name__ == '__main__':
@@ -122,6 +132,6 @@ if __name__ == '__main__':
     if len(a) == 2 and a[0] == 'gen':
         gen(a[1])
     elif len(a) >= 3 and a[0] == 'inject':
-        inject(a[1], a[2], '--autostart' in a, '--show-self' in a)
+        inject(a[1], a[2], '--autostart' in a, '--show-self' in a, '--test' in a)
     else:
         sys.exit(__doc__)
