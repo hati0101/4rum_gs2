@@ -3,11 +3,12 @@
 //   1) 게임을 일시정지하고 1픽(Player 1, 없으면 가디언 첫 유저)에게 모드 선택 팝업
 //      - 같이 켤 수 없는 모드는 자동 잠금, 기존 명령어 표기
 //      - 확정하면 게임 재개 + 기존 모드 트리거(Mode_AP 등)를 그대로 실행
-//      - 잠수 대비: 다른 플레이어 절반 이상이 "진행 투표"하면 모드 없이 진행,
-//        1픽이 나가면 바로 진행 (일시정지 중에는 타이머가 멈춰서 시간제한 불가)
+//      - 1픽이 나가면 모드 없이 바로 진행 (일시정지 중에는 타이머가 멈춰서 시간제한 불가)
 //   2) 확정 직후 모두에게 영웅 선택 화면 (왼쪽 가디언 / 오른쪽 다크니스, 힘·민첩·지능)
 //      - 클릭 = 기존 상점(정령)에서 구매 (중복/밴/3P2R/올픽 규칙 그대로 적용)
 //      - 영웅은 상점 재고 시작 지연(15초) 뒤부터 팔리므로, 그때까지 아이콘에 쿨다운 표시 + 클릭 불가
+//      - 가운데 랜덤 버튼 = 기존 -랜덤 트리거 실행 (골드 소모 없음, 올픽이면 양 진영)
+//        기준 맵에 tools/patch_random.py 가 적용돼 있어야 함
 //      - 선택하면 닫힘, 상점이 사라지는 120초에 모두 닫힘, -보드 로 다시 열기
 //
 //   사용법: 맵 초기화 트리거에 사용자 지정 스크립트  call GSPF_Init()
@@ -183,26 +184,6 @@ function GSPF_RefreshModes takes nothing returns nothing
     set b = null
 endfunction
 
-// 진행 투표: 1픽 제외 유저 절반 이상
-function GSPF_RefreshVote takes nothing returns boolean
-    local integer i = 0
-    local integer users = 0
-    local integer votes = 0
-    local integer host = GSPF_HostId()
-    loop
-        exitwhen i > 11
-        if i != host and GSPF_IsUser(Player(i)) then
-            set users = users + 1
-            if GSPF_Bit("GSPF_Votes", i) then
-                set votes = votes + 1
-            endif
-        endif
-        set i = i + 1
-    endloop
-    call BlzFrameSetText(BlzGetFrameByName("ScriptDialogButton", 7250), "진행 투표  |cff999999(" + I2S(votes) + " / " + I2S((users + 1) / 2) + ")|r")
-    return users > 0 and votes * 2 >= users
-endfunction
-
 //--- 영웅 선택 화면 ----------------------------------------------------------
 function GSPF_ShopsAlive takes nothing returns boolean
     local integer g = 0
@@ -280,10 +261,18 @@ function GSPF_BoardTick takes nothing returns nothing
     endif
 
     set rem = 15.5 - TimerGetElapsed(udg_MBTime)
+    set b = BlzGetFrameByName("ScriptDialogButton", 7310)
+    call BlzFrameSetEnable(b, rem <= 0.0 and not udg_RandomRuning)
     if rem <= 0.0 then
-        call BlzFrameSetText(BlzGetFrameByName("GSPF_BoardTitle", 0), "|cffffcc00영웅 선택|r   |cff999999아이콘 클릭 = 구매 / 마우스를 올리면 이름|r")
+        call BlzFrameSetText(BlzGetFrameByName("GSPF_BoardTitle", 0), "|cffffcc00영웅 선택|r   |cff999999클릭 = 구매 (200골드)|r")
+        if udg_ModeAllpick then
+            call BlzFrameSetText(b, "|cffffcc00랜덤|r  |cff999999(무료, 양 진영)|r")
+        else
+            call BlzFrameSetText(b, "|cffffcc00랜덤|r  |cff999999(무료)|r")
+        endif
     else
         call BlzFrameSetText(BlzGetFrameByName("GSPF_BoardTitle", 0), "|cffffcc00영웅 선택|r   영웅 판매 준비 중 |cffffcc00" + I2S(R2I(rem) + 1) + "초|r")
+        call BlzFrameSetText(b, "|cff808080랜덤  (" + I2S(R2I(rem) + 1) + "초)|r")
     endif
     loop
         exitwhen k > 1
@@ -397,19 +386,6 @@ function GSPF_OnModeClick takes nothing returns nothing
         set f = null
         return
     endif
-    if f == BlzGetFrameByName("ScriptDialogButton", 7250) then
-        // 진행 투표 (1픽 외)
-        if pid != GSPF_HostId() then
-            call GSPF_SetBit("GSPF_Votes", pid, true)
-            if GSPF_RefreshVote() then
-                call DisplayTimedTextToPlayer(GetLocalPlayer(), 0, 0, 10, "진행 투표 통과 - 모드 없이 진행합니다.")
-                call GSPF_SetState("GSPF_Sel", "000000")
-                call GSPF_Confirm()
-            endif
-        endif
-        set f = null
-        return
-    endif
     if pid != GSPF_HostId() then
         set f = null
         return
@@ -438,8 +414,6 @@ function GSPF_OnLeave takes nothing returns nothing
         call DisplayTimedTextToPlayer(GetLocalPlayer(), 0, 0, 10, "1픽이 나가서 모드 없이 진행합니다.")
         call GSPF_SetState("GSPF_Sel", "000000")
         call GSPF_Confirm()
-    else
-        call GSPF_RefreshVote()
     endif
 endfunction
 
@@ -490,6 +464,20 @@ function GSPF_OnBoardCmd takes nothing returns nothing
     set f = null
 endfunction
 
+// 랜덤 버튼: 기존 -랜덤 트리거(Trig_random_Actions)를 그대로 실행 -> 골드 소모 없음, 올픽이면 양 진영
+// 이벤트 플레이어가 없으므로 플레이어 번호는 숨긴 프레임 GSPF_RandPid 로 넘김 (tools/patch_random.py)
+function GSPF_OnRandomClick takes nothing returns nothing
+    local player p = GetTriggerPlayer()
+    call GSPF_DropFocus(BlzGetTriggerFrame())
+    if GetUnitTypeId(udg_HeroPlayer[GetPlayerId(p) + 1]) != 0 or not GSPF_StockReady() or udg_RandomRuning then
+        set p = null
+        return
+    endif
+    call GSPF_SetState("GSPF_RandPid", I2S(GetPlayerId(p)))
+    call ExecuteFunc("Trig_random_Actions")
+    set p = null
+endfunction
+
 //--- 생성 --------------------------------------------------------------------
 function GSPF_Hidden takes string name, string v returns nothing
     local framehandle f = BlzCreateFrameByType("TEXT", name, BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI, 0), "", 0)
@@ -527,17 +515,13 @@ function GSPF_CreateModeBox takes integer host returns nothing
     call BlzTriggerRegisterFrameEvent(t, f, FRAMEEVENT_CONTROL_CLICK)
     call BlzFrameSetVisible(box, GetPlayerId(GetLocalPlayer()) == host)
 
-    // 다른 플레이어: 안내 + 진행 투표
-    set box = GSPF_Panel("GSPF_WaitBox", 7003, 0.42, 0.1)
+    // 다른 플레이어: 안내 문구
+    set box = GSPF_Panel("GSPF_WaitBox", 7003, 0.42, 0.06)
     call BlzFrameSetAbsPoint(box, FRAMEPOINT_CENTER, 0.4, 0.4)
     set f = GSPF_Text("GSPF_Wait", 0, box, 0.38, 0.02)
-    call BlzFrameSetPoint(f, FRAMEPOINT_TOP, box, FRAMEPOINT_TOP, 0.0, -0.022)
+    call BlzFrameSetPoint(f, FRAMEPOINT_CENTER, box, FRAMEPOINT_CENTER, 0.0, 0.0)
     call BlzFrameSetTextAlignment(f, TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_CENTER)
     call BlzFrameSetText(f, "|cffffcc00" + GetPlayerName(Player(host)) + "|r 님이 게임 모드를 선택하고 있습니다  |cff999999(일시정지)|r")
-    set f = BlzCreateFrame("ScriptDialogButton", box, 0, 7250)
-    call BlzFrameSetSize(f, 0.2, 0.032)
-    call BlzFrameSetPoint(f, FRAMEPOINT_BOTTOM, box, FRAMEPOINT_BOTTOM, 0.0, 0.018)
-    call BlzTriggerRegisterFrameEvent(t, f, FRAMEEVENT_CONTROL_CLICK)
     call BlzFrameSetVisible(box, GetPlayerId(GetLocalPlayer()) != host)
     call TriggerAddAction(t, function GSPF_OnModeClick)
 
@@ -560,6 +544,7 @@ function GSPF_CreateBoard takes nothing returns nothing
     local framehandle g
     local trigger th = CreateTrigger()
     local trigger tb = CreateTrigger()
+    local trigger tr = CreateTrigger()
     local integer k = 0
     local integer i
     local integer grp
@@ -567,9 +552,15 @@ function GSPF_CreateBoard takes nothing returns nothing
     local integer last = -1
     local real x
     call BlzFrameSetAbsPoint(box, FRAMEPOINT_CENTER, 0.4, 0.36)
-    set f = GSPF_Text("GSPF_BoardTitle", 0, box, 0.6, 0.02)
-    call BlzFrameSetPoint(f, FRAMEPOINT_TOP, box, FRAMEPOINT_TOP, 0.0, -0.02)
-    call BlzFrameSetTextAlignment(f, TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_CENTER)
+    set f = GSPF_Text("GSPF_BoardTitle", 0, box, 0.3, 0.02)
+    call BlzFrameSetPoint(f, FRAMEPOINT_TOPLEFT, box, FRAMEPOINT_TOPLEFT, 0.024, -0.02)
+    call BlzFrameSetTextAlignment(f, TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_LEFT)
+    // 가운데 랜덤 버튼
+    set f = BlzCreateFrame("ScriptDialogButton", box, 0, 7310)
+    call BlzFrameSetSize(f, 0.17, 0.03)
+    call BlzFrameSetPoint(f, FRAMEPOINT_TOP, box, FRAMEPOINT_TOP, 0.0, -0.013)
+    call BlzTriggerRegisterFrameEvent(tr, f, FRAMEEVENT_CONTROL_CLICK)
+    call TriggerAddAction(tr, function GSPF_OnRandomClick)
     set f = BlzCreateFrame("ScriptDialogButton", box, 0, 7300)
     call BlzFrameSetSize(f, 0.07, 0.028)
     call BlzFrameSetPoint(f, FRAMEPOINT_TOPRIGHT, box, FRAMEPOINT_TOPRIGHT, -0.016, -0.014)
@@ -654,6 +645,7 @@ function GSPF_CreateBoard takes nothing returns nothing
     set g = null
     set th = null
     set tb = null
+    set tr = null
 endfunction
 
 function GSPF_Create takes nothing returns nothing
@@ -661,9 +653,9 @@ function GSPF_Create takes nothing returns nothing
     call DestroyTimer(GetExpiredTimer())
     call GSPF_Hidden("GSPF_Host", I2S(host))
     call GSPF_Hidden("GSPF_Sel", "000000")
-    call GSPF_Hidden("GSPF_Votes", "000000000000")
     call GSPF_Hidden("GSPF_Done", "0")
     call GSPF_Hidden("GSPF_Closed", "0")
+    call GSPF_Hidden("GSPF_RandPid", "0")
     call GSPF_CreateBoard()
     if host < 0 then
         call GSPF_Confirm()
@@ -671,7 +663,6 @@ function GSPF_Create takes nothing returns nothing
     endif
     call GSPF_CreateModeBox(host)
     call GSPF_RefreshModes()
-    call GSPF_RefreshVote()
     call PauseGame(true)
 endfunction
 
