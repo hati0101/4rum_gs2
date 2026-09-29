@@ -44,10 +44,10 @@ def iter_mods(data, leveled):
                 for _ in range(n):
                     st = p
                     fid = data[p:p + 4].decode('latin1'); p += 4
+                    t, = struct.unpack_from('<I', data, p); p += 4
                     level = dptr = 0
                     if leveled:
                         level, dptr = struct.unpack_from('<II', data, p); p += 8
-                    t, = struct.unpack_from('<I', data, p); p += 4
                     if t == 0:
                         v, = struct.unpack_from('<i', data, p); p += 4
                     elif t in (1, 2):
