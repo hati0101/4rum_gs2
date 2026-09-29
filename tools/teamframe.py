@@ -12,6 +12,8 @@ usage:
       the custom script line `call GSTF_Init()`.
       --show-self lists the local player's own hero too (handy for solo tests).
       --test adds src/TeamFrameTest.j (-gstest / -gskill bot commands); needs --autostart.
+      --pickflow adds src/PickFlow.j (host mode popup + hero board); a saved map
+      needs `call GSPF_Init()` in the same Map Initialization trigger.
 """
 import os
 import re
@@ -27,6 +29,9 @@ TEMPLATE = os.path.join(ROOT, 'src', 'TeamFrame.template.j')
 OUTPUT = os.path.join(ROOT, 'src', 'TeamFrame.j')
 TEST_CODE = os.path.join(ROOT, 'src', 'TeamFrameTest.j')
 MARKER = '//@@ULT_TABLE@@'
+PICK_TEMPLATE = os.path.join(ROOT, 'src', 'PickFlow.template.j')
+PICK_OUTPUT = os.path.join(ROOT, 'src', 'PickFlow.j')
+PICK_MARKER = '//@@PICK_TABLE@@'
 
 
 def ult_table(arc):
@@ -56,6 +61,53 @@ def ult_table(arc):
     return '\n'.join(lines), len(ults)
 
 
+def pick_table(arc):
+    """JASS tables for the hero board: heroes grouped by the shop that sells them.
+
+    Groups: Guardian shops first, then Darkness, each in shop-id order. Side comes
+    from the roster in the init script (first udg_HeroMax[1] heroes = Guardian)."""
+    from objdata import load_strings, resolve
+    script = arc.read('war3map.j').decode('utf-8', 'replace')
+    roster = [uid for _, uid in re.findall(r"set udg_Hero\[(\d+|\( udg_HeroMax\[1\] \+ \d+ \))\] = '(\w{4})'", script)]
+    n_guard = int(re.search(r'set udg_HeroMax\[1\] = (\d+)', script).group(1))
+    guardian = set(roster[:n_guard])
+    units, strings = load_units(arc), load_strings(arc)
+    shops = []
+    for sid, u in sorted(units.items()):
+        sold = [h for h in str(u.get('useu', '')).split(',') if h in roster]
+        var = re.search(r'\b(gg_unit_%s_\d+)\b' % re.escape(sid), script)
+        if sold and var:
+            name = str(resolve(u.get('unam', sid), strings)).strip().replace('의 정령', '')
+            shops.append((sold[0] not in guardian, sid, var.group(1), name, sold))
+    shops.sort()
+    heroes = [(g, h) for g, s in enumerate(shops) for h in s[4]]
+    missing = [h for h in roster if h not in {h for _, h in heroes}]
+    L = ['// 영웅 선택 보드 표 (tools/teamframe.py gen 으로 생성)',
+         'function GSPF_HeroCount takes nothing returns integer',
+         '    return %d' % len(heroes), 'endfunction', '',
+         'function GSPF_HeroAt takes integer i returns integer']
+    for i, (g, h) in enumerate(heroes):
+        L += ["    %s i == %d then" % ('if' if i == 0 else 'elseif', i), "        return '%s'" % h]
+    L += ['    endif', '    return 0', 'endfunction', '',
+          'function GSPF_GroupOf takes integer i returns integer']
+    start = 0
+    for g, s in enumerate(shops):
+        start += len(s[4])
+        L += ['    if i < %d then' % start, '        return %d' % g, '    endif']
+    L += ['    return %d' % (len(shops) - 1), 'endfunction', '',
+          'function GSPF_Shop takes integer g returns unit']
+    for g, s in enumerate(shops):
+        L += ['    %s g == %d then' % ('if' if g == 0 else 'elseif', g), '        return %s' % s[2]]
+    L += ['    endif', '    return null', 'endfunction', '',
+          'function GSPF_GroupLabel takes integer g returns string']
+    for g, s in enumerate(shops):
+        side = '|cffff7070다크니스|r' if s[0] else '|cff70b0ff가디언|r'
+        L += ['    %s g == %d then' % ('if' if g == 0 else 'elseif', g),
+              '        return "%s\\n|cffffffff%s|r"' % (side, s[3])]
+    L += ['    endif', '    return ""', 'endfunction']
+    return '\n'.join(L), len(heroes), len(shops), missing
+
+
 def gen(map_path):
     arc = Archive(map_path)
     table, n = ult_table(arc)
@@ -64,13 +116,19 @@ def gen(map_path):
     with open(OUTPUT, 'w', encoding='utf-8', newline='\n') as f:
         f.write(src.replace(MARKER, table))
     print('wrote %s (%d hero types)' % (OUTPUT, n))
+    table, n, shops, missing = pick_table(arc)
+    src = open(PICK_TEMPLATE, encoding='utf-8').read()
+    assert PICK_MARKER in src
+    with open(PICK_OUTPUT, 'w', encoding='utf-8', newline='\n') as f:
+        f.write(src.replace(PICK_MARKER, table))
+    print('wrote %s (%d heroes in %d shops, not sold: %s)' % (PICK_OUTPUT, n, shops, missing or 'none'))
 
 
 def _eol(text):
     return '\r\n' if '\r\n' in text else '\n'
 
 
-def inject_j(j, code, autostart, test=False):
+def inject_j(j, code, autostart, test=False, pickflow=False):
     eol = _eol(j)
     if 'function GSTF_Init' in j:
         raise SystemExit('war3map.j already contains GSTF')
@@ -83,6 +141,8 @@ def inject_j(j, code, autostart, test=False):
     if autostart:
         mm = re.search(r'function main takes nothing returns nothing.*?\n(endfunction)', j, re.S)
         calls = '    call GSTF_Init()' + eol
+        if pickflow:
+            calls += '    call GSPF_Init()' + eol
         if test:
             calls += '    call GSTF_TestInit()' + eol
         j = j[:mm.start(1)] + calls + j[mm.start(1):]
@@ -106,12 +166,14 @@ def inject_wct(wct, code):
     return wct[:p] + struct.pack('<I', len(new)) + new + wct[p + 4 + n:]
 
 
-def inject(src, dst, autostart, show_self=False, test=False):
+def inject(src, dst, autostart, show_self=False, test=False, pickflow=False):
     code = open(OUTPUT, encoding='utf-8').read().rstrip('\n')
     if show_self:
         old = 'function GSTF_ShowSelf takes nothing returns boolean\n    return false'
         assert old in code
         code = code.replace(old, old[:-5] + 'true')
+    if pickflow:
+        code += '\n\n' + open(PICK_OUTPUT, encoding='utf-8').read().rstrip('\n')
     if test:
         if not autostart:
             raise SystemExit('--test needs --autostart')
@@ -120,10 +182,11 @@ def inject(src, dst, autostart, show_self=False, test=False):
     j = arc.read('war3map.j').decode('utf-8')
     wct = arc.read('war3map.wct')
     arc.save_with_replacements(dst, {
-        'war3map.j': inject_j(j, code, autostart, test).encode('utf-8'),
+        'war3map.j': inject_j(j, code, autostart, test, pickflow).encode('utf-8'),
         'war3map.wct': inject_wct(wct, code),
     })
-    flags = [f for f, on in (('autostart', autostart), ('show-self', show_self), ('test', test)) if on]
+    flags = [f for f, on in (('autostart', autostart), ('show-self', show_self), ('test', test),
+                             ('pickflow', pickflow)) if on]
     print('wrote', dst, '(%s)' % ', '.join(flags) if flags else '')
 
 
@@ -132,6 +195,6 @@ if __name__ == '__main__':
     if len(a) == 2 and a[0] == 'gen':
         gen(a[1])
     elif len(a) >= 3 and a[0] == 'inject':
-        inject(a[1], a[2], '--autostart' in a, '--show-self' in a, '--test' in a)
+        inject(a[1], a[2], '--autostart' in a, '--show-self' in a, '--test' in a, '--pickflow' in a)
     else:
         sys.exit(__doc__)
