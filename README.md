@@ -26,7 +26,7 @@ CHANGELOG.md 버전별 수정 내역
 |---|---|
 | `maps/GS2vF_ver19.w3x` | 원본 (vF_8FKfix [R2 TEST +G5]) |
 | `maps/GS2vF_ver19_portraitfix.w3x` | 2.0 패치 초상화 버그 수정본 |
-| `maps/GS2vF_ver19_teamframe_test.w3x` | 초상화 수정본 + 팀원 현황 패널 (인게임 테스트용, 자동 시작) |
+| `maps/GS2vF_ver19_teamframe_test.w3x` | 초상화 수정본 + 팀원 현황 패널 (인게임 테스트용: 자동 시작, 자기 영웅도 표시) |
 
 ## 팀원 현황 패널 (GSTF)
 

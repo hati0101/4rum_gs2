@@ -3,13 +3,14 @@
 usage:
   python teamframe.py gen <map.w3x>
       writes src/TeamFrame.j (template + ultimate table generated from the map)
-  python teamframe.py inject <in.w3x> <out.w3x> [--autostart]
+  python teamframe.py inject <in.w3x> <out.w3x> [--autostart] [--show-self]
       appends src/TeamFrame.j to the map's custom script header, in both
       war3map.wct (what the World Editor loads) and war3map.j (what the game runs).
       --autostart also adds `call GSTF_Init()` to main() in war3map.j so the panel
       runs without a trigger. This is for test builds: the World Editor rebuilds
       war3map.j on save, so a saved map needs a Map Initialization trigger with
       the custom script line `call GSTF_Init()`.
+      --show-self lists the local player's own hero too (handy for solo tests).
 """
 import os
 import re
@@ -100,8 +101,12 @@ def inject_wct(wct, code):
     return wct[:p] + struct.pack('<I', len(new)) + new + wct[p + 4 + n:]
 
 
-def inject(src, dst, autostart):
+def inject(src, dst, autostart, show_self=False):
     code = open(OUTPUT, encoding='utf-8').read().rstrip('\n')
+    if show_self:
+        old = 'function GSTF_ShowSelf takes nothing returns boolean\n    return false'
+        assert old in code
+        code = code.replace(old, old[:-5] + 'true')
     arc = Archive(src)
     j = arc.read('war3map.j').decode('utf-8')
     wct = arc.read('war3map.wct')
@@ -117,6 +122,6 @@ if __name__ == '__main__':
     if len(a) == 2 and a[0] == 'gen':
         gen(a[1])
     elif len(a) >= 3 and a[0] == 'inject':
-        inject(a[1], a[2], '--autostart' in a)
+        inject(a[1], a[2], '--autostart' in a, '--show-self' in a)
     else:
         sys.exit(__doc__)
