@@ -7,6 +7,7 @@
 //        1픽이 나가면 바로 진행 (일시정지 중에는 타이머가 멈춰서 시간제한 불가)
 //   2) 확정 직후 모두에게 영웅 선택 화면 (왼쪽 가디언 / 오른쪽 다크니스, 힘·민첩·지능)
 //      - 클릭 = 기존 상점(정령)에서 구매 (중복/밴/3P2R/올픽 규칙 그대로 적용)
+//      - 영웅은 상점 재고 시작 지연(15초) 뒤부터 팔리므로, 그 전 클릭은 예약 -> 15초에 자동 구매
 //      - 선택하면 닫힘, 상점이 사라지는 120초에 모두 닫힘, -보드 로 다시 열기
 //
 //   사용법: 맵 초기화 트리거에 사용자 지정 스크립트  call GSPF_Init()
@@ -220,9 +221,88 @@ function GSPF_SideAllowed takes integer g, player p returns boolean
     return udg_ModeAllpick or ((g < 3) == IsPlayerAlly(p, udg_Force[1]))
 endfunction
 
-// 로컬 화면 갱신 (프레임만 조작 -> 디싱크 없음)
+// 영웅은 상점 재고 시작 지연(15초, 게임 시간) 이후부터 살 수 있음
+function GSPF_StockReady takes nothing returns boolean
+    return TimerGetElapsed(udg_MBTime) >= 15.5
+endfunction
+
+// 예약: 플레이어마다 3자리 (영웅 번호 + 1, 000 = 없음)
+function GSPF_GetResv takes integer pid returns integer
+    return S2I(SubString(GSPF_GetState("GSPF_Resv"), pid * 3, pid * 3 + 3)) - 1
+endfunction
+
+function GSPF_SetResv takes integer pid, integer n returns nothing
+    local string s = GSPF_GetState("GSPF_Resv")
+    local string v = I2S(n + 1)
+    loop
+        exitwhen StringLength(v) >= 3
+        set v = "0" + v
+    endloop
+    call GSPF_SetState("GSPF_Resv", SubString(s, 0, pid * 3) + v + SubString(s, pid * 3 + 3, 36))
+endfunction
+
+// 고를 수 있는지 확인 후 기존 상점 구매 주문 (true = 주문 냄)
+function GSPF_TryBuy takes player p, integer n returns boolean
+    local integer hid = GSPF_HeroAt(n)
+    local unit shop = GSPF_Shop(GSPF_GroupOf(n))
+    local unit buyer
+    if GetUnitTypeId(udg_HeroPlayer[GetPlayerId(p) + 1]) != 0 or not GSPF_ShopsAlive() then
+        set shop = null
+        return false
+    endif
+    if not GSPF_SideAllowed(GSPF_GroupOf(n), p) or GetPlayerTechMaxAllowed(p, hid) == 0 then
+        call DisplayTimedTextToPlayer(p, 0, 0, 6, "|cffff8080" + GetObjectName(hid) + " 은(는) 선택할 수 없습니다|r (이미 선택됨/밴/모드 제한). 다른 영웅을 골라 주세요.")
+        set shop = null
+        return false
+    endif
+    // 상점 옆에 구매용 유닛을 잠깐 만들고 상점 구매 주문 -> Select Hero 트리거가 처리
+    set buyer = CreateUnit(p, 'e003', GetUnitX(shop), GetUnitY(shop) - 64.0, 270.0)
+    call UnitApplyTimedLife(buyer, 'BTLF', 2.0)
+    call IssueNeutralImmediateOrderById(p, shop, hid)
+    set shop = null
+    set buyer = null
+    return true
+endfunction
+
+// 판매 시작 시 예약 일괄 구매 (동기 코드, 플레이어 번호 순)
+function GSPF_ProcessResv takes nothing returns nothing
+    local integer pid = 0
+    local integer n
+    local string tried = ""
+    loop
+        exitwhen pid > 11
+        set n = GSPF_GetResv(pid)
+        if n >= 0 then
+            call GSPF_SetResv(pid, -1)
+            if GSPF_TryBuy(Player(pid), n) then
+                set tried = tried + "1"
+            else
+                set tried = tried + "0"
+            endif
+        else
+            set tried = tried + "0"
+        endif
+        set pid = pid + 1
+    endloop
+    call GSPF_SetState("GSPF_Tried", tried)
+endfunction
+
+// 예약 구매 1초 뒤: 주문했는데 영웅이 없으면 안내
+function GSPF_CheckTried takes nothing returns nothing
+    local integer pid = 0
+    loop
+        exitwhen pid > 11
+        if GSPF_Bit("GSPF_Tried", pid) and GetUnitTypeId(udg_HeroPlayer[pid + 1]) == 0 then
+            call DisplayTimedTextToPlayer(Player(pid), 0, 0, 8, "|cffff8080예약 구매 실패|r - 다시 골라 주세요. 계속 안 되면 상점(정령)에서 직접 구매해 주세요.")
+        endif
+        set pid = pid + 1
+    endloop
+    call GSPF_SetState("GSPF_Tried", "000000000000")
+endfunction
+
 function GSPF_BoardTick takes nothing returns nothing
     local player lp = GetLocalPlayer()
+    local integer lpid = GetPlayerId(lp)
     local framehandle board = BlzGetFrameByName("GSPF_Board", 0)
     local framehandle b
     local integer i = 0
@@ -231,6 +311,16 @@ function GSPF_BoardTick takes nothing returns nothing
     local boolean ok
     local string s = ""
 
+    // --- 동기 처리 (모든 클라이언트에서 똑같이 실행) ---
+    if GSPF_StockReady() and GSPF_GetState("GSPF_ResvDone") == "0" then
+        call GSPF_SetState("GSPF_ResvDone", "1")
+        call GSPF_ProcessResv()
+        call GSPF_SetState("GSPF_ChkAt", R2S(TimerGetElapsed(udg_MBTime) + 1.0))
+    endif
+    if GSPF_GetState("GSPF_ChkAt") != "" and TimerGetElapsed(udg_MBTime) >= S2R(GSPF_GetState("GSPF_ChkAt")) then
+        call GSPF_SetState("GSPF_ChkAt", "")
+        call GSPF_CheckTried()
+    endif
     if not GSPF_ShopsAlive() then
         call BlzFrameSetVisible(board, false)
         call DestroyTimer(GetExpiredTimer())
@@ -238,13 +328,20 @@ function GSPF_BoardTick takes nothing returns nothing
         set lp = null
         return
     endif
-    call BlzFrameSetVisible(board, GSPF_IsUser(lp) and GetUnitTypeId(udg_HeroPlayer[GetPlayerId(lp) + 1]) == 0 and GSPF_GetState("GSPF_Closed") != "1")
+
+    // --- 로컬 화면 갱신 (프레임만 조작 -> 디싱크 없음) ---
+    call BlzFrameSetVisible(board, GSPF_IsUser(lp) and GetUnitTypeId(udg_HeroPlayer[lpid + 1]) == 0 and GSPF_GetState("GSPF_Closed") != "1")
     if not BlzFrameIsVisible(board) then
         set board = null
         set lp = null
         return
     endif
 
+    if GSPF_StockReady() then
+        call BlzFrameSetText(BlzGetFrameByName("GSPF_BoardTitle", 0), "|cffffcc00영웅 선택|r   |cff999999아이콘 클릭 = 구매 / 마우스를 올리면 이름|r")
+    else
+        call BlzFrameSetText(BlzGetFrameByName("GSPF_BoardTitle", 0), "|cffffcc00영웅 선택|r   영웅 판매 시작까지 |cffffcc00" + I2S(R2I(15.5 - TimerGetElapsed(udg_MBTime)) + 1) + "초|r - 지금 클릭하면 |cffffcc00예약|r")
+    endif
     loop
         exitwhen k > 1
         if GSPF_SideAllowed(k * 3, lp) then
@@ -258,15 +355,14 @@ function GSPF_BoardTick takes nothing returns nothing
         exitwhen i >= GSPF_HeroCount()
         set hid = GSPF_HeroAt(i)
         set ok = GSPF_SideAllowed(GSPF_GroupOf(i), lp) and GetPlayerTechMaxAllowed(lp, hid) != 0
-        set b = BlzGetFrameByName("ScriptDialogButton", 7400 + i)
+        set b = BlzGetFrameByName("ScoreScreenBottomButtonTemplate", 7400 + i)
         call BlzFrameSetEnable(b, ok)
         if ok then
-            call BlzFrameSetAlpha(BlzGetFrameByName("GSPF_Icon", 7400 + i), 255)
-            call BlzFrameSetText(b, GetObjectName(hid))
+            call BlzFrameSetAlpha(BlzGetFrameByName("ScoreScreenButtonBackdrop", 7400 + i), 255)
         else
-            call BlzFrameSetAlpha(BlzGetFrameByName("GSPF_Icon", 7400 + i), 70)
-            call BlzFrameSetText(b, "|cff707070" + GetObjectName(hid) + "|r")
+            call BlzFrameSetAlpha(BlzGetFrameByName("ScoreScreenButtonBackdrop", 7400 + i), 55)
         endif
+        call BlzFrameSetVisible(BlzGetFrameByName("GSPF_Mark", 7400 + i), ok and GSPF_GetResv(lpid) == i)
         set i = i + 1
     endloop
 
@@ -397,47 +493,42 @@ endfunction
 function GSPF_OnHeroClick takes nothing returns nothing
     local framehandle f = BlzGetTriggerFrame()
     local player p = GetTriggerPlayer()
+    local integer pid = GetPlayerId(p)
     local integer i = 0
     local integer n = -1
-    local integer hid
-    local unit shop
-    local unit buyer
     call GSPF_DropFocus(f)
     loop
         exitwhen i >= GSPF_HeroCount() or n >= 0
-        if f == BlzGetFrameByName("ScriptDialogButton", 7400 + i) then
+        if f == BlzGetFrameByName("ScoreScreenBottomButtonTemplate", 7400 + i) then
             set n = i
         endif
         set i = i + 1
     endloop
     set f = null
-    if n < 0 then
+    if n < 0 or GetUnitTypeId(udg_HeroPlayer[pid + 1]) != 0 then
         set p = null
         return
     endif
-    set hid = GSPF_HeroAt(n)
-    set shop = GSPF_Shop(GSPF_GroupOf(n))
-    if GetUnitTypeId(udg_HeroPlayer[GetPlayerId(p) + 1]) != 0 or not GSPF_ShopsAlive() then
-        set shop = null
+    // 판매 시작 전: 예약 (같은 영웅 다시 클릭 = 취소)
+    if not GSPF_StockReady() then
+        if GSPF_GetResv(pid) == n then
+            call GSPF_SetResv(pid, -1)
+            call DisplayTimedTextToPlayer(p, 0, 0, 5, "예약 취소: " + GetObjectName(GSPF_HeroAt(n)))
+        elseif GSPF_SideAllowed(GSPF_GroupOf(n), p) and GetPlayerTechMaxAllowed(p, GSPF_HeroAt(n)) != 0 then
+            call GSPF_SetResv(pid, n)
+            call DisplayTimedTextToPlayer(p, 0, 0, 8, "|cffffcc00예약|r: " + GetObjectName(GSPF_HeroAt(n)) + "  (영웅 판매가 시작되면 자동 구매)")
+        else
+            call DisplayTimedTextToPlayer(p, 0, 0, 5, "|cffff8080선택할 수 없는 영웅입니다.|r")
+        endif
         set p = null
         return
     endif
-    if not GSPF_SideAllowed(GSPF_GroupOf(n), p) or GetPlayerTechMaxAllowed(p, hid) == 0 then
-        call DisplayTimedTextToPlayer(p, 0, 0, 5, "|cffff8080선택할 수 없는 영웅입니다.|r")
-        set shop = null
-        set p = null
-        return
+    if GSPF_TryBuy(p, n) then
+        call TriggerSleepAction(1.0)
+        if GetUnitTypeId(udg_HeroPlayer[pid + 1]) == 0 then
+            call DisplayTimedTextToPlayer(p, 0, 0, 8, "|cffff8080구매 실패|r - 상점(정령)에서 직접 구매해 주세요.")
+        endif
     endif
-    // 상점 옆에 구매용 유닛을 잠깐 만들고, 기존 상점 구매 주문을 냄 -> Select Hero 트리거가 처리
-    set buyer = CreateUnit(p, 'e003', GetUnitX(shop), GetUnitY(shop) - 64.0, 270.0)
-    call UnitApplyTimedLife(buyer, 'BTLF', 2.0)
-    call IssueNeutralImmediateOrderById(p, shop, hid)
-    call TriggerSleepAction(1.0)
-    if GetUnitTypeId(udg_HeroPlayer[GetPlayerId(p) + 1]) == 0 then
-        call DisplayTimedTextToPlayer(p, 0, 0, 8, "|cffff8080보드 구매 실패|r - 상점(정령)에서 직접 구매해 주세요.")
-    endif
-    set shop = null
-    set buyer = null
     set p = null
 endfunction
 
@@ -520,7 +611,7 @@ function GSPF_CreateModeBox takes integer host returns nothing
 endfunction
 
 function GSPF_CreateBoard takes nothing returns nothing
-    local framehandle box = GSPF_Panel("GSPF_Board", 7002, 0.78, 0.42)
+    local framehandle box = GSPF_Panel("GSPF_Board", 7002, 0.78, 0.43)
     local framehandle f
     local framehandle g
     local trigger th = CreateTrigger()
@@ -528,13 +619,13 @@ function GSPF_CreateBoard takes nothing returns nothing
     local integer k = 0
     local integer i
     local integer grp
-    local integer row = 0
+    local integer j = 0
     local integer last = -1
-    call BlzFrameSetAbsPoint(box, FRAMEPOINT_CENTER, 0.4, 0.365)
-    set f = GSPF_Text("GSPF_BoardTitle", 0, box, 0.3, 0.02)
+    local real x
+    call BlzFrameSetAbsPoint(box, FRAMEPOINT_CENTER, 0.4, 0.36)
+    set f = GSPF_Text("GSPF_BoardTitle", 0, box, 0.6, 0.02)
     call BlzFrameSetPoint(f, FRAMEPOINT_TOP, box, FRAMEPOINT_TOP, 0.0, -0.02)
     call BlzFrameSetTextAlignment(f, TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_CENTER)
-    call BlzFrameSetText(f, "|cffffcc00영웅 선택|r")
     set f = BlzCreateFrame("ScriptDialogButton", box, 0, 7300)
     call BlzFrameSetSize(f, 0.07, 0.028)
     call BlzFrameSetPoint(f, FRAMEPOINT_TOPRIGHT, box, FRAMEPOINT_TOPRIGHT, -0.016, -0.014)
@@ -545,52 +636,58 @@ function GSPF_CreateBoard takes nothing returns nothing
     loop
         exitwhen k > 1
         set f = GSPF_Text("GSPF_SideLbl", k, box, 0.37, 0.018)
-        call BlzFrameSetPoint(f, FRAMEPOINT_TOPLEFT, box, FRAMEPOINT_TOPLEFT, 0.022 + k * 0.385, -0.044)
+        call BlzFrameSetPoint(f, FRAMEPOINT_TOPLEFT, box, FRAMEPOINT_TOPLEFT, 0.024 + k * 0.385, -0.044)
         call BlzFrameSetTextAlignment(f, TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_LEFT)
         set k = k + 1
     endloop
     set k = 0
     loop
         exitwhen k > 5
-        set f = GSPF_Text("GSPF_GrpLbl", k, box, 0.12, 0.016)
-        call BlzFrameSetPoint(f, FRAMEPOINT_TOPLEFT, box, FRAMEPOINT_TOPLEFT, 0.024 + (k / 3) * 0.385 + ModuloInteger(k, 3) * 0.123, -0.066)
+        set f = GSPF_Text("GSPF_GrpLbl", k, box, 0.11, 0.016)
+        call BlzFrameSetPoint(f, FRAMEPOINT_TOPLEFT, box, FRAMEPOINT_TOPLEFT, 0.026 + (k / 3) * 0.385 + ModuloInteger(k, 3) * 0.123, -0.064)
         call BlzFrameSetTextAlignment(f, TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_LEFT)
         call BlzFrameSetText(f, GSPF_GroupLabel(k))
         set k = k + 1
     endloop
 
-    // 영웅 버튼: 아이콘 + 이름 (그룹 안에서 위에서 아래로)
+    // 영웅 아이콘 버튼: 그룹마다 2열, 위에서 아래로
     set i = 0
     loop
         exitwhen i >= GSPF_HeroCount()
         set grp = GSPF_GroupOf(i)
         if grp != last then
-            set row = 0
+            set j = 0
             set last = grp
         endif
-        set f = BlzCreateFrame("ScriptDialogButton", box, 0, 7400 + i)
-        call BlzFrameSetSize(f, 0.12, 0.025)
-        call BlzFrameSetPoint(f, FRAMEPOINT_TOPLEFT, box, FRAMEPOINT_TOPLEFT, 0.02 + (grp / 3) * 0.385 + ModuloInteger(grp, 3) * 0.123, -0.084 - row * 0.025)
-        call BlzFrameSetText(f, GetObjectName(GSPF_HeroAt(i)))
-        set g = BlzGetFrameByName("ScriptDialogButtonText", 7400 + i)
-        if g != null then
-            call BlzFrameClearAllPoints(g)
-            call BlzFrameSetPoint(g, FRAMEPOINT_LEFT, f, FRAMEPOINT_LEFT, 0.027, 0.0)
-            call BlzFrameSetSize(g, 0.09, 0.02)
-            call BlzFrameSetTextAlignment(g, TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_LEFT)
-        endif
-        set g = BlzCreateFrameByType("BACKDROP", "GSPF_Icon", f, "", 7400 + i)
-        call BlzFrameSetSize(g, 0.019, 0.019)
-        call BlzFrameSetPoint(g, FRAMEPOINT_LEFT, f, FRAMEPOINT_LEFT, 0.004, 0.0)
-        call BlzFrameSetTexture(g, BlzGetAbilityIcon(GSPF_HeroAt(i)), 0, true)
+        set x = 0.024 + (grp / 3) * 0.385 + ModuloInteger(grp, 3) * 0.123 + ModuloInteger(j, 2) * 0.056
+        set f = BlzCreateFrame("ScoreScreenBottomButtonTemplate", box, 0, 7400 + i)
+        call BlzFrameSetSize(f, 0.046, 0.046)
+        call BlzFrameSetPoint(f, FRAMEPOINT_TOPLEFT, box, FRAMEPOINT_TOPLEFT, x, -0.082 - (j / 2) * 0.052)
+        call BlzFrameSetTexture(BlzGetFrameByName("ScoreScreenButtonBackdrop", 7400 + i), BlzGetAbilityIcon(GSPF_HeroAt(i)), 0, true)
         call BlzTriggerRegisterFrameEvent(th, f, FRAMEEVENT_CONTROL_CLICK)
-        set row = row + 1
+        // 예약 표시 (노란 테두리)
+        set g = BlzCreateFrameByType("BACKDROP", "GSPF_Mark", f, "", 7400 + i)
+        call BlzFrameSetAllPoints(g, f)
+        call BlzFrameSetTexture(g, "UI\\Widgets\\Console\\Human\\CommandButton\\human-activebutton.blp", 0, true)
+        call BlzFrameSetVisible(g, false)
+        // 툴팁: 영웅 이름
+        set g = BlzCreateFrameByType("BACKDROP", "GSPF_Tip", f, "", 7400 + i)
+        call BlzFrameSetTexture(g, "Textures\\Black32.blp", 0, true)
+        call BlzFrameSetAlpha(g, 230)
+        call BlzFrameSetSize(g, 0.14, 0.024)
+        call BlzFrameSetPoint(g, FRAMEPOINT_BOTTOM, f, FRAMEPOINT_TOP, 0.0, 0.004)
+        call BlzFrameSetTooltip(f, g)
+        set g = GSPF_Text("GSPF_TipText", 7400 + i, g, 0.14, 0.024)
+        call BlzFrameSetPoint(g, FRAMEPOINT_CENTER, BlzGetFrameByName("GSPF_Tip", 7400 + i), FRAMEPOINT_CENTER, 0.0, 0.0)
+        call BlzFrameSetTextAlignment(g, TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_CENTER)
+        call BlzFrameSetText(g, "|cffffffff" + GetObjectName(GSPF_HeroAt(i)) + "|r")
+        set j = j + 1
         set i = i + 1
     endloop
     call TriggerAddAction(th, function GSPF_OnHeroClick)
 
     set f = GSPF_Text("GSPF_Hint", 0, box, 0.74, 0.018)
-    call BlzFrameSetPoint(f, FRAMEPOINT_BOTTOM, box, FRAMEPOINT_BOTTOM, 0.0, 0.016)
+    call BlzFrameSetPoint(f, FRAMEPOINT_BOTTOM, box, FRAMEPOINT_BOTTOM, 0.0, 0.014)
     call BlzFrameSetTextAlignment(f, TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_CENTER)
     call BlzFrameSetVisible(box, false)
 
@@ -618,6 +715,10 @@ function GSPF_Create takes nothing returns nothing
     call GSPF_Hidden("GSPF_Votes", "000000000000")
     call GSPF_Hidden("GSPF_Done", "0")
     call GSPF_Hidden("GSPF_Closed", "0")
+    call GSPF_Hidden("GSPF_Resv", "000000000000000000000000000000000000")
+    call GSPF_Hidden("GSPF_ResvDone", "0")
+    call GSPF_Hidden("GSPF_Tried", "000000000000")
+    call GSPF_Hidden("GSPF_ChkAt", "")
     call GSPF_CreateBoard()
     if host < 0 then
         call GSPF_Confirm()
