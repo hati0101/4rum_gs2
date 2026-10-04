@@ -1,5 +1,14 @@
 # 변경 내역
 
+## ver52 fix (배포) — 2026-10-04
+
+`maps/release/GS2vF_ver52_fix.w3x` — 공동 작업자의 ver52(`maps/GS2vF_ver52.w3x`)에 patch4 수정만 적용
+
+- ver52는 ver19 patch3 기반 + 공동 작업자 수정 (능력 41개 수치, 툴팁 21개, 유닛 4개, 스크립트 약 2,000줄)
+  - patch3 내용(팀원 패널, 모드 선택, 영웅 선택판, -랜덤 수정, 초상화, 평화 무적 수정)은 이미 포함
+- 추가 적용: 천둥 일격 기반 능력 55개 Htc5 = 0 (`tools/fix_new_fields.py`)
+- 바뀐 내부 파일은 `war3map.w3a`, `(attributes)` 뿐. 공동 작업자 수정은 그대로
+
 ## ver19 patch4 (배포) — 2026-10-04
 
 `maps/release/GS2vF_ver19_patch4.w3x` — patch3 + 아래 버그 수정

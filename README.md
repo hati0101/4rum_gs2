@@ -25,7 +25,9 @@ CHANGELOG.md 버전별 수정 내역
 | 파일 | 설명 |
 |---|---|
 | `maps/GS2vF_ver19.w3x` | 원본 (vF_8FKfix [R2 TEST +G5]) |
-| `maps/release/GS2vF_ver19_patch4.w3x` | **배포용 (최신)** — patch3 + 천둥 일격 기반 스킬 4레벨 피해 제한 수정 |
+| `maps/release/GS2vF_ver52_fix.w3x` | **배포용 (최신, ver52 기준)** — ver52 + 천둥 일격 기반 스킬 4레벨 피해 제한 수정 |
+| `maps/GS2vF_ver52.w3x` | ver52 원본 (공동 작업자 버전: ver19 patch3 + 밸런스·툴팁·스크립트 수정) |
+| `maps/release/GS2vF_ver19_patch4.w3x` | 배포용 (ver19 기준) — patch3 + 천둥 일격 기반 스킬 4레벨 피해 제한 수정 |
 | `maps/release/GS2vF_ver19_patch3.w3x` | 배포용 — patch2 + 팀원 패널 Q W E R 스킬·패시브·궁극기 강조·부활 시간 |
 | `maps/release/GS2vF_ver19_patch2.w3x` | 배포용 — patch1 + 진행 투표 제거, 선택판 랜덤 버튼, -랜덤 버그 수정 |
 | `maps/release/GS2vF_ver19_patch1.w3x` | 배포용 — 수정본 + 팀원 현황 패널 + 모드 선택 팝업 + 영웅 선택판 (테스트 기능 없음) |
