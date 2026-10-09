@@ -3,3 +3,6 @@ __pycache__/
 # World Editor backup/temp files
 *.w3x.bak
 *.tmp
+# GSRI local extraction, dependencies, validators and test binaries (handoff ZIP)
+/work/
+/maps/testing/*.w3x

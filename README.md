@@ -7,6 +7,12 @@
 
 ## 구성
 
+### GSRI 스킬 범위 표시 시험 구현
+
+`codex/skill-range-indicators` 브랜치의 레인저·노네 대상 v9 시험 구현입니다. [기술 이관서](HANDOFF.md), [구현 문서](docs/RangeIndicator.md), [위험 검토](docs/RangeIndicator-risk-v9.md)를 먼저 확인하십시오. 다인 동기화·성능·시야 밖 표시 검증이 남아 있으며 정식 배포본이 아닙니다.
+
+소스·리소스·v9 manifest/coverage는 Git에 포함하고, ver93 원본·테스트맵·검사 도구 바이너리는 별도 이관 ZIP으로 전달합니다. `work/`와 생성 테스트 `.w3x`는 추적하지 않습니다.
+
 ```
 maps/        맵 파일 (.w3x, Git LFS)
 extracted/   맵에서 추출한 텍스트 데이터 — 변경 내용을 git diff로 보기 위함

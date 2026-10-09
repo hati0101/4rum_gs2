@@ -1,0 +1,30 @@
+Version { FormatVersion 800, }
+Model "line" { NumGeosets 1, NumBones 1, BlendTime 0, MinimumExtent { -2, -2, -2 }, MaximumExtent { 2, 2, 2 }, BoundsRadius 4, }
+Sequences 1 { Anim "Stand" { Interval { 0, 1000 }, MinimumExtent { -2, -2, -2 }, MaximumExtent { 2, 2, 2 }, BoundsRadius 4, } }
+Textures 1 { Bitmap { Image "GSRI\\white.tga", } }
+Materials 1 { Material { Layer { FilterMode Blend, Unshaded, TwoSided, Unfogged, NoDepthSet, static TextureID 0, static Alpha 1, } } }
+Geoset {
+Vertices 4 { { 0, -0.5, 0 },
+{ 1, -0.5, 0 },
+{ 1, 0.5, 0 },
+{ 0, 0.5, 0 }, }
+Normals 4 { { 0, 0, 1 },
+{ 0, 0, 1 },
+{ 0, 0, 1 },
+{ 0, 0, 1 }, }
+TVertices 4 { { 0.5, 0.5 },
+{ 0.5, 0.5 },
+{ 0.5, 0.5 },
+{ 0.5, 0.5 }, }
+VertexGroup { 0,
+0,
+0,
+0, }
+Faces 1 6 { Triangles { { 0, 1, 2, 0, 2, 3 }, } }
+Groups 1 1 { Matrices { 0 }, }
+MinimumExtent { -2, -2, -2 }, MaximumExtent { 2, 2, 2 }, BoundsRadius 4,
+Anim { MinimumExtent { -2, -2, -2 }, MaximumExtent { 2, 2, 2 }, BoundsRadius 4, }
+MaterialID 0, SelectionGroup 0, Unselectable,
+}
+Bone "Root" { ObjectId 0, GeosetId Multiple, GeosetAnimId None, }
+PivotPoints 1 { { 0, 0, 0 }, }

@@ -1,0 +1,17 @@
+﻿id,base,key,name,owner,panel,added_by_script,ranges,kind,status,profile
+A00T,Aens,,[특성 - 레인저],[특성 - 레인저],False,True,[550.0],0,no_hotkey,0
+A012,Aeye,Q,헌팅 네트(Q) - [레벨 1],[가디언 - 레인저],True,False,"[650.0, 650.0, 650.0, 650.0]",1,targeted_native,0
+A03V,AOcl,W,헥스(W) - [레벨 1],[가디언 - 스펠 인보커],True,False,"[650.0, 650.0, 650.0, 650.0]",1,targeted_native,0
+A08G,ACbf,Q,퓨리피 웨이브(Q) - [레벨 1],[가디언 - 스펠 인보커],True,False,"[700.0, 700.0, 700.0, 700.0]",1,targeted_native,1
+A08H,ANsi,E,[가디언 - 스펠 인보커],[가디언 - 스펠 인보커],True,False,"[800.0, 800.0, 800.0, 800.0]",1,targeted_native,0
+A08I,ANhx,W,[효과 - 스펠 인보커],[효과 - 스펠 인보커],False,True,"[99999.0, 99999.0, 99999.0, 99999.0]",0,zero_or_unlimited_range,0
+A08J,AHbn,R,이터리얼 스매쉬(R) - [레벨 1],[가디언 - 스펠 인보커],True,False,"[750.0, 750.0, 750.0]",1,targeted_native,0
+A0GT,Aivs,,[특성 - 스펠 인보커],[특성 - 스펠 인보커],False,True,"[99999.0, 99999.0, 99999.0, 99999.0]",0,no_hotkey,0
+A0HH,Aspo,,마력 방출,[특성 - 스펠 인보커],False,False,[0.0],0,no_hotkey,0
+A0KQ,Absk,D,그물 발동(D),[스킬 - 레인저],False,False,[0.0],0,self_or_passive,0
+A0ME,Aroa,D,함정 발동(D),[스킬 - 레인저],False,True,[0.0],0,self_or_passive,0
+A0O8,Afla,W,포이즌 스나이핑(W) - [레벨 1],[가디언 - 레인저],True,False,"[1800.0, 1800.0, 1800.0, 1800.0]",1,targeted_native,2
+A10I,Adis,,[특성 - 스펠 인보커],[특성 - 스펠 인보커],False,True,"[99999.0, 99999.0, 99999.0, 99999.0]",0,no_hotkey,0
+A11K,Adis,R,캡쳐 네트(R) - [레벨 1],[가디언 - 레인저],True,False,"[400.0, 450.0, 500.0]",1,targeted_native,0
+A12Q,AOfs,E,스카이 비전(E) - [레벨 1],[가디언 - 레인저],True,False,"[99999.0, 99999.0, 99999.0, 99999.0]",0,zero_or_unlimited_range,0
+A14Z,Asph,,[특성 - 스펠 인보커],[특성 - 스펠 인보커],False,True,[0.0],0,no_hotkey,0

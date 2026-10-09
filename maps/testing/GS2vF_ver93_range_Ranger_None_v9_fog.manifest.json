@@ -1,0 +1,44 @@
+{
+  "status": "PREPARED_NOT_PUBLISHED_RUNTIME_UNVERIFIED",
+  "source": "C:\\Users\\admin\\Downloads\\GS2vF_ver93.w3x",
+  "source_sha256": "057f8ae676762de28c652603339d6a3f70a6831ddf7631eed638b41e61b2356f",
+  "output": "GS2vF_ver93_range_Ranger_None_v9_fog.w3x",
+  "output_sha256": "56d25b8cf45fec3165bf0b7cabf01bb4affe55fea9cd1ef77f4b1f8f25f1ef04",
+  "game_version": "3.0.0.24268",
+  "enabled_heroes": [
+    "Hvwd (Ranger / Earthlake)",
+    "Hkal (Spell Invoker / None)"
+  ],
+  "changed_members": [
+    "(attributes)",
+    "GSRI\\white.tga",
+    "Splats\\LightningData.slk",
+    "war3map.imp",
+    "war3map.j",
+    "war3map.wct"
+  ],
+  "preserved_members": 1061,
+  "statuses": {
+    "no_hotkey": 5,
+    "targeted_native": 7,
+    "zero_or_unlimited_range": 2,
+    "self_or_passive": 2
+  },
+  "supported": 7,
+  "profiles": [
+    "A08G",
+    "A0O8"
+  ],
+  "explicit_exclusions": {
+    "A0OB": "디멘션 도어",
+    "A0T1": "데스 프로마이즈",
+    "A11L": "카오스 위치: 타임 오브 데스",
+    "A07I": "에인션트 트리(윗브): 네추럴링"
+  },
+  "custom_function_signatures": {
+    "Trig_Poison_Sniping_Actions": "93641743037b71d508e4c740a4d05c137c637eb2ce481de50fd1166d1e1f13a7",
+    "Trig_Poison_Sniping_Move_Actions": "c6a1144a53223a4f6719c6fba1d01f50057996bb58f24f15cb7cc21b5f628c25",
+    "Trig_Poison_Sniping_Move_Func001C": "3909fdbc3e6540f74d6495180d6c5972c4f4833b5b9d25b6caf5ebd53d876bc7",
+    "GS2_AuditRangeRegister": "4d619b5321f566c23981046baf65776dbab0cb8b659878887dad99f3989878d6"
+  }
+}
