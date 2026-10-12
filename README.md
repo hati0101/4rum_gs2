@@ -5,6 +5,14 @@
 - 원작: 4rum Community ([4rum.co.kr](http://4rum.co.kr))
 - 대상 게임 버전: Warcraft III: Reforged 2.0 이상 (리포지드 월드 에디터로 편집)
 
+## 최신 수정본과 전체 변경 기록
+
+- **최신 수정 맵:** [`maps/release/GS2vF_ver138_fix.w3x`](maps/release/GS2vF_ver138_fix.w3x) — ver138의 사거리 표시 동기화 위험과 피와케 E 스킨 데이터 덮어쓰기를 보강한 테스트용 수정본. 인게임 이름은 ver138입니다. 실제 멀티플레이 디싱크·크래시 해결 여부는 재현 테스트가 필요합니다.
+- **최초 F8 대비 전체 수정 메모:** [텍스트 다운로드](https://github.com/hati0101/4rum_gs2/raw/refs/heads/main/F8_to_ver138_all_changes.txt) / [압축본 다운로드](https://github.com/hati0101/4rum_gs2/raw/refs/heads/main/F8_to_ver138_all_changes.zip). UTF-8 BOM 텍스트로 Windows 메모장에서 열 수 있습니다.
+- 비교 기준은 저장소의 `maps/GS2vF_ver19.w3x`이며, 내부 이름은 **vF_8FKfix [R2 TEST +G5]**입니다. 확인 가능한 누적 변경 전부를 실제 맵 데이터로 비교했고, 기록이 없는 중간 버전의 의도는 추측하지 않았습니다.
+- 메모에는 기능 요약, 기존 변경 기록, 객체 필드 변경 11,509건, 문자열 전체 변경, 런타임/에디터 스크립트 전체 차이, 리소스 및 파일 검증 목록이 있습니다. 분량이 크므로 GitHub 미리보기보다 다운로드를 권장합니다.
+- 이번 수정의 검증과 한계: [`reviews/ver138/README.md`](reviews/ver138/README.md).
+
 ## 구성
 
 ```
@@ -24,8 +32,10 @@ CHANGELOG.md 버전별 수정 내역
 
 | 파일 | 설명 |
 |---|---|
+| `maps/release/GS2vF_ver138_fix.w3x` | **최신 수정본** — ver138 + 사거리 표시 동기화 위험 보강 + 피와케 E 스킨 필드 보정 (멀티플레이 테스트 필요) |
+| `maps/release/GS2vF_ver137_DoomLord_skin_fix.w3x` | ver137 둠로드 스킨 경로 호환 수정본 |
 | `maps/GS2vF_ver19.w3x` | 원본 (vF_8FKfix [R2 TEST +G5]) |
-| `maps/release/GS2vF_ver52_fix.w3x` | **배포용 (최신, ver52 기준)** — ver52 + 천둥 일격 기반 스킬 4레벨 피해 제한 수정 |
+| `maps/release/GS2vF_ver52_fix.w3x` | 배포용 (ver52 기준) — ver52 + 천둥 일격 기반 스킬 4레벨 피해 제한 수정 |
 | `maps/GS2vF_ver52.w3x` | ver52 원본 (공동 작업자 버전: ver19 patch3 + 밸런스·툴팁·스크립트 수정) |
 | `maps/release/GS2vF_ver19_patch4.w3x` | 배포용 (ver19 기준) — patch3 + 천둥 일격 기반 스킬 4레벨 피해 제한 수정 |
 | `maps/release/GS2vF_ver19_patch3.w3x` | 배포용 — patch2 + 팀원 패널 Q W E R 스킬·패시브·궁극기 강조·부활 시간 |
