@@ -1,0 +1,203 @@
+--- ver143
++++ ver144
+@@ -1659,6 +1659,8 @@
+     hashtable GS2S_ItemDamageData = null
+     hashtable GS2PB_Data = null
+     hashtable GS2PERF_Effects = null
++    hashtable GS144_Data = null
++    timer GS144_Clock = null
+ endglobals
+ 
+ function GS2V84_ForGroupBJOwned takes group g, code actionFunc returns nothing
+@@ -27762,10 +27764,10 @@
+ endfunction
+ function Trig_High_Ultimate_Actions takes nothing returns nothing
+     call PlaySoundBJ( gg_snd_HeroMoonPriestessReady1 )
+-    call GS2V84_CreateNUnitsAtLoc_3(1, 'e012', GetOwningPlayer(GetTriggerUnit()), GetUnitLoc(GetSpellTargetUnit()), bj_UNIT_FACING)
+-    call UnitApplyTimedLifeBJ( 3.00, 'BTLF', GetLastCreatedUnit() )
+-    call GS2V84_CreateNUnitsAtLoc_3(1, 'e011', GetOwningPlayer(GetTriggerUnit()), GetUnitLoc(GetSpellTargetUnit()), bj_UNIT_FACING)
+-    call UnitApplyTimedLifeBJ( 4.00, 'BTLF', GetLastCreatedUnit() )
++    call GS2V84_CreateNUnitsAtLoc_3(1, 'e012', GetOwningPlayer(GetTriggerUnit()), GetUnitLoc(GetTriggerUnit()), bj_UNIT_FACING)
++    call UnitApplyTimedLifeBJ( I2R(GetUnitAbilityLevel(GetTriggerUnit(),'A0JL')+1), 'BTLF', GetLastCreatedUnit() )
++    call GS2V84_CreateNUnitsAtLoc_3(1, 'e011', GetOwningPlayer(GetTriggerUnit()), GetUnitLoc(GetTriggerUnit()), bj_UNIT_FACING)
++    call UnitApplyTimedLifeBJ( I2R(GetUnitAbilityLevel(GetTriggerUnit(),'A0JL')+1), 'BTLF', GetLastCreatedUnit() )
+     call UnitAddAbilityBJ( 'A0JM', GetLastCreatedUnit() )
+     call SetUnitAbilityLevelSwapped( 'A0JM', GetLastCreatedUnit(), GetUnitAbilityLevelSwapped('A0JL', GetTriggerUnit()) )
+     call IssueImmediateOrderBJ( GetLastCreatedUnit(), "voodoo" )
+@@ -49008,7 +49010,7 @@
+     call SetStartLocPrio( 9, 3, 8, MAP_LOC_PRIO_HIGH )
+ endfunction
+ function GS2_ShowVersion68 takes nothing returns nothing
+-    call DisplayTimedTextToForce(GetPlayersAll(), 15.00, "가디언 스피리츠 II ver143")
++    call DisplayTimedTextToForce(GetPlayersAll(), 15.00, "가디언 스피리츠 II ver144")
+     call DisplayTimedTextToForce(GetPlayersAll(), 30.00, "|cffffcc00카카오톡 오픈채팅 : 가디언 스피리츠2|r")
+     call DisplayTimedTextToForce(GetPlayersAll(),30.00,"|cffffcc00[편의 기능] Caps Lock 키로 스코어보드를 펼치거나 접을 수 있습니다. 기존 마우스 클릭도 사용할 수 있습니다.|r")
+     call DestroyTimer(GetExpiredTimer())
+@@ -52163,6 +52165,9 @@
+     elseif aid == 'A0HX' then
+         return 'ZW56'
+     endif
++    if aid == 'A0EA' then
++        return 'ZW58'
++    endif
+     if aid == 'A0PE' then
+         return 'ZW57'
+     endif
+@@ -52339,6 +52344,131 @@
+ endfunction
+ 
+ // Sashint restoration test. Hero, skills, buffs and research IDs are isolated.
++function GS144_BootFinish takes timer t, unit u returns nothing
++    local integer key = GetHandleId(t)
++    local integer uid = GetHandleId(u)
++    if u != null and LoadTimerHandle(GS144_Data,uid,2) == t then
++        if LoadBoolean(GS144_Data,uid,5) then
++            call UnitRemoveAbility(u,'SW44')
++                call UnitRemoveAbility(u,'BW45')
++        endif
++        call FlushChildHashtable(GS144_Data,uid)
++    endif
++    call FlushChildHashtable(GS144_Data,key)
++    call PauseTimer(t)
++    call DestroyTimer(t)
++endfunction
++
++function GS144_BootTick takes nothing returns nothing
++    local timer t = GetExpiredTimer()
++    local unit u = LoadUnitHandle(GS144_Data,GetHandleId(t),0)
++    local integer uid = GetHandleId(u)
++    local real now = TimerGetElapsed(GS144_Clock)
++    local boolean ended = false
++    if u == null or GetUnitTypeId(u) == 0 or GetWidgetLife(u) <= 0.405 or LoadTimerHandle(GS144_Data,uid,2) != t then
++        call GS144_BootFinish(t,u)
++    else
++        if GetUnitAbilityLevel(u,'BW44') > 0 then
++            call SaveBoolean(GS144_Data,uid,6,true)
++        endif
++        set ended = now >= LoadReal(GS144_Data,uid,1) or LoadBoolean(GS144_Data,uid,7)
++        if LoadBoolean(GS144_Data,uid,6) and GetUnitAbilityLevel(u,'BW44') == 0 then
++            set ended = true
++        endif
++        // Fail closed if the native item failed to apply its invisibility buff.
++        if now >= LoadReal(GS144_Data,uid,8)+0.50 and not LoadBoolean(GS144_Data,uid,6) then
++            set ended = true
++        endif
++        if ended then
++            call SaveBoolean(GS144_Data,uid,7,true)
++            call SaveBoolean(GS144_Data,uid,0,false)
++            if LoadBoolean(GS144_Data,uid,5) then
++                call UnitRemoveAbility(u,'SW44')
++                call UnitRemoveAbility(u,'BW45')
++                call SaveBoolean(GS144_Data,uid,5,false)
++            endif
++            if not HaveSavedHandle(GS144_Data,uid,3) or now > LoadReal(GS144_Data,uid,4) then
++                call GS144_BootFinish(t,u)
++            endif
++        endif
++    endif
++    set u = null
++    set t = null
++endfunction
++
++function GS144_BootUse takes nothing returns nothing
++    local unit u = GetTriggerUnit()
++    local integer uid = GetHandleId(u)
++    local timer t
++    local real now
++    if GetItemTypeId(GetManipulatedItem()) != 'I01G' then
++        set u = null
++        return
++    endif
++    set t = LoadTimerHandle(GS144_Data,uid,2)
++    if t != null then
++        call GS144_BootFinish(t,u)
++    endif
++    set now = TimerGetElapsed(GS144_Clock)
++    set t = CreateTimer()
++    call SaveUnitHandle(GS144_Data,GetHandleId(t),0,u)
++    call SaveTimerHandle(GS144_Data,uid,2,t)
++    call SaveBoolean(GS144_Data,uid,0,true)
++    call SaveReal(GS144_Data,uid,1,now+7.00)
++    call SaveReal(GS144_Data,uid,8,now)
++    call UnitAddAbility(u,'SW44')
++    call BlzUnitHideAbility(u,'SW44',true)
++    call SaveBoolean(GS144_Data,uid,5,true)
++    call TimerStart(t,0.05,true,function GS144_BootTick)
++    set t = null
++    set u = null
++endfunction
++
++function GS144_BootAttack takes nothing returns nothing
++    local unit u = GetAttacker()
++    local integer uid = GetHandleId(u)
++    local real now = TimerGetElapsed(GS144_Clock)
++    if LoadBoolean(GS144_Data,uid,0) and now <= LoadReal(GS144_Data,uid,1) and not LoadBoolean(GS144_Data,uid,7) then
++        call SaveBoolean(GS144_Data,uid,0,false)
++        call SaveBoolean(GS144_Data,uid,7,true)
++        call SaveUnitHandle(GS144_Data,uid,3,GetTriggerUnit())
++        // Preserve one committed ranged attack after invisibility ends.
++        call SaveReal(GS144_Data,uid,4,now+3.00)
++    endif
++    set u = null
++endfunction
++
++function GS144_BootDamage takes nothing returns nothing
++    local unit u = GetEventDamageSource()
++    local integer uid = GetHandleId(u)
++    if BlzGetEventIsAttack() and GetEventDamage() > 0.00 and LoadUnitHandle(GS144_Data,uid,3) == GetTriggerUnit() and TimerGetElapsed(GS144_Clock) <= LoadReal(GS144_Data,uid,4) then
++        call RemoveSavedHandle(GS144_Data,uid,3)
++        call BlzSetEventDamage(GetEventDamage()+100.00)
++    endif
++    set u = null
++endfunction
++
++function GS144_Init takes nothing returns nothing
++    local trigger t = CreateTrigger()
++    local integer i = 0
++    set GS144_Data = InitHashtable()
++    set GS144_Clock = CreateTimer()
++    call TimerStart(GS144_Clock,1000000000.00,false,null)
++    call TriggerRegisterAnyUnitEventBJ(t,EVENT_PLAYER_UNIT_USE_ITEM)
++    call TriggerAddAction(t,function GS144_BootUse)
++    set t = CreateTrigger()
++    call TriggerRegisterAnyUnitEventBJ(t,EVENT_PLAYER_UNIT_ATTACKED)
++    call TriggerAddAction(t,function GS144_BootAttack)
++    set t = CreateTrigger()
++    loop
++        exitwhen i >= bj_MAX_PLAYER_SLOTS
++        call TriggerRegisterPlayerUnitEvent(t,Player(i),EVENT_PLAYER_UNIT_DAMAGING,null)
++        set i = i+1
++    endloop
++    call TriggerAddAction(t,function GS144_BootDamage)
++    set t = null
++endfunction
++
+ function GS114S_Band takes unit h returns integer
+     if GetHeroLevel(h) >= 15 then
+         return 3
+@@ -55112,7 +55242,7 @@
+ function GSRI_OnChat takes nothing returns nothing
+     if GetTriggerPlayer() == GetLocalPlayer() then
+         if GetEventPlayerChatString() == "-range" then
+-            call DisplayTimedTextToPlayer(GetLocalPlayer(),0,0,20,"GSRI ver143 keys="+I2S(GSRI_KeyCount)+" shows="+I2S(GSRI_ShowCount)+" range="+R2S(GSRI_LastRange)+" last="+GSRI_Reason)
++            call DisplayTimedTextToPlayer(GetLocalPlayer(),0,0,20,"GSRI ver144 keys="+I2S(GSRI_KeyCount)+" shows="+I2S(GSRI_ShowCount)+" range="+R2S(GSRI_LastRange)+" last="+GSRI_Reason)
+         endif
+         if GetEventPlayerChatString() == "-range off" then
+             set GSRI_PendingSlot = -1
+@@ -55535,6 +55665,7 @@
+     call GS114S_Init()
+     call GS121_Init()
+     call GS117_Init()
++    call GS144_Init()
+     call GS129_Init()
+     call DWT_Init()
+     call GS2DW_Init()
+@@ -55547,7 +55678,7 @@
+     call TimerStart(CreateTimer(),0.10,false,function GSRI_Init)
+ endfunction
+ function config takes nothing returns nothing
+-    call SetMapName( "가디언 스피리츠 II ver143" )
++    call SetMapName( "가디언 스피리츠 II ver144" )
+     call SetMapDescription( "가츠 최종파이널 픽스\n\nWarcraft III Reforged 최종 수정본\n영웅·특성·아이템·시스템 오류 수정 및 안정화 반영\n\n|cffffcc00카카오톡 오픈채팅 : 가디언 스피리츠2|r" )
+     call SetPlayers( 10 )
+     call SetTeams( 10 )
