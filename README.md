@@ -14,6 +14,8 @@
 - 트리거 최적화 검토와 검증 한계: [`reviews/performance138/README.md`](reviews/performance138/README.md).
 - 이전 안정화 수정의 검증과 한계: [`reviews/ver138/README.md`](reviews/ver138/README.md).
 
+- 프로그램 종료 응답 없음 비교용: [ver140 종료 진단 맵](maps/diagnostics/GS2vF_ver140_exitdiag.w3x) / [비교 방법](maps/diagnostics/README.md). 사거리 표시를 시작하지 않는 진단용이며 일반 배포본은 ver139입니다.
+
 ## 구성
 
 ```
