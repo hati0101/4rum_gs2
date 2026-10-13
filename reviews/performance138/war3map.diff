@@ -1,0 +1,224 @@
+--- ver138_fix
++++ ver138_opt
+@@ -1658,6 +1658,7 @@
+     boolean DWT_Dealt = false
+     hashtable GS2S_ItemDamageData = null
+     hashtable GS2PB_Data = null
++    hashtable GS2PERF_Effects = null
+ endglobals
+ 
+ function GS2V84_ForGroupBJOwned takes group g, code actionFunc returns nothing
+@@ -3740,20 +3741,47 @@
+     set gg_rct_Move_Top_W = Rect( -4512.0, -256.0, -4000.0, 224.0 )
+     set gg_rct_D_Top = Rect( 1952.0, 5088.0, 2304.0, 5504.0 )
+ endfunction
++function GS2PERF_AddLightningUnits takes string codeName, unit first, unit second returns lightning
++    local location firstLoc = GetUnitLoc(first)
++    local location secondLoc = GetUnitLoc(second)
++    local lightning result = AddLightningLoc(codeName, firstLoc, secondLoc)
++    call RemoveLocation(firstLoc)
++    call RemoveLocation(secondLoc)
++    set firstLoc = null
++    set secondLoc = null
++    return result
++endfunction
++
+ function d_effect_action takes nothing returns nothing
+-    local effect e = udg_d_effect_e
+-    local real t = udg_d_effect_t
+-    call PolledWait( t )
+-    call DestroyEffectBJ( e )
+-    call DestroyTrigger( GetTriggeringTrigger() )
++    local timer timerHandle = GetExpiredTimer()
++    local integer key = GetHandleId(timerHandle)
++    local effect fx = LoadEffectHandle(GS2PERF_Effects, key, 0)
++    // Release storage before destroying the effect; this callback owns it.
++    call FlushChildHashtable(GS2PERF_Effects, key)
++    call PauseTimer(timerHandle)
++    call DestroyTimer(timerHandle)
++    if fx != null then
++        call DestroyEffect(fx)
++    endif
++    set fx = null
++    set timerHandle = null
+ endfunction
+ function d_effect takes effect e, real t returns nothing
+-    local trigger tr = CreateTrigger()
+-    set udg_d_effect_e = e
+-    set udg_d_effect_t = t
+-    call TriggerAddAction( tr, function d_effect_action )
+-    call TriggerExecute( tr )
+-    set tr = null
++    local timer timerHandle
++    if e == null then
++        return
++    endif
++    if t <= 0.00 then
++        call DestroyEffect(e)
++        return
++    endif
++    if GS2PERF_Effects == null then
++        set GS2PERF_Effects = InitHashtable()
++    endif
++    set timerHandle = CreateTimer()
++    call SaveEffectHandle(GS2PERF_Effects, GetHandleId(timerHandle), 0, e)
++    call TimerStart(timerHandle, t, false, function d_effect_action)
++    set timerHandle = null
+ endfunction
+ function GS138_MaterialType takes item it returns integer
+     local integer id=GetItemTypeId(it)
+@@ -4006,33 +4034,24 @@
+ 
+ function MakeUnitFollow_Sub takes nothing returns nothing
+     local timer t = GetExpiredTimer()
+-    local location followLoc
+-    if (LoadIntegerBJ(GetHandleIdBJ(t), StringHashBJ("Follow3"), GetLastCreatedHashtableBJ()) >= 0) and IsUnitAliveBJ(LoadUnitHandleBJ(GetHandleIdBJ(t),StringHashBJ("Follow2"), GetLastCreatedHashtableBJ())) == true and IsUnitAliveBJ(LoadUnitHandleBJ(GetHandleIdBJ(t),StringHashBJ("Follow1"), GetLastCreatedHashtableBJ())) == true then
+-        set followLoc = GetUnitLoc(LoadUnitHandleBJ(GetHandleIdBJ(t),StringHashBJ("Follow2"), GetLastCreatedHashtableBJ()))
+-        call SetUnitPositionLoc( LoadUnitHandleBJ(GetHandleIdBJ(t),StringHashBJ("Follow1"), GetLastCreatedHashtableBJ()), followLoc )
+-        call RemoveLocation(followLoc)
+-        call SetUnitFacing( LoadUnitHandleBJ(GetHandleIdBJ(t),StringHashBJ("Follow1"), GetLastCreatedHashtableBJ()), GetUnitFacing(LoadUnitHandleBJ(GetHandleIdBJ(t),StringHashBJ("Follow2"), GetLastCreatedHashtableBJ())) )
+-        call SaveIntegerBJ( ( LoadIntegerBJ(GetHandleIdBJ(t), StringHashBJ("Follow3"), GetLastCreatedHashtableBJ()) - 1 ), GetHandleIdBJ(t), StringHashBJ("Follow3"), GetLastCreatedHashtableBJ() )
+-    else
+-        call RemoveUnit( LoadUnitHandleBJ(GetHandleIdBJ(t), StringHashBJ("Follow1"), GetLastCreatedHashtableBJ()) )
+-                call RemoveSavedHandle(GetLastCreatedHashtableBJ(), StringHash("Follow3"), GetHandleId(t))
+-        call RemoveSavedInteger(GetLastCreatedHashtableBJ(), StringHash("Follow3"), GetHandleId(t))
+-        call RemoveSavedReal(GetLastCreatedHashtableBJ(), StringHash("Follow3"), GetHandleId(t))
+-        call RemoveSavedBoolean(GetLastCreatedHashtableBJ(), StringHash("Follow3"), GetHandleId(t))
+-        call RemoveSavedString(GetLastCreatedHashtableBJ(), StringHash("Follow3"), GetHandleId(t))
+-        call RemoveSavedHandle(GetLastCreatedHashtableBJ(), StringHash("Follow2"), GetHandleId(t))
+-        call RemoveSavedInteger(GetLastCreatedHashtableBJ(), StringHash("Follow2"), GetHandleId(t))
+-        call RemoveSavedReal(GetLastCreatedHashtableBJ(), StringHash("Follow2"), GetHandleId(t))
+-        call RemoveSavedBoolean(GetLastCreatedHashtableBJ(), StringHash("Follow2"), GetHandleId(t))
+-        call RemoveSavedString(GetLastCreatedHashtableBJ(), StringHash("Follow2"), GetHandleId(t))
+-        call RemoveSavedHandle(GetLastCreatedHashtableBJ(), StringHash("Follow1"), GetHandleId(t))
+-        call RemoveSavedInteger(GetLastCreatedHashtableBJ(), StringHash("Follow1"), GetHandleId(t))
+-        call RemoveSavedReal(GetLastCreatedHashtableBJ(), StringHash("Follow1"), GetHandleId(t))
+-        call RemoveSavedBoolean(GetLastCreatedHashtableBJ(), StringHash("Follow1"), GetHandleId(t))
+-        call RemoveSavedString(GetLastCreatedHashtableBJ(), StringHash("Follow1"), GetHandleId(t))
++    local hashtable data = GetLastCreatedHashtableBJ()
++    local integer key = GetHandleId(t)
++    local unit follower = LoadUnitHandle(data, key, StringHash("Follow1"))
++    local unit target = LoadUnitHandle(data, key, StringHash("Follow2"))
++    local integer remaining = LoadInteger(data, key, StringHash("Follow3"))
++    if remaining >= 0 and IsUnitAliveBJ(target) and IsUnitAliveBJ(follower) then
++        call SetUnitPosition(follower, GetUnitX(target), GetUnitY(target))
++        call SetUnitFacing(follower, GetUnitFacing(target))
++        call SaveInteger(data, key, StringHash("Follow3"), remaining-1)
++    else
++        call RemoveUnit(follower)
++        call FlushChildHashtable(data, key)
++        call PauseTimer(t)
+         call DestroyTimer(t)
+     endif
+-    set followLoc = null
++    set follower = null
++    set target = null
++    set data = null
+     set t = null
+ endfunction
+ function MakeUnitFollow takes unit u, unit target, integer time returns nothing
+@@ -4055,26 +4074,8 @@
+     call RemoveItem( i )
+     call SaveRealBJ( ( LoadRealBJ(GetHandleIdBJ(GetExpiredTimer()), StringHashBJ("KnockBack3"), GetLastCreatedHashtableBJ()) - LoadRealBJ(GetHandleIdBJ(GetExpiredTimer()), StringHashBJ("KnockBack4"), GetLastCreatedHashtableBJ()) ), GetHandleIdBJ(GetExpiredTimer()), StringHashBJ("KnockBack3"), GetLastCreatedHashtableBJ() )
+     if (LoadRealBJ(GetHandleIdBJ(GetExpiredTimer()), StringHashBJ("KnockBack3"), GetLastCreatedHashtableBJ()) <= 0.00 ) then
+-                call RemoveSavedHandle(GetLastCreatedHashtableBJ(), StringHash("KnockBack4"), GetHandleId(GetExpiredTimer()))
+-        call RemoveSavedInteger(GetLastCreatedHashtableBJ(), StringHash("KnockBack4"), GetHandleId(GetExpiredTimer()))
+-        call RemoveSavedReal(GetLastCreatedHashtableBJ(), StringHash("KnockBack4"), GetHandleId(GetExpiredTimer()))
+-        call RemoveSavedBoolean(GetLastCreatedHashtableBJ(), StringHash("KnockBack4"), GetHandleId(GetExpiredTimer()))
+-        call RemoveSavedString(GetLastCreatedHashtableBJ(), StringHash("KnockBack4"), GetHandleId(GetExpiredTimer()))
+-        call RemoveSavedHandle(GetLastCreatedHashtableBJ(), StringHash("KnockBack2"), GetHandleId(GetExpiredTimer()))
+-        call RemoveSavedInteger(GetLastCreatedHashtableBJ(), StringHash("KnockBack2"), GetHandleId(GetExpiredTimer()))
+-        call RemoveSavedReal(GetLastCreatedHashtableBJ(), StringHash("KnockBack2"), GetHandleId(GetExpiredTimer()))
+-        call RemoveSavedBoolean(GetLastCreatedHashtableBJ(), StringHash("KnockBack2"), GetHandleId(GetExpiredTimer()))
+-        call RemoveSavedString(GetLastCreatedHashtableBJ(), StringHash("KnockBack2"), GetHandleId(GetExpiredTimer()))
+-        call RemoveSavedHandle(GetLastCreatedHashtableBJ(), StringHash("KnockBack1"), GetHandleId(GetExpiredTimer()))
+-        call RemoveSavedInteger(GetLastCreatedHashtableBJ(), StringHash("KnockBack1"), GetHandleId(GetExpiredTimer()))
+-        call RemoveSavedReal(GetLastCreatedHashtableBJ(), StringHash("KnockBack1"), GetHandleId(GetExpiredTimer()))
+-        call RemoveSavedBoolean(GetLastCreatedHashtableBJ(), StringHash("KnockBack1"), GetHandleId(GetExpiredTimer()))
+-        call RemoveSavedString(GetLastCreatedHashtableBJ(), StringHash("KnockBack1"), GetHandleId(GetExpiredTimer()))
+-        call RemoveSavedHandle(GetLastCreatedHashtableBJ(), StringHash("KnockBack3"), GetHandleId(GetExpiredTimer()))
+-        call RemoveSavedInteger(GetLastCreatedHashtableBJ(), StringHash("KnockBack3"), GetHandleId(GetExpiredTimer()))
+-        call RemoveSavedReal(GetLastCreatedHashtableBJ(), StringHash("KnockBack3"), GetHandleId(GetExpiredTimer()))
+-        call RemoveSavedBoolean(GetLastCreatedHashtableBJ(), StringHash("KnockBack3"), GetHandleId(GetExpiredTimer()))
+-        call RemoveSavedString(GetLastCreatedHashtableBJ(), StringHash("KnockBack3"), GetHandleId(GetExpiredTimer()))
++        call FlushChildHashtable(GetLastCreatedHashtableBJ(), GetHandleId(GetExpiredTimer()))
++        call PauseTimer(GetExpiredTimer())
+         call DestroyTimer(GetExpiredTimer())
+     endif
+     set knockLoc = null
+@@ -21058,21 +21059,8 @@
+     call SetUnitPosition(u, GetUnitX(u) - 10.00 * CosBJ(angle), GetUnitY(u) - 10.00 * SinBJ(angle))
+     call SaveIntegerBJ( LoopX + 1, GetHandleIdBJ(GetExpiredTimer()), StringHashBJ("CruIndex"), GetLastCreatedHashtableBJ() )
+     if IsUnitAliveBJ(u) != true or LoopX > 35 then
+-            call RemoveSavedHandle(GetLastCreatedHashtableBJ(), StringHash("CruTgt"), GetHandleId(GetExpiredTimer()))
+-        call RemoveSavedInteger(GetLastCreatedHashtableBJ(), StringHash("CruTgt"), GetHandleId(GetExpiredTimer()))
+-        call RemoveSavedReal(GetLastCreatedHashtableBJ(), StringHash("CruTgt"), GetHandleId(GetExpiredTimer()))
+-        call RemoveSavedBoolean(GetLastCreatedHashtableBJ(), StringHash("CruTgt"), GetHandleId(GetExpiredTimer()))
+-        call RemoveSavedString(GetLastCreatedHashtableBJ(), StringHash("CruTgt"), GetHandleId(GetExpiredTimer()))
+-        call RemoveSavedHandle(GetLastCreatedHashtableBJ(), StringHash("CruIndex"), GetHandleId(GetExpiredTimer()))
+-        call RemoveSavedInteger(GetLastCreatedHashtableBJ(), StringHash("CruIndex"), GetHandleId(GetExpiredTimer()))
+-        call RemoveSavedReal(GetLastCreatedHashtableBJ(), StringHash("CruIndex"), GetHandleId(GetExpiredTimer()))
+-        call RemoveSavedBoolean(GetLastCreatedHashtableBJ(), StringHash("CruIndex"), GetHandleId(GetExpiredTimer()))
+-        call RemoveSavedString(GetLastCreatedHashtableBJ(), StringHash("CruIndex"), GetHandleId(GetExpiredTimer()))
+-        call RemoveSavedHandle(GetLastCreatedHashtableBJ(), StringHash("CruAngle"), GetHandleId(GetExpiredTimer()))
+-        call RemoveSavedInteger(GetLastCreatedHashtableBJ(), StringHash("CruAngle"), GetHandleId(GetExpiredTimer()))
+-        call RemoveSavedReal(GetLastCreatedHashtableBJ(), StringHash("CruAngle"), GetHandleId(GetExpiredTimer()))
+-        call RemoveSavedBoolean(GetLastCreatedHashtableBJ(), StringHash("CruAngle"), GetHandleId(GetExpiredTimer()))
+-        call RemoveSavedString(GetLastCreatedHashtableBJ(), StringHash("CruAngle"), GetHandleId(GetExpiredTimer()))
++        call FlushChildHashtable(GetLastCreatedHashtableBJ(), GetHandleId(GetExpiredTimer()))
++        call PauseTimer(GetExpiredTimer())
+         call DestroyTimer(GetExpiredTimer())
+     endif
+ endfunction
+@@ -27043,7 +27031,7 @@
+     call TextTag( "즉사광선!" , GetSpellTargetUnit() , 10 , 255 , 255 , 150 ,3)
+     call AddSpecialEffectTargetUnitBJ( "origin", GetSpellTargetUnit(), "Abilities\\Spells\\Demon\\DemonBoltImpact\\DemonBoltImpact.mdl" )
+     call d_effect(GetLastCreatedEffectBJ(),2)
+-    call AddLightningLoc( "AFOD", GetUnitLoc(GetTriggerUnit()), GetUnitLoc(GetSpellTargetUnit()) )
++    call GS2PERF_AddLightningUnits( "AFOD", GetTriggerUnit(), GetSpellTargetUnit() )
+     set l = bj_lastCreatedLightning
+     call PolledWait( 0.30 )
+     call DestroyLightning(l)
+@@ -28317,14 +28305,14 @@
+     local unit dummy = null
+     local location loc = GetUnitLoc(caster)
+     local real relativeAngle = 0.0
+-    call GS2V84_AddSpecialEffectLocBJ_0(loc, "Abilities\\Spells\\Orc\\MirrorImage\\MirrorImageCaster.mdl")
++    call AddSpecialEffectLocBJ(loc, "Abilities\\Spells\\Orc\\MirrorImage\\MirrorImageCaster.mdl")
+     call RemoveLocation(loc)
+     call d_effect(GetLastCreatedEffectBJ(), 0.7)
+     call PolledWait(0.10)
+     if caster != null and target != null and GetUnitTypeId(target) != 0 then
+         if GetPlayerTechCountSimple('R07R', GetOwningPlayer(caster)) == 1 then
+             set loc = GetUnitLoc(target)
+-            call GS2V84_CreateNUnitsAtLoc_3(1, 'ewsp', GetOwningPlayer(caster), loc, bj_UNIT_FACING)
++            call CreateNUnitsAtLoc(1, 'ewsp', GetOwningPlayer(caster), loc, bj_UNIT_FACING)
+             call RemoveLocation(loc)
+             set dummy = GetLastCreatedUnit()
+             call UnitApplyTimedLifeBJ(1.00, 'BTLF', dummy)
+@@ -28334,14 +28322,14 @@
+             if relativeAngle <= 90.00 then
+                 call UnitDamageTargetBJ(caster, target, 30.00 + (15.00 * I2R(GetUnitAbilityLevelSwapped('A0EX', caster))), ATTACK_TYPE_NORMAL, DAMAGE_TYPE_MAGIC)
+                 set loc = GetUnitLoc(target)
+-                call GS2V84_AddSpecialEffectLocBJ_0(loc, "Abilities\\Spells\\Orc\\FeralSpirit\\feralspiritdone.mdl")
++                call AddSpecialEffectLocBJ(loc, "Abilities\\Spells\\Orc\\FeralSpirit\\feralspiritdone.mdl")
+                 call RemoveLocation(loc)
+                 call d_effect(GetLastCreatedEffectBJ(),0.7)
+             endif
+         endif
+         if GS2V84_DistanceBetweenPointsUnits(caster, target) <= 1500.00 then
+             set loc = GS2V84_PolarProjectionBJ_0(GetUnitLoc(target), 125.00, GetUnitFacing(target))
+-            call GS2V84_SetUnitPositionLoc_1(caster, loc)
++            call SetUnitPositionLoc(caster, loc)
+             call RemoveLocation(loc)
+             call IssueTargetOrderBJ(caster, "attack", target)
+         endif
+@@ -40697,7 +40685,7 @@
+     call DestroyEffectBJ( GetLastCreatedEffectBJ() )
+     call AddSpecialEffectTargetUnitBJ( "origin", GetTriggerUnit(), "Objects\\Spawnmodels\\Undead\\UDeathSmall\\UDeathSmall.mdl" )
+     call DestroyEffectBJ( GetLastCreatedEffectBJ() )
+-    call AddLightningLoc( "DRAL", GetUnitLoc(GetTriggerUnit()), GetUnitLoc(udg_Hero_DrK_UltiPoint) )
++    call GS2PERF_AddLightningUnits( "DRAL", GetTriggerUnit(), udg_Hero_DrK_UltiPoint )
+     set a = GetLastCreatedLightningBJ()
+     call GS2V84_SetUnitPositionLoc_1(GetTriggerUnit(), GetUnitLoc(udg_Hero_DrK_UltiPoint))
+     call GS2V84_CreateNUnitsAtLoc_3(1, 'ewsp', GetOwningPlayer(udg_Hero_DrK), GetUnitLoc(GetTriggerUnit()), bj_UNIT_FACING)
