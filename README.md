@@ -7,14 +7,14 @@
 
 ## 최신 수정본과 전체 변경 기록
 
-- **최신 수정 맵:** [`maps/release/GS2vF_ver145.w3x`](maps/release/GS2vF_ver145.w3x) — 기존 ver138 수정에 추종·넉백·디바인 스트라이크 저장소 누수, 위치 객체 정리, 공통 이펙트 정리 비용을 보강한 1차 최적화본. 비교용 이전 맵은 [`ver138_fix`](maps/release/GS2vF_ver138_fix.w3x)입니다. 인게임 이름은 **가디언 스피리츠 II ver145**입니다. ver144의 부츠 소환 회귀를 수정했습니다. 카이 특성 쿨다운, 성역 무적 대상 유지, 바람의 부츠의 독립 처리를 수정했습니다. 크기는 8,912,639바이트입니다. [소환 회귀 수정과 검증](reviews/ver145/README.md)을 참고하세요. 실제 멀티플레이 디싱크·크래시 해결 여부는 재현 테스트가 필요합니다.
+- **최신 수정 맵:** [`maps/release/GS2vF_ver146.w3x`](maps/release/GS2vF_ver146.w3x). 인게임 제목은 **가디언 스피리츠 II ver146**입니다. 바스테트 성역에 F8FIX 툴팁 기준 레벨별 **2/3/4초 직접 무적**을 추가했습니다. 시전 순간 800 범위 아군 생체 유닛을 보호하며, 중첩 시전과 기존 무적의 회수를 분리합니다. ver145의 다른 수정과 리소스를 보존했습니다. 크기 8,915,060바이트. [상세 변경 및 검증 한계](reviews/ver146/README.md). 실제 게임에서의 무적 적용은 재검증이 필요합니다.
 - **최초 F8 대비 전체 수정 메모:** [텍스트 다운로드](https://github.com/hati0101/4rum_gs2/raw/refs/heads/main/F8_to_latest_all_changes.txt) / [압축본 다운로드](https://github.com/hati0101/4rum_gs2/raw/refs/heads/main/F8_to_latest_all_changes.zip). UTF-8 BOM 텍스트로 Windows 메모장에서 열 수 있습니다.
 - 비교 기준은 저장소의 `maps/GS2vF_ver19.w3x`이며, 내부 이름은 **vF_8FKfix [R2 TEST +G5]**입니다. 확인 가능한 누적 변경 전부를 실제 맵 데이터로 비교했고, 기록이 없는 중간 버전의 의도는 추측하지 않았습니다.
-- 메모에는 기능 요약, 기존 변경 기록, 객체 필드 변경 11,509건, 문자열 전체 변경, 런타임/에디터 스크립트 전체 차이, 리소스 및 파일 검증 목록이 있습니다. 분량이 크므로 GitHub 미리보기보다 다운로드를 권장합니다.
+- 메모에는 기능 요약, 기존 변경 기록, 객체 필드 변경 11,630건, 문자열 전체 변경, 런타임/에디터 스크립트 전체 차이, 리소스 및 파일 검증 목록이 있습니다. 분량이 크므로 GitHub 미리보기보다 다운로드를 권장합니다.
 - 트리거 최적화 검토와 검증 한계: [`reviews/performance138/README.md`](reviews/performance138/README.md).
 - 이전 안정화 수정의 검증과 한계: [`reviews/ver138/README.md`](reviews/ver138/README.md).
 
-- 프로그램 종료 응답 없음 비교용: [ver140 종료 진단 맵](maps/diagnostics/GS2vF_ver140_exitdiag.w3x) / [비교 방법](maps/diagnostics/README.md). 사거리 표시를 시작하지 않는 진단용이며 일반 최신본은 ver145입니다.
+- 프로그램 종료 응답 없음 비교용: [ver140 종료 진단 맵](maps/diagnostics/GS2vF_ver140_exitdiag.w3x) / [비교 방법](maps/diagnostics/README.md). 사거리 표시를 시작하지 않는 진단용이며 일반 최신본은 ver146입니다.
 
 ## 구성
 
@@ -35,8 +35,9 @@ CHANGELOG.md 버전별 수정 내역
 
 | 파일 | 설명 |
 |---|---|
-| `maps/release/GS2vF_ver145.w3x` | **최신 수정 맵** — 부츠의 잘못된 인퍼널 원본을 실제 아이템 투명화로 수정 |
-| `maps/release/GS2vF_ver144.w3x` | **부츠 소환 오류 있음 — ver145 사용 권장** — 카이 특성 쿨다운·성역·바람의 부츠 수정 (실게임 확인 필요) |
+| `maps/release/GS2vF_ver146.w3x` | **최신 수정 맵** — 성역 레벨별 2/3/4초 직접 무적 추가 |
+| `maps/release/GS2vF_ver145.w3x` | 비교용 이전 맵 — 부츠의 잘못된 인퍼널 원본을 실제 아이템 투명화로 수정 |
+| `maps/release/GS2vF_ver144.w3x` | **부츠 소환 오류 있음 — ver146 사용 권장** — 카이 특성 쿨다운·성역·바람의 부츠 수정 (실게임 확인 필요) |
 | `maps/release/GS2vF_ver143.w3x` | 이전 비교본 — ver139 기능 그대로, 활성 파일 보존 및 이전 MPQ 공간 정리 |
 | `maps/release/GS2vF_ver139.w3x` | 이전 최적화 비교본 — ver138_opt와 동일한 최적화, 인게임 제목/안내를 ver139로 변경 |
 | `maps/release/GS2vF_ver138_opt.w3x` | 이전 최적화 비교본 — 종료 타이머 저장소 누수 및 반복 위치/이펙트 처리 보강 (실게임 성능 미측정) |
