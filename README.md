@@ -7,8 +7,8 @@
 
 ## 최신 수정본과 전체 변경 기록
 
-- **최신 테스트 맵:** [`maps/release/GS2vF_ver138_opt.w3x`](maps/release/GS2vF_ver138_opt.w3x) — 기존 ver138 수정에 추종·넉백·디바인 스트라이크 저장소 누수, 위치 객체 정리, 공통 이펙트 정리 비용을 보강한 1차 최적화본. 비교용 이전 맵은 [`ver138_fix`](maps/release/GS2vF_ver138_fix.w3x)입니다. 인게임 이름은 ver138입니다. 실제 멀티플레이 디싱크·크래시 해결 여부는 재현 테스트가 필요합니다.
-- **최초 F8 대비 전체 수정 메모:** [텍스트 다운로드](https://github.com/hati0101/4rum_gs2/raw/refs/heads/main/F8_to_ver138_all_changes.txt) / [압축본 다운로드](https://github.com/hati0101/4rum_gs2/raw/refs/heads/main/F8_to_ver138_all_changes.zip). UTF-8 BOM 텍스트로 Windows 메모장에서 열 수 있습니다.
+- **최신 테스트 맵:** [`maps/release/GS2vF_ver139.w3x`](maps/release/GS2vF_ver139.w3x) — 기존 ver138 수정에 추종·넉백·디바인 스트라이크 저장소 누수, 위치 객체 정리, 공통 이펙트 정리 비용을 보강한 1차 최적화본. 비교용 이전 맵은 [`ver138_fix`](maps/release/GS2vF_ver138_fix.w3x)입니다. 인게임 이름은 **가디언 스피리츠 II ver139**입니다. 최적화 내용은 ver138_opt와 같고, 버전 제목으로 구분할 수 있습니다. 실제 멀티플레이 디싱크·크래시 해결 여부는 재현 테스트가 필요합니다.
+- **최초 F8 대비 전체 수정 메모:** [텍스트 다운로드](https://github.com/hati0101/4rum_gs2/raw/refs/heads/main/F8_to_latest_all_changes.txt) / [압축본 다운로드](https://github.com/hati0101/4rum_gs2/raw/refs/heads/main/F8_to_latest_all_changes.zip). UTF-8 BOM 텍스트로 Windows 메모장에서 열 수 있습니다.
 - 비교 기준은 저장소의 `maps/GS2vF_ver19.w3x`이며, 내부 이름은 **vF_8FKfix [R2 TEST +G5]**입니다. 확인 가능한 누적 변경 전부를 실제 맵 데이터로 비교했고, 기록이 없는 중간 버전의 의도는 추측하지 않았습니다.
 - 메모에는 기능 요약, 기존 변경 기록, 객체 필드 변경 11,509건, 문자열 전체 변경, 런타임/에디터 스크립트 전체 차이, 리소스 및 파일 검증 목록이 있습니다. 분량이 크므로 GitHub 미리보기보다 다운로드를 권장합니다.
 - 트리거 최적화 검토와 검증 한계: [`reviews/performance138/README.md`](reviews/performance138/README.md).
@@ -33,7 +33,8 @@ CHANGELOG.md 버전별 수정 내역
 
 | 파일 | 설명 |
 |---|---|
-| `maps/release/GS2vF_ver138_opt.w3x` | **최신 테스트용 최적화본** — 종료 타이머 저장소 누수 및 반복 위치/이펙트 처리 보강 (실게임 성능 미측정) |
+| `maps/release/GS2vF_ver139.w3x` | **최신 테스트 맵** — ver138_opt와 동일한 최적화, 인게임 제목/안내를 ver139로 변경 |
+| `maps/release/GS2vF_ver138_opt.w3x` | 이전 최적화 비교본 — 종료 타이머 저장소 누수 및 반복 위치/이펙트 처리 보강 (실게임 성능 미측정) |
 | `maps/release/GS2vF_ver138_fix.w3x` | 이전 안정화 수정본 — ver138 + 사거리 표시 동기화 위험 보강 + 피와케 E 스킨 필드 보정 (멀티플레이 테스트 필요) |
 | `maps/release/GS2vF_ver137_DoomLord_skin_fix.w3x` | ver137 둠로드 스킨 경로 호환 수정본 |
 | `maps/GS2vF_ver19.w3x` | 원본 (vF_8FKfix [R2 TEST +G5]) |
