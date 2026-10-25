@@ -1,0 +1,10 @@
+UI stable model: {'text': 4500, 'visible': 3500, 'alpha': 2000, 'size': 1000} -> {'text': 25, 'visible': 2510, 'alpha': 2000, 'size': 10} identical final visual state after every tick
+PASS: panel state transitions and recreated-frame cache invalidation
+PASS: named-damage predicate equivalence across owners and point values; old group allocation removed
+PASS: null/live rain-proc cleanup
+PASS: random picker selection/ownership semantics unchanged
+PASS: all RNG call expressions retained
+PASS: missing-effect/missing-source one-shot timers release their own storage and handles
+PASS: position-swap behavior/timing identical; 2 leaked locations per cast -> 0
+Item-distance 10,000-check model: GS2V84_DistanceBetweenPoints_0 unreleased locations 10000
+Item-distance 10,000-check model: GS2V84_DistanceBetweenPoints_01 unreleased locations 0
