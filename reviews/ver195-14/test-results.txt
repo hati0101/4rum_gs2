@@ -1,0 +1,10 @@
+PASS: idle E level 1 drains 4 per tick; no attack/native damage callback and no player-hero array in namespace
+PASS: idle E level 2 drains 6 per tick; no attack/native damage callback and no player-hero array in namespace
+PASS: idle E level 3 drains 8 per tick; no attack/native damage callback and no player-hero array in namespace
+PASS: idle E level 4 drains 10 per tick; no attack/native damage callback and no player-hero array in namespace
+PASS: 250 boundary, enemy/living/organic/immunity filters and no friendly drain
+PASS: research before E, low-mana floor, trait loss/base resistance, death/revival, illusion and removed-unit cleanup
+PASS: research discovers actual owned hero without udg_Hero_FlB or udg_HeroPlayer
+PASS: one replacement passive timer; W/other skills/item/recipe/trait/resource objects untouched
+PASS: duplicate initialization creates exactly one 1-second clock and one destroyed startup timer; pre-existing hero seeded without attacking
+LIMIT: stationary aura logic is mocked; actual engine registration, mana regeneration and multiplayer need in-game validation

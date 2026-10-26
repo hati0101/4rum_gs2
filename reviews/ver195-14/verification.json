@@ -1,0 +1,24 @@
+{
+  "source_sha256": "127cbcc063c8b3e090831a3c64039cd5e792c06069f870afe7687837e74438fe",
+  "result_sha256": "e48d0facca828f925cad84243cebfc3b0b406073146606926030820a39e3ab47",
+  "result_bytes": 9062007,
+  "active_files": 1069,
+  "changed_files": [
+    "war3map.j",
+    "war3map.w3i",
+    "war3map.wct",
+    "(attributes)"
+  ],
+  "object_data_unchanged": true,
+  "period_seconds": 1,
+  "radius": 250,
+  "per_level_mana_burn": [
+    4,
+    6,
+    8,
+    10
+  ],
+  "magic_reduction_bonus_percentage_points": 7,
+  "editor_blocks": 903,
+  "compaction_bytes_saved": 697697
+}
