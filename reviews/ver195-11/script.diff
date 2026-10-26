@@ -1,0 +1,49 @@
+--- 195-10/war3map.j
++++ 195-11/war3map.j
+@@ -25026,7 +25026,7 @@
+     call SetStartLocPrio( 9, 3, 8, MAP_LOC_PRIO_HIGH )
+ endfunction
+ function GS2_ShowVersion68 takes nothing returns nothing
+-    call DisplayTimedTextToForce(GetPlayersAll(), 15.00, "가디언 스피리츠 II 195-10")
++    call DisplayTimedTextToForce(GetPlayersAll(), 15.00, "가디언 스피리츠 II 195-11")
+     call DisplayTimedTextToForce(GetPlayersAll(), 30.00, "|cffffcc00카카오톡 오픈채팅 : 가디언 스피리츠2|r")
+     call DisplayTimedTextToForce(GetPlayersAll(),30.00,"|cffffcc00[편의 기능] Caps Lock 키로 스코어보드를 펼치거나 접을 수 있습니다. 기존 마우스 클릭도 사용할 수 있습니다.|r")
+     call DestroyTimer(GetExpiredTimer())
+@@ -27718,7 +27718,7 @@
+         call SelectUnit(shop,true)
+         call PanCameraToTimed(GetUnitX(shop),GetUnitY(shop),0.2)
+     endif
+-    call DisplayTimedTextToPlayer(p,0,0,8,"[195-10] 11시 상인 1 / 5시 상인 2 · 상인 1은 8종 / 상인 2는 5종 판매. -특성상점 / -특성상점2")
++    call DisplayTimedTextToPlayer(p,0,0,8,"[195-11] 11시 상인 1 / 5시 상인 2 · 상인 1은 8종 / 상인 2는 5종 판매. -특성상점 / -특성상점2")
+     set shop=null
+     set p=null
+ endfunction
+@@ -45281,7 +45281,7 @@
+ 
+ 
+ function config takes nothing returns nothing
+-    call SetMapName( "가디언 스피리츠 II 195-10" )
++    call SetMapName( "가디언 스피리츠 II 195-11" )
+     call SetMapDescription( "가츠 최종파이널 픽스\n\nWarcraft III Reforged 최종 수정본\n영웅·특성·아이템·시스템 오류 수정 및 안정화 반영\n\n|cffffcc00카카오톡 오픈채팅 : 가디언 스피리츠2|r" )
+     call SetPlayers( 10 )
+     call SetTeams( 10 )
+@@ -45442,8 +45442,8 @@
+     call GSTI_RestoreStock('IT31')
+     call RemoveItemFromStock(GSTI_Shops[1],'IT32')
+     call GSTI_RestoreStock('IT32')
+-    call CreateQuestBJ(bj_QUESTTYPE_OPT_DISCOVERED,"195-10 특성 아이템","기본 특성 아이템 13종을 판매합니다.|n|n맵 11시 상인 1과 5시 상인 2에서 양팀 모두 구매할 수 있습니다. 각 품목은 게임 전체에 1개뿐이며, 구매 성공 시 재입고되지 않습니다.|n-특성상점 / -특성상점2로 위치를 확인할 수 있습니다.|n|n구매 비용: 900 골드 + 특성 1.|n경제·교환 항목은 제공하지 않습니다.","ReplaceableTextures\\CommandButtons\\BTNMedalionOfCourage.blp")
+-    call DisplayTimedTextToForce(GetPlayersAll(),15,"|cffffcc00[195-10]|r 기본 특템 13종 · 11시 상인 1 / 5시 상인 2 · -특성상점 / -특성상점2 · 상세 내용 F9")
++    call CreateQuestBJ(bj_QUESTTYPE_OPT_DISCOVERED,"195-11 특성 아이템","기본 특성 아이템 13종을 판매합니다.|n|n맵 11시 상인 1과 5시 상인 2에서 양팀 모두 구매할 수 있습니다. 각 품목은 게임 전체에 1개뿐이며, 구매 성공 시 재입고되지 않습니다.|n-특성상점 / -특성상점2로 위치를 확인할 수 있습니다.|n|n구매 비용: 900 골드 + 특성 1.|n경제·교환 항목은 제공하지 않습니다.","ReplaceableTextures\\CommandButtons\\BTNMedalionOfCourage.blp")
++    call DisplayTimedTextToForce(GetPlayersAll(),15,"|cffffcc00[195-11]|r 기본 특템 13종 · 11시 상인 1 / 5시 상인 2 · -특성상점 / -특성상점2 · 상세 내용 F9")
+     call DestroyTimer(GetExpiredTimer())
+ endfunction
+ 
+@@ -56284,7 +56284,7 @@
+ function GSRI_OnChat takes nothing returns nothing
+     if GetTriggerPlayer() == GetLocalPlayer() then
+         if GetEventPlayerChatString() == "-range" then
+-            call DisplayTimedTextToPlayer(GetLocalPlayer(),0,0,20,"GSRI ver195-10 keys="+I2S(GSRI_KeyCount)+" shows="+I2S(GSRI_ShowCount)+" range="+R2S(GSRI_LastRange)+" last="+GSRI_Reason)
++            call DisplayTimedTextToPlayer(GetLocalPlayer(),0,0,20,"GSRI ver195-11 keys="+I2S(GSRI_KeyCount)+" shows="+I2S(GSRI_ShowCount)+" range="+R2S(GSRI_LastRange)+" last="+GSRI_Reason)
+         endif
+         if GetEventPlayerChatString() == "-range off" then
+             set GSRI_PendingSlot = -1

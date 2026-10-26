@@ -1,0 +1,3 @@
+PASS: existing Flame Beast passive cooldown is set before area damage; nested callback cannot proc again
+PASS: existing Soen backstab armed flag is cleared before bonus damage and pending target is cleared after the wait
+LIMIT: native engine callbacks/other heroes/items/resources and the reported client freeze are not reproduced by these mocks

@@ -1,0 +1,27 @@
+{
+  "source": "GS2vF_ver195-10.w3x",
+  "source_sha256": "c369129a5566263e316774adf7bd0272494e1eb59e5bfb53633dab773a288a3f",
+  "runtime_functions": 4976,
+  "research_context_level_sites": 80,
+  "distinct_abilities_in_sites": 67,
+  "nonfinite_object_float_fields_found": 0,
+  "literal_zero_period_recurring_timers_found": 0,
+  "loops_lacking_exitwhen_and_return_found": 0,
+  "removed_bot_function_string_references_found": 0,
+  "direct_call_cycles": [
+    [
+      "Trig_EleHar_Get_Actions"
+    ]
+  ],
+  "cycle_wait_seconds": [
+    8,
+    15
+  ],
+  "client_freeze_reproduced": false,
+  "client_freeze_cause_confirmed": false,
+  "limitations": [
+    "Static scans do not model every data-dependent loop or native event cycle.",
+    "Ability level expressions are heuristic candidates; complex branches require manual review.",
+    "No Warcraft engine, multiplayer or world-editor-resave validation."
+  ]
+}

@@ -1,0 +1,2334 @@
+[
+  {
+    "function": "Trig_Arcane_Shift_Start_Actions",
+    "ability": "A11Z",
+    "name": "아케인 쉬프트",
+    "base": "AIil",
+    "levels": 4,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "mana": [
+      null,
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [
+      "e00Q",
+      "ewsp",
+      "ewsp"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped('A11Z', dummy, GetUnitAbilityLevelSwapped(GetSpellAbilityId(), caster))"
+  },
+  {
+    "function": "Charge_Sub",
+    "ability": "A0XP",
+    "name": "나이트 차지",
+    "base": "AHtc",
+    "levels": 8,
+    "sources": [
+      "A0FB"
+    ],
+    "source_max": 4,
+    "possible_required_max": 8,
+    "level_overrun": false,
+    "missing_mana": [
+      5,
+      6,
+      7,
+      8
+    ],
+    "mana": [
+      0,
+      0,
+      0,
+      0,
+      null,
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [
+      "e038"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped('A0XP', dummy, (GetUnitAbilityLevelSwapped('A0FB', u) + (4 * GetPlayerTechCountSimple('R07S', GetOwningPlayer(u)))))"
+  },
+  {
+    "function": "Trig_Shadow_Break_Actions",
+    "ability": "A0K2",
+    "name": "쉐도우 브레이크",
+    "base": "AIil",
+    "levels": 16,
+    "sources": [
+      "A09F"
+    ],
+    "source_max": 4,
+    "possible_required_max": 12,
+    "level_overrun": false,
+    "missing_mana": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16
+    ],
+    "mana": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [
+      "ewsp"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped('A0K2', dummy, 4 + GetUnitAbilityLevelSwapped('A09F', udg_Hero_BlS) + 8 * GetPlayerTechCountSimple('R08X', GetOwningPlayer(udg_Hero_BlS)))"
+  },
+  {
+    "function": "Trig_Shadow_Break_Actions",
+    "ability": "A0K2",
+    "name": "쉐도우 브레이크",
+    "base": "AIil",
+    "levels": 16,
+    "sources": [
+      "A09F"
+    ],
+    "source_max": 4,
+    "possible_required_max": 12,
+    "level_overrun": false,
+    "missing_mana": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16
+    ],
+    "mana": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [
+      "ewsp"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped('A0K2', dummy, GetUnitAbilityLevelSwapped('A09F', udg_Hero_BlS) + 8 * GetPlayerTechCountSimple('R08X', GetOwningPlayer(udg_Hero_BlS)))"
+  },
+  {
+    "function": "Trig_FlB_Special_1_Actions",
+    "ability": "A0UG",
+    "name": "업화의 열기",
+    "base": "ACba",
+    "levels": 4,
+    "sources": [
+      "ANic"
+    ],
+    "source_max": 4,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "mana": [
+      null,
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A0UG', udg_Hero_FlB, GetUnitAbilityLevelSwapped('ANic', udg_Hero_FlB) )"
+  },
+  {
+    "function": "Trig_FlB_Special_1_Actions",
+    "ability": "A11Q",
+    "name": "플레임 엘리멘트",
+    "base": "AIsr",
+    "levels": 5,
+    "sources": [
+      "ANic"
+    ],
+    "source_max": 4,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "mana": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A11Q', udg_Hero_FlB, ( GetUnitAbilityLevelSwapped('ANic', udg_Hero_FlB) + GetPlayerTechCountSimple('R04B', GetOwningPlayer(GetTriggerUnit())) ) )"
+  },
+  {
+    "function": "Trig_GrW_Skill_Effect_Actions",
+    "ability": "A08P",
+    "name": "어스퀘이크",
+    "base": "AOw2",
+    "levels": 8,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [],
+    "mana": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "dummy_types": [
+      "e002"
+    ],
+    "expression": "call SetUnitAbilityLevel(dummy, 'A08P', level)"
+  },
+  {
+    "function": "GS117_OverflowRank",
+    "ability": "A0T5",
+    "name": "오버 플로우",
+    "base": "AOw2",
+    "levels": 8,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [],
+    "mana": [
+      75,
+      90,
+      105,
+      120,
+      75,
+      90,
+      105,
+      120
+    ],
+    "dummy_types": [],
+    "expression": "call SetUnitAbilityLevel(u, 'A0T5', lv)"
+  },
+  {
+    "function": "Trig_CriticalPoison_Shoot_Actions",
+    "ability": "A0UN",
+    "name": "크리티컬 포이즌",
+    "base": "ANab",
+    "levels": 4,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [],
+    "mana": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "dummy_types": [
+      "e036"
+    ],
+    "expression": "call SetUnitAbilityLevel(d,'A0UN',lv)"
+  },
+  {
+    "function": "GS294_BurnTick",
+    "ability": "A0UG",
+    "name": "업화의 열기",
+    "base": "ACba",
+    "levels": 4,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "mana": [
+      null,
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [],
+    "expression": "call SetUnitAbilityLevel(source, 'A0UG', level)"
+  },
+  {
+    "function": "Trig_AnT_Skill_Learn_Actions",
+    "ability": "A0W0",
+    "name": "포토신테시스 (루트상태)",
+    "base": "AUau",
+    "levels": 5,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "mana": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A0W0', GetTriggerUnit(), ( GetLearnedSkillLevel() + 1 ) )"
+  },
+  {
+    "function": "Trig_AnT_Skill_Learn_Actions",
+    "ability": "A14Q",
+    "name": "생명의 지대",
+    "base": "AOwk",
+    "levels": 4,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [],
+    "mana": [
+      30,
+      40,
+      50,
+      60
+    ],
+    "dummy_types": [],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A14Q', GetTriggerUnit(), GetLearnedSkillLevel() )"
+  },
+  {
+    "function": "Trig_AnT_Skill_Learn_Actions",
+    "ability": "A0L4",
+    "name": "포토신테시스",
+    "base": "AUts",
+    "levels": 4,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "mana": [
+      null,
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A0L4', GetTriggerUnit(), GetLearnedSkillLevel() )"
+  },
+  {
+    "function": "Trig_Arcane_Arrow_Eff_Actions",
+    "ability": "A08X",
+    "name": "아케인 애로우(크리플)",
+    "base": "Acri",
+    "levels": 2,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [
+      2
+    ],
+    "mana": [
+      0,
+      null
+    ],
+    "dummy_types": [
+      "ewsp",
+      "e024"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A08X', wisp, ( GetPlayerTechCountSimple('R03U', GetOwningPlayer(wisp)) + 1 ) )"
+  },
+  {
+    "function": "Trig_Glave2_Actions",
+    "ability": "A009",
+    "name": "글레이브",
+    "base": "ACbf",
+    "levels": 8,
+    "sources": [
+      "A13W"
+    ],
+    "source_max": 4,
+    "possible_required_max": 8,
+    "level_overrun": false,
+    "missing_mana": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "mana": [
+      0,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [
+      "ewsp"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A009', GetLastCreatedUnit(), ( ( GetPlayerTechCountSimple('R098', GetTriggerPlayer()) * 4 ) + GetUnitAbilityLevelSwapped('A13W', GetTriggerUnit()) ) )"
+  },
+  {
+    "function": "Trig_Bash_Actions",
+    "ability": "A0O2",
+    "name": "배쉬(스턴)",
+    "base": "AHtb",
+    "levels": 2,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [],
+    "mana": [
+      0,
+      0
+    ],
+    "dummy_types": [
+      "ewsp"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A0O2', GetLastCreatedUnit(), ( GetPlayerTechCountSimple('R07L', GetOwningPlayer(GetAttacker())) + 1 ) )"
+  },
+  {
+    "function": "Trig_Shadow_Jail_Cast_Actions",
+    "ability": "A0L0",
+    "name": "쉐도우 자일",
+    "base": "AUsl",
+    "levels": 2,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [],
+    "mana": [
+      0,
+      0
+    ],
+    "dummy_types": [
+      "ewsp"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped('A0L0', dummy, 2)"
+  },
+  {
+    "function": "Trig_Shadow_Jail_Cast_Actions",
+    "ability": "A0L0",
+    "name": "쉐도우 자일",
+    "base": "AUsl",
+    "levels": 2,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [],
+    "mana": [
+      0,
+      0
+    ],
+    "dummy_types": [
+      "ewsp"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped('A0L0', dummy, 1)"
+  },
+  {
+    "function": "Trig_GoT_Special_2_Actions",
+    "ability": "A09Y",
+    "name": "로켓 부츠(스피드)",
+    "base": "AIsa",
+    "levels": 2,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [
+      1,
+      2
+    ],
+    "mana": [
+      null,
+      null
+    ],
+    "dummy_types": [
+      "ewsp"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A09Y', GetLastCreatedUnit(), 2 )"
+  },
+  {
+    "function": "Trig_Grand_Phantasm_Func008A",
+    "ability": "A0IG",
+    "name": "그랜드 판타즘",
+    "base": "AIil",
+    "levels": 6,
+    "sources": [
+      "A11A"
+    ],
+    "source_max": 3,
+    "possible_required_max": 6,
+    "level_overrun": false,
+    "missing_mana": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "mana": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [
+      "ewsp"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A0IG', GetLastCreatedUnit(), ( GetUnitAbilityLevelSwapped('A11A', GetTriggerUnit()) + ( GetPlayerTechCountSimple('R063', GetOwningPlayer(GetTriggerUnit())) * 3 ) ) )"
+  },
+  {
+    "function": "Trig_Grand_Phantasm_Explode_Actions",
+    "ability": "A0XR",
+    "name": "그랜드 판타즘(폭발)",
+    "base": "ACt2",
+    "levels": 2,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [
+      2
+    ],
+    "mana": [
+      0,
+      null
+    ],
+    "dummy_types": [
+      "ewsp"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A0XR', GetLastCreatedUnit(), ( 1 + GetPlayerTechCountSimple('R063', GetOwningPlayer(GetTriggerUnit())) ) )"
+  },
+  {
+    "function": "Trig_Satellite_Launcher_Select_Actions",
+    "ability": "A00L",
+    "name": "좌표 지정",
+    "base": "Afla",
+    "levels": 2,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [
+      1,
+      2
+    ],
+    "mana": [
+      null,
+      null
+    ],
+    "dummy_types": [],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A00L', udg_Hero_LeT, 2 )"
+  },
+  {
+    "function": "Trig_Drunk_Attack_Damage_Actions",
+    "ability": "A0T0",
+    "name": "비전연공류",
+    "base": "AHtb",
+    "levels": 1,
+    "sources": [
+      "A0ZL"
+    ],
+    "source_max": 3,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [],
+    "mana": [
+      0
+    ],
+    "dummy_types": [
+      "ewsp"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A0T0', GetLastCreatedUnit(), GetUnitAbilityLevelSwapped('A0ZL', GetEventDamageSource()) )"
+  },
+  {
+    "function": "Trig_Drunk_Attack_Damage_Actions",
+    "ability": "A0YR",
+    "name": "순보",
+    "base": "AEbl",
+    "levels": 8,
+    "sources": [
+      "A0A6"
+    ],
+    "source_max": 4,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [
+      1
+    ],
+    "mana": [
+      null,
+      50,
+      50,
+      50,
+      25,
+      25,
+      25,
+      25
+    ],
+    "dummy_types": [
+      "ewsp"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A0YR', udg_Hero_PaB, ( GetUnitAbilityLevelSwapped('A0A6', udg_Hero_PaB) + 4 ) )"
+  },
+  {
+    "function": "Trig_Drunk_Attack_Damage_Actions",
+    "ability": "A13E",
+    "name": "화주",
+    "base": "ACbf",
+    "levels": 8,
+    "sources": [
+      "A022"
+    ],
+    "source_max": 4,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [],
+    "mana": [
+      35,
+      40,
+      45,
+      50,
+      17,
+      20,
+      22,
+      25
+    ],
+    "dummy_types": [
+      "ewsp"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A13E', udg_Hero_PaB, ( GetUnitAbilityLevelSwapped('A022', udg_Hero_PaB) + 4 ) )"
+  },
+  {
+    "function": "Trig_Drunk_Attack_Damage_Actions",
+    "ability": "A0ML",
+    "name": "술주정",
+    "base": "Afzy",
+    "levels": 8,
+    "sources": [
+      "A0CU"
+    ],
+    "source_max": 4,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [],
+    "mana": [
+      70,
+      80,
+      90,
+      100,
+      35,
+      40,
+      45,
+      50
+    ],
+    "dummy_types": [
+      "ewsp"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A0ML', udg_Hero_PaB, ( GetUnitAbilityLevelSwapped('A0CU', udg_Hero_PaB) + 4 ) )"
+  },
+  {
+    "function": "Trig_Drunk_Attack_Damage_Actions",
+    "ability": "A138",
+    "name": "술주정(공격 속도)",
+    "base": "AIsx",
+    "levels": 13,
+    "sources": [
+      "A138"
+    ],
+    "source_max": 13,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "mana": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [
+      "ewsp"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A138', GetEventDamageSource(), GetUnitAbilityLevelSwapped('A138', GetEventDamageSource())-1 )"
+  },
+  {
+    "function": "Trig_Drunk_Attack_Damage_Actions",
+    "ability": "A138",
+    "name": "술주정(공격 속도)",
+    "base": "AIsx",
+    "levels": 13,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "mana": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [
+      "ewsp"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A138', GetEventDamageSource(), 1 )"
+  },
+  {
+    "function": "Trig_Drunk_Attack_Damage_Actions",
+    "ability": "A14C",
+    "name": "음주가무",
+    "base": "AItg",
+    "levels": 2,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [
+      1,
+      2
+    ],
+    "mana": [
+      null,
+      null
+    ],
+    "dummy_types": [
+      "ewsp"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A14C', GetEventDamageSource(), 1 )"
+  },
+  {
+    "function": "Trig_Poison_Sniping_Poison_Actions",
+    "ability": "A00Q",
+    "name": "포이즌 스나이핑(독)",
+    "base": "AEsh",
+    "levels": 8,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [
+      5,
+      6,
+      7,
+      8
+    ],
+    "mana": [
+      0,
+      0,
+      0,
+      0,
+      null,
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [
+      "ewsp"
+    ],
+    "expression": "call SetUnitAbilityLevel(dummy,'A00Q',rank)"
+  },
+  {
+    "function": "Trig_Swash_Slide_Actions",
+    "ability": "A01O",
+    "name": "스워시 슬라이드",
+    "base": "AHtb",
+    "levels": 8,
+    "sources": [
+      "A01X"
+    ],
+    "source_max": 4,
+    "possible_required_max": 8,
+    "level_overrun": false,
+    "missing_mana": [
+      5,
+      6,
+      7,
+      8
+    ],
+    "mana": [
+      0,
+      0,
+      0,
+      0,
+      null,
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A01O', dmgunit, ( GetUnitAbilityLevelSwapped('A01X', caster) + ( 4 * GetPlayerTechCountSimple('R00Q', GetOwningPlayer(caster)) ) ) )"
+  },
+  {
+    "function": "Trig_SwM_Skill_Effect_Actions",
+    "ability": "A00J",
+    "name": "스트라이크",
+    "base": "AHtc",
+    "levels": 8,
+    "sources": [
+      "A00C"
+    ],
+    "source_max": 4,
+    "possible_required_max": 8,
+    "level_overrun": false,
+    "missing_mana": [
+      5,
+      6,
+      7,
+      8
+    ],
+    "mana": [
+      0,
+      0,
+      0,
+      0,
+      null,
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [
+      "ewsp",
+      "ewsp",
+      "e03E"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A00J', GetLastCreatedUnit(), ( GetUnitAbilityLevelSwapped('A00C', GetTriggerUnit()) + ( 4 * GetPlayerTechCountSimple('R007', GetOwningPlayer(GetTriggerUnit())) ) ) )"
+  },
+  {
+    "function": "Trig_SwM_Skill_Effect_Actions",
+    "ability": "A00D",
+    "name": "강맹한 타격",
+    "base": "AOws",
+    "levels": 4,
+    "sources": [
+      "A00C"
+    ],
+    "source_max": 4,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [],
+    "mana": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "dummy_types": [
+      "ewsp",
+      "ewsp",
+      "e03E"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A00D', GetLastCreatedUnit(), GetUnitAbilityLevelSwapped('A00C', GetTriggerUnit()) )"
+  },
+  {
+    "function": "Trig_Vendetta_Actions",
+    "ability": "A0KS",
+    "name": "벤데타(이펙트)",
+    "base": "AUfn",
+    "levels": 16,
+    "sources": [
+      "A0KO"
+    ],
+    "source_max": 4,
+    "possible_required_max": 8,
+    "level_overrun": false,
+    "missing_mana": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16
+    ],
+    "mana": [
+      0,
+      0,
+      0,
+      0,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [
+      "e02I"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A0KS', GetLastCreatedUnit(), ( ( 8 + GetUnitAbilityLevelSwapped('A0KO', udg_Hero_AbW) ) + ( GetPlayerTechCountSimple('R06O', GetOwningPlayer(GetLastCreatedUnit())) * 4 ) ) )"
+  },
+  {
+    "function": "Trig_Vendetta_Actions",
+    "ability": "A0KS",
+    "name": "벤데타(이펙트)",
+    "base": "AUfn",
+    "levels": 16,
+    "sources": [
+      "A0KO"
+    ],
+    "source_max": 4,
+    "possible_required_max": 8,
+    "level_overrun": false,
+    "missing_mana": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16
+    ],
+    "mana": [
+      0,
+      0,
+      0,
+      0,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [
+      "e02I"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A0KS', GetLastCreatedUnit(), ( GetUnitAbilityLevelSwapped('A0KO', udg_HeroPlayer[GetConvertedPlayerId(GetOwningPlayer(GetLastCreatedUnit()))]) + ( GetPlayerTechCountSimple('R06O', GetOwningPlayer(GetLastCreatedUnit())) * 4 ) ) )"
+  },
+  {
+    "function": "Trig_Void_Sneak_Learn_Actions",
+    "ability": "A0TP",
+    "name": "보이드 스닉",
+    "base": "Absk",
+    "levels": 8,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [],
+    "mana": [
+      50,
+      50,
+      50,
+      50,
+      50,
+      50,
+      50,
+      50
+    ],
+    "dummy_types": [],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A0TP', GetTriggerUnit(), ( GetLearnedSkillLevel() + ( GetPlayerTechCountSimple('R08Z', GetOwningPlayer(GetTriggerUnit())) * 4 ) ) )"
+  },
+  {
+    "function": "Trig_Void_Sneak_Actions",
+    "ability": "A0TP",
+    "name": "보이드 스닉",
+    "base": "Absk",
+    "levels": 8,
+    "sources": [
+      "A0CN"
+    ],
+    "source_max": 4,
+    "possible_required_max": 8,
+    "level_overrun": false,
+    "missing_mana": [],
+    "mana": [
+      50,
+      50,
+      50,
+      50,
+      50,
+      50,
+      50,
+      50
+    ],
+    "dummy_types": [],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A0TP', GetTriggerUnit(), ( GetUnitAbilityLevelSwapped('A0CN', GetTriggerUnit()) + ( GetPlayerTechCountSimple('R08Z', GetOwningPlayer(GetTriggerUnit())) * 4 ) ) )"
+  },
+  {
+    "function": "GS166_Sync",
+    "ability": "A08F",
+    "name": "인볼브 다크니스 (크리회피)",
+    "base": "ANdb",
+    "levels": 17,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17
+    ],
+    "mana": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [],
+    "expression": "call SetUnitAbilityLevel(u,'A08F',target)"
+  },
+  {
+    "function": "GS166_Sync",
+    "ability": "A169",
+    "name": "[엘타닌] 치명적인 어둠",
+    "base": "AOcr",
+    "levels": 8,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "mana": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [],
+    "expression": "call SetUnitAbilityLevel(u,'A169',target)"
+  },
+  {
+    "function": "Trig_Dark_Cloud_Actions",
+    "ability": "A0FT",
+    "name": "다크 클라우드",
+    "base": "AOr2",
+    "levels": 8,
+    "sources": [
+      "A03A"
+    ],
+    "source_max": 4,
+    "possible_required_max": 8,
+    "level_overrun": false,
+    "missing_mana": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "mana": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [
+      "e02M"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A0FT', GetLastCreatedUnit(), ( GetUnitAbilityLevelSwapped('A03A', GetTriggerUnit()) + ( 4 * GetPlayerTechCountSimple('R006', GetOwningPlayer(GetTriggerUnit())) ) ) )"
+  },
+  {
+    "function": "Trig_Dark_Cloud_Actions",
+    "ability": "A0P4",
+    "name": "부패의 연기",
+    "base": "AHad",
+    "levels": 8,
+    "sources": [
+      "A03A"
+    ],
+    "source_max": 4,
+    "possible_required_max": 8,
+    "level_overrun": false,
+    "missing_mana": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "mana": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [
+      "e02M"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A0P4', GetLastCreatedUnit(), ( GetUnitAbilityLevelSwapped('A03A', GetTriggerUnit()) + ( 4 * GetPlayerTechCountSimple('R006', GetOwningPlayer(GetTriggerUnit())) ) ) )"
+  },
+  {
+    "function": "Trig_Corrosive_Poison_Actions",
+    "ability": "A13N",
+    "name": "코로시브 포이즌(스턴)",
+    "base": "AHtb",
+    "levels": 4,
+    "sources": [
+      "A03D"
+    ],
+    "source_max": 4,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [],
+    "mana": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "dummy_types": [
+      "ewsp"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A13N', GetLastCreatedUnit(), GetUnitAbilityLevelSwapped('A03D', GetTriggerUnit()) )"
+  },
+  {
+    "function": "Trig_Coward_Smash_Actions",
+    "ability": "A0W7",
+    "name": "카워드 스매시(둠)",
+    "base": "ANdo",
+    "levels": 2,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [],
+    "mana": [
+      0,
+      0
+    ],
+    "dummy_types": [
+      "ewsp",
+      "ewsp"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A0W7', GetLastCreatedUnit(), ( GetPlayerTechCountSimple('R077', GetOwningPlayer(GetTriggerUnit())) + 1 ) )"
+  },
+  {
+    "function": "Trig_Coward_Smash_Actions",
+    "ability": "A117",
+    "name": "스턴 x0.25",
+    "base": "AHtb",
+    "levels": 10,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "mana": [
+      0,
+      0,
+      0,
+      0,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [
+      "ewsp",
+      "ewsp"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A117', GetLastCreatedUnit(), 4 )"
+  },
+  {
+    "function": "Trig_Flame_Burst_Actions",
+    "ability": "A0CV",
+    "name": "플레임 버스트 (썬더 클랩)",
+    "base": "AHtc",
+    "levels": 8,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [],
+    "mana": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "dummy_types": [
+      "h00W"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A0CV', GetLastCreatedUnit(), ( GetUnitAbilityLevelSwapped(GetSpellAbilityId(), GetTriggerUnit()) + ( 4 * GetPlayerTechCountSimple('R048', GetOwningPlayer(GetTriggerUnit())) ) ) )"
+  },
+  {
+    "function": "Trig_Flame_Element_Learn_Actions",
+    "ability": "A11Q",
+    "name": "플레임 엘리멘트",
+    "base": "AIsr",
+    "levels": 5,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "mana": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A11Q', GetTriggerUnit(), ( GetLearnedSkillLevel() + GetPlayerTechCountSimple('R04B', GetOwningPlayer(GetTriggerUnit())) ) )"
+  },
+  {
+    "function": "Trig_Inq_Learn_Actions",
+    "ability": "A0LC",
+    "name": "플레임 샤워 (껍데기)",
+    "base": "ANrf",
+    "levels": 8,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [
+      2
+    ],
+    "mana": [
+      70,
+      null,
+      100,
+      115,
+      80,
+      100,
+      120,
+      140
+    ],
+    "dummy_types": [],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A0LC', GetTriggerUnit(), ( 4 + GetLearnedSkillLevel() ) )"
+  },
+  {
+    "function": "Trig_Inq_Learn_Actions",
+    "ability": "A0LC",
+    "name": "플레임 샤워 (껍데기)",
+    "base": "ANrf",
+    "levels": 8,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [
+      2
+    ],
+    "mana": [
+      70,
+      null,
+      100,
+      115,
+      80,
+      100,
+      120,
+      140
+    ],
+    "dummy_types": [],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A0LC', GetTriggerUnit(), GetLearnedSkillLevel() )"
+  },
+  {
+    "function": "Trig_Burrow_Strike_dmg_Actions",
+    "ability": "A0HQ",
+    "name": "버로우 스트라이크",
+    "base": "AHtb",
+    "levels": 2,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [],
+    "mana": [
+      0,
+      0
+    ],
+    "dummy_types": [
+      "e00Q"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A0HQ', GetLastCreatedUnit(), ( GetPlayerTechCountSimple('R05R', GetOwningPlayer(gs2EvtSource)) + 1 ) )"
+  },
+  {
+    "function": "Trig_Counter_Spell_Actions",
+    "ability": "A0DD",
+    "name": "카운터 스펠(스턴)",
+    "base": "AHtb",
+    "levels": 8,
+    "sources": [
+      "A0D6"
+    ],
+    "source_max": 4,
+    "possible_required_max": 8,
+    "level_overrun": false,
+    "missing_mana": [
+      5,
+      6,
+      7,
+      8
+    ],
+    "mana": [
+      0,
+      0,
+      0,
+      0,
+      null,
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [
+      "ewsp",
+      "ewsp"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A0DD', GetLastCreatedUnit(), ( GetUnitAbilityLevelSwapped('A0D6', udg_Hero_Mel) + ( 4 * GetPlayerTechCountSimple('R04J', GetOwningPlayer(udg_Hero_Mel)) ) ) )"
+  },
+  {
+    "function": "Trig_Counter_Spell_Actions",
+    "ability": "A0DF",
+    "name": "카운터 스펠(마법 사용 불가)",
+    "base": "ANso",
+    "levels": 8,
+    "sources": [
+      "A0D6"
+    ],
+    "source_max": 4,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [
+      5,
+      6,
+      7,
+      8
+    ],
+    "mana": [
+      0,
+      0,
+      0,
+      0,
+      null,
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [
+      "ewsp",
+      "ewsp"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A0DF', GetLastCreatedUnit(), GetUnitAbilityLevelSwapped('A0D6', udg_Hero_Mel) )"
+  },
+  {
+    "function": "Trig_OgL_Skill_Effect_Actions",
+    "ability": "A0AA",
+    "name": "파워 스트라이크",
+    "base": "Asph",
+    "levels": 6,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "mana": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [
+      "ewsp"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A0AA', GetTriggerUnit(), PowerCnt )"
+  },
+  {
+    "function": "Trig_OgL_Skill_Effect_Actions",
+    "ability": "A041",
+    "name": "매니스 크라이",
+    "base": "AHtc",
+    "levels": 8,
+    "sources": [
+      "A04Y"
+    ],
+    "source_max": 4,
+    "possible_required_max": 8,
+    "level_overrun": false,
+    "missing_mana": [
+      5,
+      6,
+      7,
+      8
+    ],
+    "mana": [
+      0,
+      0,
+      0,
+      0,
+      null,
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [
+      "ewsp"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A041', GetLastCreatedUnit(), ( GetUnitAbilityLevelSwapped('A04Y', GetTriggerUnit()) + ( GetPlayerTechCountSimple('R01H', GetOwningPlayer(GetTriggerUnit())) * 4 ) ) )"
+  },
+  {
+    "function": "GS2S_HeroUpdate",
+    "ability": "S008",
+    "name": "광폭화 (이공속)",
+    "base": "AOae",
+    "levels": 3,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [
+      1,
+      2,
+      3
+    ],
+    "mana": [
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [],
+    "expression": "call SetUnitAbilityLevel(u, 'S008', ultimateLevel)"
+  },
+  {
+    "function": "GS2S_HeroUpdate",
+    "ability": "A15G",
+    "name": "광폭화 (데미지)",
+    "base": "AIt9",
+    "levels": 3,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [
+      1,
+      2,
+      3
+    ],
+    "mana": [
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [],
+    "expression": "call SetUnitAbilityLevel(u, 'A15G', ultimateLevel)"
+  },
+  {
+    "function": "GS2S_HeroUpdate",
+    "ability": "A15H",
+    "name": "광폭화 (방어력)",
+    "base": "AId5",
+    "levels": 3,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [
+      1,
+      2,
+      3
+    ],
+    "mana": [
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [],
+    "expression": "call SetUnitAbilityLevel(u, 'A15H', ultimateLevel)"
+  },
+  {
+    "function": "GS114S_Update",
+    "ability": "ASs1",
+    "name": "[사신트 특성] 지원",
+    "base": "AOcl",
+    "levels": 3,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [],
+    "mana": [
+      50,
+      50,
+      50
+    ],
+    "dummy_types": [],
+    "expression": "call SetUnitAbilityLevel(h, 'ASs1', GS114S_Band(h))"
+  },
+  {
+    "function": "GS181_LeapImpact",
+    "ability": "A0CE",
+    "name": "충격파",
+    "base": "AOw2",
+    "levels": 3,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [],
+    "mana": [
+      0,
+      0,
+      0
+    ],
+    "dummy_types": [
+      "ewsp",
+      "ewsp"
+    ],
+    "expression": "call SetUnitAbilityLevel(d,'A0CE',rank)"
+  },
+  {
+    "function": "GS181_LeapImpact",
+    "ability": "A0BH",
+    "name": "리프 어택",
+    "base": "ACt2",
+    "levels": 3,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [
+      2,
+      3
+    ],
+    "mana": [
+      0,
+      null,
+      null
+    ],
+    "dummy_types": [
+      "ewsp",
+      "ewsp"
+    ],
+    "expression": "call SetUnitAbilityLevel(d,'A0BH',rank)"
+  },
+  {
+    "function": "GS2FB_Transform",
+    "ability": "AFq1",
+    "name": "[가디언 - 플레임 비스트]",
+    "base": "AOw2",
+    "levels": 4,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [],
+    "mana": [
+      90,
+      100,
+      110,
+      120
+    ],
+    "dummy_types": [
+      "nFl1"
+    ],
+    "expression": "call SetUnitAbilityLevel(hero, 'AFq1', q)"
+  },
+  {
+    "function": "GS2FB_Transform",
+    "ability": "AFw1",
+    "name": "[가디언 - 플레임 비스트]",
+    "base": "AOcl",
+    "levels": 4,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [],
+    "mana": [
+      65,
+      85,
+      105,
+      125
+    ],
+    "dummy_types": [
+      "nFl1"
+    ],
+    "expression": "call SetUnitAbilityLevel(hero, 'AFw1', w)"
+  },
+  {
+    "function": "GS2FB_Transform",
+    "ability": "AFe1",
+    "name": "[가디언 - 플레임 비스트]",
+    "base": "AEah",
+    "levels": 4,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "mana": [
+      null,
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [
+      "nFl1"
+    ],
+    "expression": "call SetUnitAbilityLevel(hero, 'AFe1', e)"
+  },
+  {
+    "function": "GS2FB_Transform",
+    "ability": "AFr1",
+    "name": "[가디언 - 플레임 비스트]",
+    "base": "Amls",
+    "levels": 3,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [],
+    "mana": [
+      110,
+      145,
+      180
+    ],
+    "dummy_types": [
+      "nFl1"
+    ],
+    "expression": "call SetUnitAbilityLevel(hero, 'AFr1', r)"
+  },
+  {
+    "function": "GS2FB_Transform",
+    "ability": "A04T",
+    "name": "[모든 영웅]",
+    "base": "Aamk",
+    "levels": 5,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "mana": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [
+      "nFl1"
+    ],
+    "expression": "call SetUnitAbilityLevel(hero, 'A04T', stats)"
+  },
+  {
+    "function": "Trig_Ambush_Dmg_Actions",
+    "ability": "A0LI",
+    "name": "앰버쉬(스턴)",
+    "base": "AHtb",
+    "levels": 5,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [
+      5
+    ],
+    "mana": [
+      0,
+      0,
+      0,
+      0,
+      null
+    ],
+    "dummy_types": [
+      "ewsp"
+    ],
+    "expression": "call SetUnitAbilityLevel(dummy, 'A0LI', stacks)"
+  },
+  {
+    "function": "Trig_Blow_Bomb_Actions",
+    "ability": "A0LT",
+    "name": "블로우 붐",
+    "base": "AHtc",
+    "levels": 8,
+    "sources": [
+      "A00N"
+    ],
+    "source_max": 4,
+    "possible_required_max": 8,
+    "level_overrun": false,
+    "missing_mana": [
+      3,
+      7
+    ],
+    "mana": [
+      70,
+      80,
+      null,
+      100,
+      70,
+      80,
+      null,
+      100
+    ],
+    "dummy_types": [
+      "ewsp",
+      "ewsp",
+      "ewsp"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A0LT', dummy, ( GetUnitAbilityLevelSwapped('A00N', caster) + ( 4 * GetPlayerTechCountSimple('R0AR', GetOwningPlayer(caster)) ) ) )"
+  },
+  {
+    "function": "Trig_Blow_Bomb_Actions",
+    "ability": "A0EQ",
+    "name": "블로우 붐 (사일런스)",
+    "base": "ACsi",
+    "levels": 8,
+    "sources": [
+      "A00N"
+    ],
+    "source_max": 4,
+    "possible_required_max": 8,
+    "level_overrun": false,
+    "missing_mana": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "mana": [
+      0,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [
+      "ewsp",
+      "ewsp",
+      "ewsp"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A0EQ', dummy, ( GetUnitAbilityLevelSwapped('A00N', caster) + ( 4 * GetPlayerTechCountSimple('R0AR', GetOwningPlayer(caster)) ) ) )"
+  },
+  {
+    "function": "Trig_Fire_Wave_Actions",
+    "ability": "A06W",
+    "name": "파이어 웨이브",
+    "base": "AOsh",
+    "levels": 4,
+    "sources": [
+      "A06V"
+    ],
+    "source_max": 4,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [],
+    "mana": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "dummy_types": [
+      "e00F",
+      "e00F",
+      "e00F",
+      "e00F"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A06W', GetLastCreatedUnit(), GetUnitAbilityLevelSwapped('A06V', GetTriggerUnit()) )"
+  },
+  {
+    "function": "Trig_Fire_Wave_Actions",
+    "ability": "A06W",
+    "name": "파이어 웨이브",
+    "base": "AOsh",
+    "levels": 4,
+    "sources": [
+      "A06V"
+    ],
+    "source_max": 4,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [],
+    "mana": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "dummy_types": [
+      "e00F",
+      "e00F",
+      "e00F",
+      "e00F"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A06W', GetLastCreatedUnit(), GetUnitAbilityLevelSwapped('A06V', GetTriggerUnit()) )"
+  },
+  {
+    "function": "Trig_Fire_Wave_Actions",
+    "ability": "A06W",
+    "name": "파이어 웨이브",
+    "base": "AOsh",
+    "levels": 4,
+    "sources": [
+      "A06V"
+    ],
+    "source_max": 4,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [],
+    "mana": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "dummy_types": [
+      "e00F",
+      "e00F",
+      "e00F",
+      "e00F"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A06W', GetLastCreatedUnit(), GetUnitAbilityLevelSwapped('A06V', GetTriggerUnit()) )"
+  },
+  {
+    "function": "Trig_Fire_Wave_Actions",
+    "ability": "A06W",
+    "name": "파이어 웨이브",
+    "base": "AOsh",
+    "levels": 4,
+    "sources": [
+      "A06V"
+    ],
+    "source_max": 4,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [],
+    "mana": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "dummy_types": [
+      "e00F",
+      "e00F",
+      "e00F",
+      "e00F"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A06W', GetLastCreatedUnit(), GetUnitAbilityLevelSwapped('A06V', GetTriggerUnit()) )"
+  },
+  {
+    "function": "Trig_Shock_Actions",
+    "ability": "A13R",
+    "name": "어스 쇼크",
+    "base": "AOws",
+    "levels": 8,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [],
+    "mana": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "dummy_types": [
+      "e023"
+    ],
+    "expression": "call SetUnitAbilityLevel(d,'A13R',level)"
+  },
+  {
+    "function": "Trig_GoT_Special_3_Actions",
+    "ability": "A0NR",
+    "name": "즉사 광선(부작용)",
+    "base": "AOcl",
+    "levels": 4,
+    "sources": [
+      "A0NU"
+    ],
+    "source_max": 4,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [],
+    "mana": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "dummy_types": [
+      "e00Q"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A0NR', GetLastCreatedUnit(), GetUnitAbilityLevelSwapped('A0NU', GetSpellAbilityUnit()) )"
+  },
+  {
+    "function": "Trig_PaW_Skill_Effect_Actions",
+    "ability": "A0IM",
+    "name": "술병 투척(적)",
+    "base": "ANab",
+    "levels": 8,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [
+      5,
+      6,
+      7,
+      8
+    ],
+    "mana": [
+      0,
+      0,
+      0,
+      0,
+      null,
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [
+      "ewsp",
+      "ewsp",
+      "e03L"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A0IM', GetLastCreatedUnit(), ( GetUnitAbilityLevelSwapped(GetSpellAbilityId(), GetTriggerUnit()) + ( GetPlayerTechCountSimple('R0AC', GetOwningPlayer(GetTriggerUnit())) * 4 ) ) )"
+  },
+  {
+    "function": "Trig_PaW_Skill_Effect_Actions",
+    "ability": "A138",
+    "name": "술주정(공격 속도)",
+    "base": "AIsx",
+    "levels": 13,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "mana": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [
+      "ewsp",
+      "ewsp",
+      "e03L"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A138', udg_Hero_PaW, 1 )"
+  },
+  {
+    "function": "Trig_PaW_Skill_Effect_Actions",
+    "ability": "A138",
+    "name": "술주정(공격 속도)",
+    "base": "AIsx",
+    "levels": 13,
+    "sources": [
+      "A138"
+    ],
+    "source_max": 13,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "mana": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "dummy_types": [
+      "ewsp",
+      "ewsp",
+      "e03L"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A138', udg_Hero_PaW, GetUnitAbilityLevelSwapped('A138', udg_Hero_PaW)/2 + 1)"
+  },
+  {
+    "function": "Trig_Brain_Shock_Actions",
+    "ability": "A011",
+    "name": "브레인 쇼크",
+    "base": "Acri",
+    "levels": 2,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [
+      2
+    ],
+    "mana": [
+      0,
+      null
+    ],
+    "dummy_types": [
+      "ewsp"
+    ],
+    "expression": "call SetUnitAbilityLevelSwapped( 'A011', GetLastCreatedUnit(), 1 )"
+  },
+  {
+    "function": "GS2FB_Spell",
+    "ability": "AFw2",
+    "name": "[특성 - 플레임 비스트]",
+    "base": "AHfs",
+    "levels": 8,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [],
+    "mana": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "dummy_types": [
+      "ewsp"
+    ],
+    "expression": "call SetUnitAbilityLevel(dummy, 'AFw2', level)"
+  },
+  {
+    "function": "GS2FB_Damaged",
+    "ability": "AFt1",
+    "name": "[특성 - 플레임 비스트]",
+    "base": "AHtc",
+    "levels": 4,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [],
+    "mana": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "dummy_types": [
+      "ewsp"
+    ],
+    "expression": "call SetUnitAbilityLevel(dummy, 'AFt1', level)"
+  },
+  {
+    "function": "GS2DW_Spell",
+    "ability": "DXwa",
+    "name": "용린 수호 표시",
+    "base": "AUfa",
+    "levels": 4,
+    "sources": [],
+    "source_max": 0,
+    "possible_required_max": null,
+    "level_overrun": false,
+    "missing_mana": [],
+    "mana": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "dummy_types": [
+      "ewsp",
+      "ewsp"
+    ],
+    "expression": "call SetUnitAbilityLevel(d,'DXwa',lv)"
+  }
+]

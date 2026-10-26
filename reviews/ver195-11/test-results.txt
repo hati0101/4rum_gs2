@@ -1,0 +1,5 @@
+PASS: normal runtime changes only version labels; comparison runtime is exactly 195-8 plus its distinct version labels
+PASS: 13 whitelisted helper costs pinned; all damage/target/range/cooldown/buff fields and every other ability preserved
+PASS: unit/hero/trait/item objects, recipe/purchase data and strings unchanged and equal between normal/comparison builds
+PASS: Shinta and Ranger ability records unchanged
+PASS: 1,069 decoded live entries and 903 WCT block lengths in each map
