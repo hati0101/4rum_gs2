@@ -1,0 +1,22 @@
+{
+  "source_sha256": "f107d1a3b2fac0e203f5f5cad76913e4a38d53275dc4dd5a9ae623e5d5a1b486",
+  "result_sha256": "127cbcc063c8b3e090831a3c64039cd5e792c06069f870afe7687837e74438fe",
+  "result_bytes": 9056817,
+  "active_files": 1069,
+  "changed_files": [
+    "war3map.j",
+    "war3map.w3a",
+    "war3map.w3i",
+    "war3map.wct",
+    "war3mapSkin.w3a",
+    "(attributes)"
+  ],
+  "ability_changed": "A0CV",
+  "caster_unit": "ewsp",
+  "visual_unit": "h00W",
+  "numeric_order": 852096,
+  "editor_blocks": 903,
+  "compaction_bytes_saved": 1092379,
+  "editor_gui_action_replaced_directly": false,
+  "editor_install_hook_included": true
+}

@@ -1,0 +1,8 @@
+Parse successful:    11904 lines: /workspace/audit195/jass-api/common.j
+Parse successful:    14609 lines: /workspace/audit195/jass-api/Blizzard.j
+Parse successful:    61222 lines: /workspace/fix19513/war3map.j
+Parse successful:    87735 lines: <total>
+Parse successful:    11904 lines: /workspace/audit195/jass-api/common.j
+Parse successful:    14609 lines: /workspace/audit195/jass-api/Blizzard.j
+Parse successful:      113 lines: /workspace/fix19513/editor-library.j
+Parse successful:    26626 lines: <total>
