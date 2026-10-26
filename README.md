@@ -7,14 +7,14 @@
 
 ## 최신 수정본과 전체 변경 기록
 
-- **최신 수정 맵:** [`GS2vF_ver195-9.w3x`](maps/release/GS2vF_ver195-9.w3x). 사용자 제공 195-8의 봇 제거를 유지하며 네임드 피격 검색, 임시 위치/타이머 누수와 팀원 패널 반복 표시 비용을 줄였습니다. 스킬·특성 수치, 아이템 구매·조합, 사거리 표시와 복구 리소스를 보존했습니다. 인게임 제목 **가디언 스피리츠 II 195-9**, 크기 **9,055,868바이트**. [변경·검사·실전 비교 안내](reviews/ver195-9/README.md). 실제 게임 성능 개선은 재검증이 필요합니다.
+- **최신 수정 맵:** [`GS2vF_ver195-10.w3x`](maps/release/GS2vF_ver195-10.w3x). 195-9 최적화를 유지하며 투마 플레임 버스트의 내부 폭발 능력 1~8레벨에 마나 0·범위 300을 명시했습니다. 피해량/감속/특성 수치, 레인저와 다른 스킬, 아이템 구매·조합, 사거리 표시 및 복구 자료를 유지했습니다. 인게임 제목 **가디언 스피리츠 II 195-10**, 크기 **9,054,403바이트**. [변경·검증 한계](reviews/ver195-10/README.md). 실제 게임 발동은 재검증이 필요합니다.
 - **최초 F8 대비 전체 수정 메모:** [텍스트 다운로드](https://github.com/hati0101/4rum_gs2/raw/refs/heads/main/F8_to_latest_all_changes.txt) / [압축본 다운로드](https://github.com/hati0101/4rum_gs2/raw/refs/heads/main/F8_to_latest_all_changes.zip). UTF-8 BOM 텍스트로 Windows 메모장에서 열 수 있습니다.
 - 비교 기준은 저장소의 `maps/GS2vF_ver19.w3x`이며, 내부 이름은 **vF_8FKfix [R2 TEST +G5]**입니다. 확인 가능한 누적 변경 전부를 실제 맵 데이터로 비교했고, 기록이 없는 중간 버전의 의도는 추측하지 않았습니다.
 - 메모에는 기능 요약, 기존 변경 기록, 객체 필드 변경 전체, 문자열 전체 변경, 런타임/에디터 스크립트 전체 차이, 리소스 및 파일 검증 목록이 있습니다. 분량이 크므로 GitHub 미리보기보다 다운로드를 권장합니다.
 - 트리거 최적화 검토와 검증 한계: [`reviews/performance138/README.md`](reviews/performance138/README.md).
 - 이전 안정화 수정의 검증과 한계: [`reviews/ver138/README.md`](reviews/ver138/README.md).
 
-- 프로그램 종료 응답 없음 비교용: [ver140 종료 진단 맵](maps/diagnostics/GS2vF_ver140_exitdiag.w3x) / [비교 방법](maps/diagnostics/README.md). 사거리 표시를 시작하지 않는 진단용이며 일반 최신본은 195-9입니다.
+- 프로그램 종료 응답 없음 비교용: [ver140 종료 진단 맵](maps/diagnostics/GS2vF_ver140_exitdiag.w3x) / [비교 방법](maps/diagnostics/README.md). 사거리 표시를 시작하지 않는 진단용이며 일반 최신본은 195-10입니다.
 
 ## 구성
 
@@ -35,7 +35,8 @@ CHANGELOG.md 버전별 수정 내역
 
 | 파일 | 설명 |
 |---|---|
-| `maps/release/GS2vF_ver195-9.w3x` | **최신 수정 맵** — 195-8 기준 누수/검색/팀원 패널 비용 보강 |
+| `maps/release/GS2vF_ver195-10.w3x` | **최신 수정 맵** — 투마 내부 폭발 능력 마나·범위 명시 |
+| `maps/release/GS2vF_ver195-9.w3x` | 이전 최적화 맵 — 195-8 기준 누수/검색/팀원 패널 비용 보강 |
 | `maps/reference/GS2vF_ver195-8.w3x` | 사용자 제공 봇 제거·전투 정리 분산본 |
 | `maps/reference/GS2vF_ver195-7.w3x` | 사용자 제공 마지막 실전 플레이본 |
 | `maps/release/GS2vF_ver146.w3x` | 이전 수정 맵 — 성역 레벨별 2/3/4초 직접 무적 추가 |

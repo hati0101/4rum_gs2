@@ -1,0 +1,10 @@
+PASS: Flame Burst trigger and data identical in 195-7/8/9; ranger runtime unchanged in 195-10
+PASS: skill level 1 trait 0 dummy rank 1 cost 0/radius 300; damage and slow preserved
+PASS: skill level 2 trait 0 dummy rank 2 cost 0/radius 300; damage and slow preserved
+PASS: skill level 3 trait 0 dummy rank 3 cost 0/radius 300; damage and slow preserved
+PASS: skill level 4 trait 0 dummy rank 4 cost 0/radius 300; damage and slow preserved
+PASS: skill level 1 trait 1 dummy rank 5 cost 0/radius 300; damage and slow preserved
+PASS: skill level 2 trait 1 dummy rank 6 cost 0/radius 300; damage and slow preserved
+PASS: skill level 3 trait 1 dummy rank 7 cost 0/radius 300; damage and slow preserved
+PASS: skill level 4 trait 1 dummy rank 8 cost 0/radius 300; damage and slow preserved
+PASS: other abilities, units, items, upgrades, tooltips, ranger and recipe/purchase runtime preserved

@@ -1,0 +1,178 @@
+[
+  {
+    "file": "war3map.w3a",
+    "object": "A0CV",
+    "field": "aare1",
+    "old": null,
+    "new": 300.0,
+    "old_missing": true
+  },
+  {
+    "file": "war3map.w3a",
+    "object": "A0CV",
+    "field": "aare2",
+    "old": null,
+    "new": 300.0,
+    "old_missing": true
+  },
+  {
+    "file": "war3map.w3a",
+    "object": "A0CV",
+    "field": "amcs5",
+    "old": null,
+    "new": 0,
+    "old_missing": true
+  },
+  {
+    "file": "war3map.w3a",
+    "object": "A0CV",
+    "field": "amcs6",
+    "old": null,
+    "new": 0,
+    "old_missing": true
+  },
+  {
+    "file": "war3map.w3a",
+    "object": "A0CV",
+    "field": "amcs7",
+    "old": null,
+    "new": 0,
+    "old_missing": true
+  },
+  {
+    "file": "war3map.w3a",
+    "object": "A0CV",
+    "field": "amcs8",
+    "old": null,
+    "new": 0,
+    "old_missing": true
+  },
+  {
+    "file": "war3mapSkin.w3a",
+    "object": "A0CV",
+    "field": "aare1",
+    "old": null,
+    "new": 300.0,
+    "old_missing": true
+  },
+  {
+    "file": "war3mapSkin.w3a",
+    "object": "A0CV",
+    "field": "aare2",
+    "old": null,
+    "new": 300.0,
+    "old_missing": true
+  },
+  {
+    "file": "war3mapSkin.w3a",
+    "object": "A0CV",
+    "field": "aare3",
+    "old": null,
+    "new": 300.0,
+    "old_missing": true
+  },
+  {
+    "file": "war3mapSkin.w3a",
+    "object": "A0CV",
+    "field": "aare4",
+    "old": null,
+    "new": 300.0,
+    "old_missing": true
+  },
+  {
+    "file": "war3mapSkin.w3a",
+    "object": "A0CV",
+    "field": "aare5",
+    "old": null,
+    "new": 300.0,
+    "old_missing": true
+  },
+  {
+    "file": "war3mapSkin.w3a",
+    "object": "A0CV",
+    "field": "aare6",
+    "old": null,
+    "new": 300.0,
+    "old_missing": true
+  },
+  {
+    "file": "war3mapSkin.w3a",
+    "object": "A0CV",
+    "field": "aare7",
+    "old": null,
+    "new": 300.0,
+    "old_missing": true
+  },
+  {
+    "file": "war3mapSkin.w3a",
+    "object": "A0CV",
+    "field": "aare8",
+    "old": null,
+    "new": 300.0,
+    "old_missing": true
+  },
+  {
+    "file": "war3mapSkin.w3a",
+    "object": "A0CV",
+    "field": "amcs1",
+    "old": null,
+    "new": 0,
+    "old_missing": true
+  },
+  {
+    "file": "war3mapSkin.w3a",
+    "object": "A0CV",
+    "field": "amcs2",
+    "old": null,
+    "new": 0,
+    "old_missing": true
+  },
+  {
+    "file": "war3mapSkin.w3a",
+    "object": "A0CV",
+    "field": "amcs3",
+    "old": null,
+    "new": 0,
+    "old_missing": true
+  },
+  {
+    "file": "war3mapSkin.w3a",
+    "object": "A0CV",
+    "field": "amcs4",
+    "old": null,
+    "new": 0,
+    "old_missing": true
+  },
+  {
+    "file": "war3mapSkin.w3a",
+    "object": "A0CV",
+    "field": "amcs5",
+    "old": null,
+    "new": 0,
+    "old_missing": true
+  },
+  {
+    "file": "war3mapSkin.w3a",
+    "object": "A0CV",
+    "field": "amcs6",
+    "old": null,
+    "new": 0,
+    "old_missing": true
+  },
+  {
+    "file": "war3mapSkin.w3a",
+    "object": "A0CV",
+    "field": "amcs7",
+    "old": null,
+    "new": 0,
+    "old_missing": true
+  },
+  {
+    "file": "war3mapSkin.w3a",
+    "object": "A0CV",
+    "field": "amcs8",
+    "old": null,
+    "new": 0,
+    "old_missing": true
+  }
+]
