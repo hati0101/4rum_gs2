@@ -7,16 +7,21 @@
 
 ## 최신 수정본과 전체 변경 기록
 
-195-14는 철회했습니다. 사용자가 업화의 열기가 195-13에서도 정상 작동함을 확인하여, 최신본과 누적 변경 메모를 195-13으로 복원했습니다.
+최신 배포본은 **196**입니다. 사용자가 시험한 196 파일을 내용 변경 없이 게시했습니다.
 
-- **최신 수정 맵:** [`GS2vF_ver195-13.w3x`](maps/release/GS2vF_ver195-13.w3x). 투마 W는 이전 195-10/11/12에서 피해·감속 실패가 사용자 확인됐습니다. 이번에는 구버전과 비교해 연출과 실제 시전자를 분리하고 시전자/레벨을 먼저 저장하도록 바꿨습니다. 인게임 제목 **가디언 스피리츠 II 195-13**, **9,056,817바이트**. W 후 `-투마진단`으로 실제 능력 부여·레벨·명령 접수·로드된 수치를 확인할 수 있습니다. **실제 피해·감속 적용은 재검증 필요, 195-9 교전 멈춤 원인도 미확정**입니다. [구버전 비교·변경·검증 한계](reviews/ver195-13/README.md).
+- **최신 맵:** [`GS2vF_ver196.w3x`](maps/release/GS2vF_ver196.w3x)
+- **ZIP 바로 다운로드:** [GS2vF_ver196.zip](https://raw.githubusercontent.com/hati0101/4rum_gs2/main/downloads/GS2vF_ver196.zip)
+- 대지 수호자 W 특성: 해로운 마법 효과 해제 + 1.5초 마법 면역. 기존 W 효과 5초 유지. 레인딜라 W 상향 제안은 미반영입니다.
+- 사용자 W 작동 확인 제보가 있습니다. 자동 모사 81개·하네스 59개 통과는 실제 전체 스킬/멀티 안정성 검증과 구분합니다. [196 변경·검증 범위](reviews/ver196-release/README.md).
+- 이전 195-13과 철회 기록은 비교 자료로 보존합니다. 196은 대화에서 제공한 시험본 계보이며, 현재 main의 195-13에서 새로 재빌드한 파일이 아닙니다.
+
 - **최초 F8 대비 전체 수정 메모:** [텍스트 다운로드](https://github.com/hati0101/4rum_gs2/raw/refs/heads/main/F8_to_latest_all_changes.txt) / [압축본 다운로드](https://github.com/hati0101/4rum_gs2/raw/refs/heads/main/F8_to_latest_all_changes.zip). UTF-8 BOM 텍스트로 Windows 메모장에서 열 수 있습니다.
 - 비교 기준은 저장소의 `maps/GS2vF_ver19.w3x`이며, 내부 이름은 **vF_8FKfix [R2 TEST +G5]**입니다. 확인 가능한 누적 변경 전부를 실제 맵 데이터로 비교했고, 기록이 없는 중간 버전의 의도는 추측하지 않았습니다.
 - 메모에는 기능 요약, 기존 변경 기록, 객체 필드 변경 전체, 문자열 전체 변경, 런타임/에디터 스크립트 전체 차이, 리소스 및 파일 검증 목록이 있습니다. 분량이 크므로 GitHub 미리보기보다 다운로드를 권장합니다.
 - 트리거 최적화 검토와 검증 한계: [`reviews/performance138/README.md`](reviews/performance138/README.md).
 - 이전 안정화 수정의 검증과 한계: [`reviews/ver138/README.md`](reviews/ver138/README.md).
 
-- 프로그램 종료 응답 없음 비교용: [ver140 종료 진단 맵](maps/diagnostics/GS2vF_ver140_exitdiag.w3x) / [비교 방법](maps/diagnostics/README.md). 사거리 표시를 시작하지 않는 진단용이며 일반 최신본은 195-13입니다.
+- 프로그램 종료 응답 없음 비교용: [ver140 종료 진단 맵](maps/diagnostics/GS2vF_ver140_exitdiag.w3x) / [비교 방법](maps/diagnostics/README.md). 사거리 표시를 시작하지 않는 진단용이며 일반 최신본은 196입니다.
 
 ## 구성
 
@@ -37,7 +42,8 @@ CHANGELOG.md 버전별 수정 내역
 
 | 파일 | 설명 |
 |---|---|
-| `maps/release/GS2vF_ver195-13.w3x` | **최신 수정 맵** — 투마 W 실제 시전자 경로 변경 / 실전 재검증 필요 |
+| `maps/release/GS2vF_ver196.w3x` | **최신 배포 맵** — 대지 수호자 W 특성 1.5초 마법 면역 |
+| `maps/release/GS2vF_ver195-13.w3x` | 이전 수정 맵 — 투마 W 실제 시전자 경로 변경 / 실전 재검증 필요 |
 | `maps/release/GS2vF_ver195-11.w3x` | 이전 보강본 — 투마 W 실전 미해결 확인 — 특성 보조 능력 마나 설정 보강, 멈춤 원인 미확정 |
 | `maps/diagnostics/GS2vF_ver195-12_compare1958.w3x` | **원인 비교 진단용** — 195-8 실행 코드 / 195-11과 같은 객체 |
 | `maps/release/GS2vF_ver195-10.w3x` | 이전 수정 맵 — 투마 내부 폭발 능력 마나·범위 명시 |

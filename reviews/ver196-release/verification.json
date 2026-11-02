@@ -1,0 +1,76 @@
+{
+  "source_sha256": "adb6787a605d14ddf9cabe1dcc8403f73dcaae4a11dfa08eaefc4ec740ed8761",
+  "backup": "/workspace/artifacts/gs2-ver196-release/backups/adb6787a605d14ddf9cabe1dcc8403f73dcaae4a11dfa08eaefc4ec740ed8761.w3x",
+  "candidate_sha256": "c46d905651eea7c773061822dccf03ac705d9958542ac2c3bbdabf14abe3174a",
+  "candidate_bytes": 9102436,
+  "active_files": 1069,
+  "changed_files": [
+    "(attributes)",
+    "war3map.j",
+    "war3map.w3a",
+    "war3map.w3i",
+    "war3map.w3q",
+    "war3map.w3u",
+    "war3map.wct"
+  ],
+  "changed_functions": [
+    "EAV_End",
+    "EAV_Expire",
+    "EAV_Start",
+    "EAV_Tick",
+    "EQW_Prewarm",
+    "ES15_Chat",
+    "ES15_Spell",
+    "ES15_Tick",
+    "ES15_Transform",
+    "ETW_TooltipRefresh",
+    "GS2_ShowVersion68",
+    "GSRI_OnChat",
+    "GSTI_Chat",
+    "GSTI_Ready",
+    "config"
+  ],
+  "object_changes": "One new EWav(Amim) ability; RE12 descriptions/icons both display levels; HE15 legacy test-label tooltip only; other object fields preserved.",
+  "before_patch_caller_review": {
+    "transitive_callers": {
+      "ES15_Spell": [
+        "ES15_Init",
+        "main"
+      ],
+      "ES15_Tick": [
+        "ES15_Init",
+        "main"
+      ],
+      "ETW_TooltipRefresh": [
+        "ES15_Chat",
+        "ES15_Init",
+        "ES15_Pickup",
+        "ES15_Transform",
+        "ETW_Research",
+        "main"
+      ],
+      "EQW_Prewarm": [
+        "ES15_Init",
+        "ES15_Pickup",
+        "ES15_Transform",
+        "main"
+      ],
+      "ES15_Chat": [
+        "ES15_Init",
+        "main"
+      ]
+    },
+    "unresolved_dynamic_callers": [],
+    "limitations": [
+      "Native events, timers, triggers, globals, object rawcodes and local-player synchronization require manual review."
+    ]
+  },
+  "compaction_bytes_removed": 1044807,
+  "acceptance": "PASS",
+  "errors": [],
+  "actual_game_tests": 0,
+  "requested_work_completion": "IMPLEMENTED_USER_APPROVED_MAGIC_IMMUNITY_DESIGN",
+  "status": "TEST_CANDIDATE_NOT_GAME_VALIDATED",
+  "version": "196",
+  "user_approved_design": "W trait changed from selective movement-slow immunity to1.5s magic immunity and negative magic cleanse; previous preserve-AS/DoT condition superseded."
+}
