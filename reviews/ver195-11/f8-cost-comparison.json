@@ -1,0 +1,193 @@
+[
+  {
+    "ability": "A0XP",
+    "original_f8_present": true,
+    "original_f8_mana_fields": {
+      "amcs1": 0,
+      "amcs2": 0,
+      "amcs3": 0,
+      "amcs4": 0
+    },
+    "source_19510_mana_fields": {
+      "amcs1": 0,
+      "amcs2": 0,
+      "amcs3": 0,
+      "amcs4": 0
+    },
+    "same": true
+  },
+  {
+    "ability": "A009",
+    "original_f8_present": true,
+    "original_f8_mana_fields": {
+      "amcs1": 0
+    },
+    "source_19510_mana_fields": {
+      "amcs1": 0
+    },
+    "same": true
+  },
+  {
+    "ability": "A01O",
+    "original_f8_present": true,
+    "original_f8_mana_fields": {
+      "amcs1": 0,
+      "amcs2": 0,
+      "amcs3": 0,
+      "amcs4": 0
+    },
+    "source_19510_mana_fields": {
+      "amcs1": 0,
+      "amcs2": 0,
+      "amcs3": 0,
+      "amcs4": 0
+    },
+    "same": true
+  },
+  {
+    "ability": "A00J",
+    "original_f8_present": true,
+    "original_f8_mana_fields": {
+      "amcs1": 0,
+      "amcs2": 0,
+      "amcs3": 0,
+      "amcs4": 0
+    },
+    "source_19510_mana_fields": {
+      "amcs1": 0,
+      "amcs2": 0,
+      "amcs3": 0,
+      "amcs4": 0
+    },
+    "same": true
+  },
+  {
+    "ability": "A0KS",
+    "original_f8_present": true,
+    "original_f8_mana_fields": {
+      "amcs1": 0,
+      "amcs2": 0,
+      "amcs3": 0,
+      "amcs4": 0
+    },
+    "source_19510_mana_fields": {
+      "amcs1": 0,
+      "amcs2": 0,
+      "amcs3": 0,
+      "amcs4": 0
+    },
+    "same": true
+  },
+  {
+    "ability": "A0DD",
+    "original_f8_present": true,
+    "original_f8_mana_fields": {
+      "amcs1": 0,
+      "amcs2": 0,
+      "amcs3": 0,
+      "amcs4": 0
+    },
+    "source_19510_mana_fields": {
+      "amcs1": 0,
+      "amcs2": 0,
+      "amcs3": 0,
+      "amcs4": 0
+    },
+    "same": true
+  },
+  {
+    "ability": "A0DF",
+    "original_f8_present": true,
+    "original_f8_mana_fields": {
+      "amcs1": 0,
+      "amcs2": 0,
+      "amcs3": 0,
+      "amcs4": 0
+    },
+    "source_19510_mana_fields": {
+      "amcs1": 0,
+      "amcs2": 0,
+      "amcs3": 0,
+      "amcs4": 0
+    },
+    "same": true
+  },
+  {
+    "ability": "A041",
+    "original_f8_present": true,
+    "original_f8_mana_fields": {
+      "amcs1": 0,
+      "amcs2": 0,
+      "amcs3": 0,
+      "amcs4": 0
+    },
+    "source_19510_mana_fields": {
+      "amcs1": 0,
+      "amcs2": 0,
+      "amcs3": 0,
+      "amcs4": 0
+    },
+    "same": true
+  },
+  {
+    "ability": "A0EQ",
+    "original_f8_present": true,
+    "original_f8_mana_fields": {
+      "amcs1": 0
+    },
+    "source_19510_mana_fields": {
+      "amcs1": 0
+    },
+    "same": true
+  },
+  {
+    "ability": "A0IM",
+    "original_f8_present": true,
+    "original_f8_mana_fields": {
+      "amcs1": 0,
+      "amcs2": 0,
+      "amcs3": 0,
+      "amcs4": 0
+    },
+    "source_19510_mana_fields": {
+      "amcs1": 0,
+      "amcs2": 0,
+      "amcs3": 0,
+      "amcs4": 0
+    },
+    "same": true
+  },
+  {
+    "ability": "A0XR",
+    "original_f8_present": true,
+    "original_f8_mana_fields": {
+      "amcs1": 0
+    },
+    "source_19510_mana_fields": {
+      "amcs1": 0
+    },
+    "same": true
+  },
+  {
+    "ability": "A08X",
+    "original_f8_present": true,
+    "original_f8_mana_fields": {
+      "amcs1": 0
+    },
+    "source_19510_mana_fields": {
+      "amcs1": 0
+    },
+    "same": true
+  },
+  {
+    "ability": "A011",
+    "original_f8_present": true,
+    "original_f8_mana_fields": {
+      "amcs1": 0
+    },
+    "source_19510_mana_fields": {
+      "amcs1": 0
+    },
+    "same": true
+  }
+]

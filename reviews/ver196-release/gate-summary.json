@@ -1,0 +1,75 @@
+{
+  "status": "PASS",
+  "source_sha256": "adb6787a605d14ddf9cabe1dcc8403f73dcaae4a11dfa08eaefc4ec740ed8761",
+  "candidate_sha256": "c46d905651eea7c773061822dccf03ac705d9958542ac2c3bbdabf14abe3174a",
+  "changed_functions": [
+    "EAV_End",
+    "EAV_Expire",
+    "EAV_Start",
+    "EAV_Tick",
+    "EQW_Prewarm",
+    "ES15_Chat",
+    "ES15_Spell",
+    "ES15_Tick",
+    "ES15_Transform",
+    "ETW_TooltipRefresh",
+    "GS2_ShowVersion68",
+    "GSRI_OnChat",
+    "GSTI_Chat",
+    "GSTI_Ready",
+    "config"
+  ],
+  "wct_changed_functions": {
+    "0": [
+      "EAV_End",
+      "EAV_Expire",
+      "EAV_Start",
+      "EAV_Tick",
+      "EQW_Prewarm",
+      "ES15_Chat",
+      "ES15_Spell",
+      "ES15_Tick",
+      "ES15_Transform",
+      "ETW_TooltipRefresh",
+      "GSRI_OnChat"
+    ]
+  },
+  "integrity": {
+    "source": {
+      "files": 1069,
+      "crc_checked": 1068,
+      "crc_mismatches": [
+        {
+          "file": "war3mapskin.txt",
+          "stored": 1619205740,
+          "actual": 2459895103,
+          "sha256": "eb252484ac12d395e64a3015744d6f9a8fa32cd1c7ce2f782d1a35ab32bb720f"
+        }
+      ],
+      "wct_blocks": 903
+    },
+    "candidate": {
+      "files": 1069,
+      "crc_checked": 1068,
+      "crc_mismatches": [
+        {
+          "file": "war3mapskin.txt",
+          "stored": 1619205740,
+          "actual": 2459895103,
+          "sha256": "eb252484ac12d395e64a3015744d6f9a8fa32cd1c7ce2f782d1a35ab32bb720f"
+        }
+      ],
+      "wct_blocks": 903
+    }
+  },
+  "jass": {
+    "status": "PASS",
+    "exit_code": 0,
+    "output": "Parse successful:    29748 lines: /workspace/gs2-toolchain/headers/common.j\nParse successful:    18373 lines: /workspace/gs2-toolchain/headers/blizzard.j\nParse successful:    62754 lines: /tmp/gs2-jass-dblkh0t_/war3map.j\nParse successful:   110875 lines: <total>\n",
+    "tool_sha256": "561899e067de5ba53a62b6a46ea75a8babdb9b01312f8554d92a01180f0c146e",
+    "common_sha256": "c013dbda1bfd9f0498dad15950329f598a97e5384a24339d6f8a1b9457c9ad56",
+    "blizzard_sha256": "6f861cae657302d4a272950c17abf2fa443a75ab9c21efb2fa66255339b5b8ce"
+  },
+  "errors": [],
+  "gameplay": "UNVERIFIED: single-player, editor re-save and multiplayer tests required"
+}

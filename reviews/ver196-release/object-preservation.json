@@ -1,0 +1,69 @@
+{
+  "source_sha256": "adb6787a605d14ddf9cabe1dcc8403f73dcaae4a11dfa08eaefc4ec740ed8761",
+  "candidate_sha256": "c46d905651eea7c773061822dccf03ac705d9958542ac2c3bbdabf14abe3174a",
+  "changed_existing_object_fields": [
+    {
+      "file": "war3map.w3q",
+      "object": "RE12",
+      "field": "gar1",
+      "level": 2
+    },
+    {
+      "file": "war3map.w3q",
+      "object": "RE12",
+      "field": "gub1",
+      "level": 1
+    },
+    {
+      "file": "war3map.w3q",
+      "object": "RE12",
+      "field": "gub1",
+      "level": 2
+    },
+    {
+      "file": "war3map.w3q",
+      "object": "RE12",
+      "field": "gar1",
+      "level": 1
+    },
+    {
+      "file": "war3map.w3u",
+      "object": "HE15",
+      "field": "utub",
+      "level": 0
+    }
+  ],
+  "added_objects": {
+    "war3map.w3a": [
+      "EWav"
+    ],
+    "war3map.w3q": [],
+    "war3map.w3u": []
+  },
+  "other_objects_assets_preserved": true,
+  "unchanged_combat_and_item_functions": [
+    "ES15_Q",
+    "ES15_Damage",
+    "ES15_Armor",
+    "ES15_Stacks",
+    "ES15_Shield",
+    "ES15_ShieldEnd",
+    "EAB_Apply",
+    "EAB_ShieldArmor",
+    "ES16_QVisual",
+    "ESW5_Attack",
+    "ESC_Orders",
+    "ESC_QCast",
+    "EQW_MoveStart",
+    "EQW_MoveEnd",
+    "EQW_QAnimation",
+    "EAB_QWindup",
+    "ES15_Pickup",
+    "EAB_PlayVoice",
+    "ESC_IconInit",
+    "ESUI_Init",
+    "GS2TT_Append"
+  ],
+  "bottle_specific_experimental_split_not_included": true,
+  "new_repeating_timers": 0
+}

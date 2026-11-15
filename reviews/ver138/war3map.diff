@@ -1,0 +1,291 @@
+--- ver138
++++ ver138_fix
+@@ -1604,6 +1604,9 @@
+     constant real GSRI_PERIOD = 0.015625
+     constant real GSRI_TURN_BLEND = 0.30
+     hashtable GSRI_Data = null
++    hashtable GSRI_Cache = null
++    hashtable GSRI_CacheIndex = null
++    integer array GSRI_CacheOwner
+     constant integer GSRI_RING_LIMIT = 256
+     constant integer GSRI_POOL_SIZE = 768
+     lightning array GSRI_Effect
+@@ -54607,32 +54610,104 @@
+     return GetLocationZ(GSRI_Ground) + 12.00
+ endfunction
+ 
+-function GSRI_Ability takes unit u, integer id returns ability
+-    if GSRI_Item != null then
+-        return null
+-    endif
+-    return BlzGetUnitAbility(u,id)
++function GSRI_Snapshot takes unit u returns nothing
++    local integer sid = GetHandleId(u)
++    local integer i = 0
++    local integer count = 0
++    local integer id
++    local integer lv
++    local integer offset
++    local integer profile
++    local integer lengthField
++    local integer endField
++    local ability a
++    local real range
++    call FlushChildHashtable(GSRI_Cache, sid)
++    call FlushChildHashtable(GSRI_CacheIndex, sid)
++    loop
++        set a = BlzGetUnitAbilityByIndex(u, i)
++        exitwhen a == null
++        set id = BlzGetAbilityId(a)
++        if LoadInteger(GSRI_Data, id, 1) != 0 and not HaveSavedInteger(GSRI_CacheIndex, sid, id) then
++            set offset = 1 + count*10
++            set lv = GetUnitAbilityLevel(u, id)-1
++            call SaveInteger(GSRI_CacheIndex, sid, id, offset)
++            call SaveInteger(GSRI_Cache, sid, offset, id)
++            call SaveInteger(GSRI_Cache, sid, offset+1, lv)
++            call SaveInteger(GSRI_Cache, sid, offset+2, BlzGetAbilityIntegerField(a, ABILITY_IF_BUTTON_POSITION_NORMAL_X))
++            call SaveInteger(GSRI_Cache, sid, offset+3, BlzGetAbilityIntegerField(a, ABILITY_IF_BUTTON_POSITION_NORMAL_Y))
++            if lv >= 0 then
++                set range = BlzGetAbilityRealLevelField(a, ABILITY_RLF_CAST_RANGE, lv)
++                set profile = LoadInteger(GSRI_Data, id, 2)
++                if profile == 4 then
++                    set range = BlzGetAbilityRealLevelField(a, ConvertAbilityRealLevelField('Ebl1'), lv)
++                endif
++                call SaveReal(GSRI_Cache, sid, offset+5, range)
++                // Query Channel-only fields only for Channel abilities.
++                if LoadInteger(GSRI_Data, id, 1) == 2 then
++                    call SaveInteger(GSRI_Cache, sid, offset+4, BlzGetAbilityIntegerLevelField(a, ConvertAbilityIntegerLevelField('Ncl2'), lv))
++                endif
++                call SaveReal(GSRI_Cache, sid, offset+6, BlzGetAbilityRealLevelField(a, ABILITY_RLF_AREA_OF_EFFECT, lv))
++                if profile == 3 then
++                    set lengthField = LoadInteger(GSRI_Data, id, 3)
++                    set endField = LoadInteger(GSRI_Data, id, 4)
++                    if lengthField != 0 and endField != 0 then
++                        call SaveReal(GSRI_Cache, sid, offset+7, BlzGetAbilityRealLevelField(a, ConvertAbilityRealLevelField(lengthField), lv))
++                        call SaveReal(GSRI_Cache, sid, offset+8, BlzGetAbilityRealLevelField(a, ConvertAbilityRealLevelField(endField), lv))
++                    endif
++                endif
++            endif
++            set count = count+1
++        endif
++        set i = i+1
++    endloop
++    call SaveInteger(GSRI_Cache, sid, 0, count)
++    set a = null
++endfunction
++
++function GSRI_SnapshotTick takes nothing returns nothing
++    local integer i = 1
++    local integer sid
++    local unit u
++    loop
++        exitwhen i > 12
++        set u = udg_HeroPlayer[i]
++        set sid = GetHandleId(u)
++        if GSRI_CacheOwner[i] != sid then
++            call FlushChildHashtable(GSRI_Cache, GSRI_CacheOwner[i])
++            call FlushChildHashtable(GSRI_CacheIndex, GSRI_CacheOwner[i])
++            set GSRI_CacheOwner[i] = sid
++        endif
++        if u != null and GetUnitTypeId(u) != 0 then
++            call GSRI_Snapshot(u)
++        endif
++        set i = i+1
++    endloop
++    set u = null
+ endfunction
+ 
+ function GSRI_Level takes unit u, integer id returns integer
++    local integer offset
+     if GSRI_Item != null then
+         return 0
+     endif
+-    return GetUnitAbilityLevel(u,id)-1
++    set offset = LoadInteger(GSRI_CacheIndex, GetHandleId(u), id)
++    if offset == 0 then
++        return -1
++    endif
++    return LoadInteger(GSRI_Cache, GetHandleId(u), offset+1)
+ endfunction
+ 
+-function GSRI_Range takes ability a, integer id, integer lv returns real
+-    local real r = 0.0
+-    if a != null then
+-        set r = BlzGetAbilityRealLevelField(a,ABILITY_RLF_CAST_RANGE,lv)
+-    endif
+-    if LoadInteger(GSRI_Data,id,2) == 4 and a != null then
+-        set r = BlzGetAbilityRealLevelField(a,ConvertAbilityRealLevelField('Ebl1'),lv)
+-    endif
+-    if GSRI_Item != null and LoadReal(GSRI_Data,id,10) > 0.0 then
+-        set r = LoadReal(GSRI_Data,id,10)
+-    endif
+-    return r
++function GSRI_Range takes unit u, integer id, integer lv returns real
++    local integer offset
++    if GSRI_Item != null then
++        return LoadReal(GSRI_Data, id, 10)
++    endif
++    set offset = LoadInteger(GSRI_CacheIndex, GetHandleId(u), id)
++    if offset == 0 then
++        return 0.0
++    endif
++    return LoadReal(GSRI_Cache, GetHandleId(u), offset+5)
+ endfunction
+ 
+ function GSRI_ItemSlot takes integer key returns integer
+@@ -54667,44 +54742,47 @@
+     return found
+ endfunction
+ 
+-function GSRI_Allowed takes unit u, ability a, integer id returns boolean
++function GSRI_Allowed takes unit u, integer id returns boolean
+     local integer kind = LoadInteger(GSRI_Data, id, 1)
+-    local integer level = GSRI_Level(u,id)
++    local integer level = GSRI_Level(u, id)
++    local integer sid = GetHandleId(u)
++    local integer offset = LoadInteger(GSRI_CacheIndex, sid, id)
+     local real range
+     if kind == 0 or level < 0 then
+         return false
+     endif
+-    if GSRI_Item == null and a != null and (BlzGetAbilityIntegerField(a, ABILITY_IF_BUTTON_POSITION_NORMAL_X) < 0 or BlzGetAbilityIntegerField(a, ABILITY_IF_BUTTON_POSITION_NORMAL_Y) < 0) then
+-        return false
+-    endif
+-    // Channel: Data B 0 = immediate, 1/2/3 = unit/point/both.
+-    if kind == 2 and a != null and BlzGetAbilityIntegerLevelField(a, ConvertAbilityIntegerLevelField('Ncl2'), level) == 0 then
+-        return false
+-    endif
+-    set range = GSRI_Range(a,id,level)
++    if GSRI_Item == null then
++        if offset == 0 then
++            return false
++        endif
++        if LoadInteger(GSRI_Cache,sid,offset+2) < 0 or LoadInteger(GSRI_Cache,sid,offset+3) < 0 then
++            return false
++        endif
++        if kind == 2 and LoadInteger(GSRI_Cache,sid,offset+4) == 0 then
++            return false
++        endif
++    endif
++    set range = GSRI_Range(u,id,level)
+     return range > 0.00 and range < 9999.00
+ endfunction
+ 
+ function GSRI_Find takes unit u, integer key returns integer
++    local integer sid = GetHandleId(u)
+     local integer i = 0
++    local integer count = LoadInteger(GSRI_Cache, sid, 0)
+     local integer id
+     local integer found = 0
+-    local ability a
+     loop
+-        set a = BlzGetUnitAbilityByIndex(u, i)
+-        exitwhen a == null
+-        set id = BlzGetAbilityId(a)
+-        if LoadInteger(GSRI_Data, id, 0) == key and GSRI_Allowed(u, a, id) then
+-            // Ambiguous bindings must not silently preview the wrong ability.
++        exitwhen i >= count
++        set id = LoadInteger(GSRI_Cache, sid, 1+i*10)
++        if LoadInteger(GSRI_Data, id, 0) == key and GSRI_Allowed(u, id) then
+             if found != 0 and found != id then
+-                set a = null
+                 return 0
+             endif
+             set found = id
+         endif
+-        set i = i + 1
++        set i = i+1
+     endloop
+-    set a = null
+     return found
+ endfunction
+ 
+@@ -54776,9 +54854,10 @@
+ endfunction
+ 
+ function GSRI_Draw takes unit u, integer id returns nothing
+-    local ability a = GSRI_Ability(u,id)
++    local integer sid = GetHandleId(u)
++    local integer offset = LoadInteger(GSRI_CacheIndex,sid,id)
+     local integer lv = GSRI_Level(u,id)
+-    local real radius = GSRI_Range(a,id,lv)
++    local real radius = GSRI_Range(u,id,lv)
+     local real x = GetUnitX(u)
+     local real y = GetUnitY(u)
+     local real dx = GSRI_MouseX-x
+@@ -54802,7 +54881,6 @@
+     endif
+     set GSRI_CacheAge = GSRI_CacheAge + GSRI_PERIOD
+     if GSRI_CachedId == id and GSRI_CachedLevel == lv and GSRI_CachedX == x and GSRI_CachedY == y and GSRI_CachedRadius == radius and (profile == 0 or profile == 4 or GSRI_CachedYaw == yaw) and GSRI_CacheAge < 0.25 then
+-        set a = null
+         return
+     endif
+     set GSRI_RingDirty = GSRI_CachedId != id or GSRI_CachedLevel != lv or GSRI_CachedX != x or GSRI_CachedY != y or GSRI_CachedRadius != radius or GSRI_CacheAge >= 0.25
+@@ -54863,14 +54941,14 @@
+             endloop
+         else
+             set startWidth = LoadReal(GSRI_Data,id,20)
+-            if a != null then
+-                set startWidth = BlzGetAbilityRealLevelField(a,ABILITY_RLF_AREA_OF_EFFECT,lv)
++            if GSRI_Item == null and offset != 0 then
++                set startWidth = LoadReal(GSRI_Cache,sid,offset+6)
+             endif
+             set reach = LoadReal(GSRI_Data,id,21)
+             set endWidth = LoadReal(GSRI_Data,id,22)
+-            if a != null then
+-                set reach = BlzGetAbilityRealLevelField(a,ConvertAbilityRealLevelField(LoadInteger(GSRI_Data,id,3)),lv)
+-                set endWidth = BlzGetAbilityRealLevelField(a,ConvertAbilityRealLevelField(LoadInteger(GSRI_Data,id,4)),lv)
++            if GSRI_Item == null and offset != 0 then
++                set reach = LoadReal(GSRI_Cache,sid,offset+7)
++                set endWidth = LoadReal(GSRI_Cache,sid,offset+8)
+             endif
+             if profile == 5 then
+                 if LoadInteger(GSRI_Data,id,5) == 1 then
+@@ -54912,13 +54990,11 @@
+     endif
+     call GSRI_Trim(GSRI_PathCount)
+     set GSRI_PathCount = GSRI_DrawIndex
+-    set a = null
+ endfunction
+ 
+ function GSRI_Tick takes nothing returns nothing
+     local unit u
+     local integer id
+-    local ability a
+     local integer slot
+     local integer hover = -1
+     set slot = 0
+@@ -54980,13 +55056,9 @@
+         set id = 0
+     endif
+     if id != 0 then
+-        set a = GSRI_Ability(u,id)
+-        if a == null and GSRI_Item == null then
++        if not GSRI_Allowed(u,id) then
+             set id = 0
+-        elseif not GSRI_Allowed(u,a,id) then
+-            set id = 0
+-        endif
+-        set a = null
++        endif
+     endif
+     if id == 0 then
+         set GSRI_Reason = "ability unavailable or ambiguous"
+@@ -55305,6 +55377,8 @@
+     call DestroyTimer(GetExpiredTimer())
+     set GSRI_Started = true
+     set GSRI_Data = InitHashtable()
++    set GSRI_Cache = InitHashtable()
++    set GSRI_CacheIndex = InitHashtable()
+     set GSRI_Ground = Location(0,0)
+     call GSRI_LoadData()
+     call SaveInteger(GSRI_Data,'ADe1',1,1)
+@@ -55402,6 +55476,8 @@
+     call TriggerRegisterAnyUnitEventBJ(spell,EVENT_PLAYER_UNIT_SPELL_CHANNEL)
+     call TriggerRegisterAnyUnitEventBJ(spell,EVENT_PLAYER_UNIT_DESELECTED)
+     call TriggerAddAction(spell,function GSRI_OnSpell)
++    call GSRI_SnapshotTick()
++    call TimerStart(CreateTimer(),0.125,true,function GSRI_SnapshotTick)
+     call TimerStart(CreateTimer(),GSRI_PERIOD,true,function GSRI_Tick)
+     set keys = null
+     set mouse = null

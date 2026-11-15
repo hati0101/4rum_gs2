@@ -1,0 +1,180 @@
+--- 195-11/war3map.j
++++ 195-13/war3map.j
+@@ -1741,6 +1741,9 @@
+     boolean array GS1959_BarValid
+     boolean GS1959_LayoutValid = false
+     real GS1959_LayoutRight = 0.0
++    string array GS19513_FlameBurstStatus
++    boolean GS19513_FlameBurstStarted = false
++    boolean GS19513_FlameBurstInstalled = false
+ endglobals
+ function GS1959_PickRandomOwned takes group g returns unit
+     local boolean alreadyOwned = bj_wantDestroyGroup
+@@ -25026,7 +25029,7 @@
+     call SetStartLocPrio( 9, 3, 8, MAP_LOC_PRIO_HIGH )
+ endfunction
+ function GS2_ShowVersion68 takes nothing returns nothing
+-    call DisplayTimedTextToForce(GetPlayersAll(), 15.00, "가디언 스피리츠 II 195-11")
++    call DisplayTimedTextToForce(GetPlayersAll(), 15.00, "가디언 스피리츠 II 195-13")
+     call DisplayTimedTextToForce(GetPlayersAll(), 30.00, "|cffffcc00카카오톡 오픈채팅 : 가디언 스피리츠2|r")
+     call DisplayTimedTextToForce(GetPlayersAll(),30.00,"|cffffcc00[편의 기능] Caps Lock 키로 스코어보드를 펼치거나 접을 수 있습니다. 기존 마우스 클릭도 사용할 수 있습니다.|r")
+     call DestroyTimer(GetExpiredTimer())
+@@ -27718,7 +27721,7 @@
+         call SelectUnit(shop,true)
+         call PanCameraToTimed(GetUnitX(shop),GetUnitY(shop),0.2)
+     endif
+-    call DisplayTimedTextToPlayer(p,0,0,8,"[195-11] 11시 상인 1 / 5시 상인 2 · 상인 1은 8종 / 상인 2는 5종 판매. -특성상점 / -특성상점2")
++    call DisplayTimedTextToPlayer(p,0,0,8,"[195-13] 11시 상인 1 / 5시 상인 2 · 상인 1은 8종 / 상인 2는 5종 판매. -특성상점 / -특성상점2")
+     set shop=null
+     set p=null
+ endfunction
+@@ -39632,12 +39635,107 @@
+         endif
+     endif
+ endfunction
++function GS19513_Flag takes boolean flag returns string
++    if flag then
++        return "1"
++    endif
++    return "0"
++endfunction
++function GS19513_FlameBurstAction takes nothing returns nothing
++    local unit caster = GetTriggerUnit()
++    local player owner = GetOwningPlayer(caster)
++    local integer pid = GetPlayerId(owner)
++    local integer level = GetUnitAbilityLevel(caster,'A0CP')
++    local integer trait = GetPlayerTechCount(owner,'R048',true)
++    local integer rank = level
++    local integer actual = 0
++    local real x = GetUnitX(caster)
++    local real y = GetUnitY(caster)
++    local real damage = 0.0
++    local real radius = 0.0
++    local real slow = 0.0
++    local unit dummy = null
++    local ability payload = null
++    local boolean added = false
++    local boolean ordered = false
++    if level >= 1 and level <= 4 then
++        if trait > 0 then
++            set rank = level+4
++        endif
++        // Preserve the existing explosion visual, without asking its model to cast.
++        call GS2V84_CreateNUnitsAtLoc_3(1,'h00W',owner,Location(x,y),bj_UNIT_FACING)
++        call UnitApplyTimedLife(GetLastCreatedUnit(),'BTLF',3.00)
++        // 1.07/1.5005 used ewsp as the actual A0CV caster as well.
++        set dummy = CreateUnit(owner,'ewsp',x,y,bj_UNIT_FACING)
++        if dummy != null then
++            call UnitApplyTimedLife(dummy,'BTLF',3.00)
++            call UnitAddAbility(dummy,'Aloc')
++            call BlzSetUnitRealField(dummy,UNIT_RF_CAST_POINT,0.0)
++            call BlzSetUnitRealField(dummy,UNIT_RF_CAST_BACK_SWING,0.0)
++            call SetUnitState(dummy,UNIT_STATE_MANA,GetUnitState(dummy,UNIT_STATE_MAX_MANA))
++            set added = UnitAddAbility(dummy,'A0CV')
++            if added then
++                call SetUnitAbilityLevel(dummy,'A0CV',rank)
++                set actual = GetUnitAbilityLevel(dummy,'A0CV')
++                set payload = BlzGetUnitAbility(dummy,'A0CV')
++                if actual == rank and payload != null then
++                    set damage = BlzGetAbilityRealLevelField(payload,ABILITY_RLF_AOE_DAMAGE,actual-1)
++                    set radius = BlzGetAbilityRealLevelField(payload,ABILITY_RLF_AREA_OF_EFFECT,actual-1)
++                    set slow = BlzGetAbilityRealLevelField(payload,ABILITY_RLF_MOVEMENT_SPEED_REDUCTION_PERCENT_HTC3,actual-1)
++                    call BlzEndUnitAbilityCooldown(dummy,'A0CV')
++                    set ordered = IssueImmediateOrderById(dummy,852096)
++                endif
++            endif
++        endif
++        set GS19513_FlameBurstStatus[pid] = "[투마 W 진단] 스킬="+I2S(level)+" 특성="+I2S(trait)+" 내부="+I2S(actual)+"/"+I2S(rank)+" 부여="+GS19513_Flag(added)+" 명령접수="+GS19513_Flag(ordered)+" 피해설정="+R2S(damage)+" 범위="+R2S(radius)+" 감속설정="+R2S(slow)
++    else
++        set GS19513_FlameBurstStatus[pid] = "[투마 W 진단] 잘못된 시전자/스킬 레벨: "+I2S(level)
++    endif
++    set payload = null
++    set dummy = null
++    set caster = null
++    set owner = null
++endfunction
++
++function GS19513_FlameBurstChat takes nothing returns nothing
++    local player p = GetTriggerPlayer()
++    local string status = GS19513_FlameBurstStatus[GetPlayerId(p)]
++    if not GS19513_FlameBurstInstalled then
++        call DisplayTimedTextToPlayer(p,0,0,20,"[투마 W 진단] 발동 처리 설치가 확인되지 않았습니다.")
++    elseif status == null or status == "" then
++        call DisplayTimedTextToPlayer(p,0,0,15,"[투마 W 진단] 아직 시전 기록이 없습니다.")
++    else
++        call DisplayTimedTextToPlayer(p,0,0,20,status)
++    endif
++    set p = null
++endfunction
++function GS19513_FlameBurstInstall takes nothing returns nothing
++    call DestroyTimer(GetExpiredTimer())
++    if gg_trg_Flame_Burst != null then
++        call TriggerClearActions(gg_trg_Flame_Burst)
++        call TriggerAddAction(gg_trg_Flame_Burst,function GS19513_FlameBurstAction)
++        set GS19513_FlameBurstInstalled = true
++    endif
++endfunction
++function GS19513_FlameBurstInit takes nothing returns nothing
++    local trigger t
++    local integer i = 0
++    if GS19513_FlameBurstStarted then
++        return
++    endif
++    set GS19513_FlameBurstStarted = true
++    set t = CreateTrigger()
++    loop
++        exitwhen i >= 12
++        call TriggerRegisterPlayerChatEvent(t,Player(i),"-투마진단",true)
++        set i = i+1
++    endloop
++    call TriggerAddAction(t,function GS19513_FlameBurstChat)
++    call TimerStart(CreateTimer(),0.0,false,function GS19513_FlameBurstInstall)
++    set t = null
++endfunction
+ function Trig_Flame_Burst_Actions takes nothing returns nothing
+-    call GS2V84_CreateNUnitsAtLoc_3(1, 'h00W', GetOwningPlayer(GetTriggerUnit()), GetUnitLoc(GetTriggerUnit()), bj_UNIT_FACING)
+-    call UnitApplyTimedLifeBJ( 3.00, 'BTLF', GetLastCreatedUnit() )
+-    call UnitAddAbilityBJ( 'A0CV', GetLastCreatedUnit() )
+-    call SetUnitAbilityLevelSwapped( 'A0CV', GetLastCreatedUnit(), ( GetUnitAbilityLevelSwapped(GetSpellAbilityId(), GetTriggerUnit()) + ( 4 * GetPlayerTechCountSimple('R048', GetOwningPlayer(GetTriggerUnit())) ) ) )
+-    call IssueImmediateOrderBJ( GetLastCreatedUnit(), "thunderclap" )
++    call GS19513_FlameBurstAction()
+ endfunction
+ function Trig_Flame_Element_Learn_Actions takes nothing returns nothing
+     if ( Trig_Flame_Element_Learn_Func001C() ) then
+@@ -45281,7 +45379,7 @@
+ 
+ 
+ function config takes nothing returns nothing
+-    call SetMapName( "가디언 스피리츠 II 195-11" )
++    call SetMapName( "가디언 스피리츠 II 195-13" )
+     call SetMapDescription( "가츠 최종파이널 픽스\n\nWarcraft III Reforged 최종 수정본\n영웅·특성·아이템·시스템 오류 수정 및 안정화 반영\n\n|cffffcc00카카오톡 오픈채팅 : 가디언 스피리츠2|r" )
+     call SetPlayers( 10 )
+     call SetTeams( 10 )
+@@ -45442,8 +45540,8 @@
+     call GSTI_RestoreStock('IT31')
+     call RemoveItemFromStock(GSTI_Shops[1],'IT32')
+     call GSTI_RestoreStock('IT32')
+-    call CreateQuestBJ(bj_QUESTTYPE_OPT_DISCOVERED,"195-11 특성 아이템","기본 특성 아이템 13종을 판매합니다.|n|n맵 11시 상인 1과 5시 상인 2에서 양팀 모두 구매할 수 있습니다. 각 품목은 게임 전체에 1개뿐이며, 구매 성공 시 재입고되지 않습니다.|n-특성상점 / -특성상점2로 위치를 확인할 수 있습니다.|n|n구매 비용: 900 골드 + 특성 1.|n경제·교환 항목은 제공하지 않습니다.","ReplaceableTextures\\CommandButtons\\BTNMedalionOfCourage.blp")
+-    call DisplayTimedTextToForce(GetPlayersAll(),15,"|cffffcc00[195-11]|r 기본 특템 13종 · 11시 상인 1 / 5시 상인 2 · -특성상점 / -특성상점2 · 상세 내용 F9")
++    call CreateQuestBJ(bj_QUESTTYPE_OPT_DISCOVERED,"195-13 특성 아이템","기본 특성 아이템 13종을 판매합니다.|n|n맵 11시 상인 1과 5시 상인 2에서 양팀 모두 구매할 수 있습니다. 각 품목은 게임 전체에 1개뿐이며, 구매 성공 시 재입고되지 않습니다.|n-특성상점 / -특성상점2로 위치를 확인할 수 있습니다.|n|n구매 비용: 900 골드 + 특성 1.|n경제·교환 항목은 제공하지 않습니다.","ReplaceableTextures\\CommandButtons\\BTNMedalionOfCourage.blp")
++    call DisplayTimedTextToForce(GetPlayersAll(),15,"|cffffcc00[195-13]|r 기본 특템 13종 · 11시 상인 1 / 5시 상인 2 · -특성상점 / -특성상점2 · 상세 내용 F9")
+     call DestroyTimer(GetExpiredTimer())
+ endfunction
+ 
+@@ -56284,7 +56382,7 @@
+ function GSRI_OnChat takes nothing returns nothing
+     if GetTriggerPlayer() == GetLocalPlayer() then
+         if GetEventPlayerChatString() == "-range" then
+-            call DisplayTimedTextToPlayer(GetLocalPlayer(),0,0,20,"GSRI ver195-11 keys="+I2S(GSRI_KeyCount)+" shows="+I2S(GSRI_ShowCount)+" range="+R2S(GSRI_LastRange)+" last="+GSRI_Reason)
++            call DisplayTimedTextToPlayer(GetLocalPlayer(),0,0,20,"GSRI ver195-13 keys="+I2S(GSRI_KeyCount)+" shows="+I2S(GSRI_ShowCount)+" range="+R2S(GSRI_LastRange)+" last="+GSRI_Reason)
+         endif
+         if GetEventPlayerChatString() == "-range off" then
+             set GSRI_PendingSlot = -1
+@@ -60921,6 +61019,7 @@
+     call InitTrig_Blazing_Rider_Stop(  )
+     call InitTrig_Blazing_Rider_End(  )
+     call InitTrig_Blazing_Rider_Damage(  )
++    call GS19513_FlameBurstInit()
+     call InitTrig_Flame_Burst(  )
+     call InitTrig_Flame_Element_Learn(  )
+     call InitTrig_FlB_Special_1(  )

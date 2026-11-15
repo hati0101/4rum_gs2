@@ -1,0 +1,2340 @@
+{
+  "release": {
+    "source": "maps/release/GS2vF_ver195-10.w3x",
+    "output": "maps/release/GS2vF_ver195-11.w3x",
+    "source_sha256": "c369129a5566263e316774adf7bd0272494e1eb59e5bfb53633dab773a288a3f",
+    "result_sha256": "f107d1a3b2fac0e203f5f5cad76913e4a38d53275dc4dd5a9ae623e5d5a1b486",
+    "source_bytes": 9054403,
+    "result_bytes": 9055655,
+    "active_files": 1069,
+    "changed_files": [
+      "war3map.j",
+      "war3map.w3a",
+      "war3map.w3i",
+      "war3mapSkin.w3a",
+      "(attributes)"
+    ],
+    "runtime_only_version_labels_changed": true,
+    "helper_abilities": [
+      "A0XP",
+      "A009",
+      "A01O",
+      "A00J",
+      "A0KS",
+      "A0DD",
+      "A0DF",
+      "A041",
+      "A0EQ",
+      "A0IM",
+      "A0XR",
+      "A08X",
+      "A011"
+    ],
+    "ability_field_changes": [
+      {
+        "file": "war3map.w3a",
+        "id": "A00J",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A00J",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A00J",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A00J",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A011",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A01O",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A01O",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A01O",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A01O",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A08X",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0DD",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0DD",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0DD",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0DD",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0DF",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0DF",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0DF",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0DF",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0EQ",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0EQ",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0EQ",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0EQ",
+        "field": "amcs4",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0EQ",
+        "field": "amcs3",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0EQ",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0EQ",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0IM",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0IM",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0IM",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0IM",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0KS",
+        "field": "amcs9",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0KS",
+        "field": "amcs11",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0KS",
+        "field": "amcs15",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0KS",
+        "field": "amcs14",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0KS",
+        "field": "amcs16",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0KS",
+        "field": "amcs12",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0KS",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0KS",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0KS",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0KS",
+        "field": "amcs10",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0KS",
+        "field": "amcs13",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0KS",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A041",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A041",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A041",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A041",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0XP",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0XP",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0XP",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0XP",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0XR",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A009",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A009",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A009",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A009",
+        "field": "amcs4",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A009",
+        "field": "amcs3",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A009",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A009",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A00J",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A00J",
+        "field": "amcs4",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A00J",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A00J",
+        "field": "amcs3",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A00J",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A00J",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A00J",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A00J",
+        "field": "amcs1",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A011",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A011",
+        "field": "amcs1",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A01O",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A01O",
+        "field": "amcs4",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A01O",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A01O",
+        "field": "amcs3",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A01O",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A01O",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A01O",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A01O",
+        "field": "amcs1",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A08X",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A08X",
+        "field": "amcs1",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0DD",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0DD",
+        "field": "amcs4",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0DD",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0DD",
+        "field": "amcs3",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0DD",
+        "field": "amcs1",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0DD",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0DD",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0DD",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0DF",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0DF",
+        "field": "amcs4",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0DF",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0DF",
+        "field": "amcs3",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0DF",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0DF",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0DF",
+        "field": "amcs1",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0DF",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0EQ",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0EQ",
+        "field": "amcs4",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0EQ",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0EQ",
+        "field": "amcs3",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0EQ",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0EQ",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0EQ",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0EQ",
+        "field": "amcs1",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0IM",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0IM",
+        "field": "amcs4",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0IM",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0IM",
+        "field": "amcs3",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0IM",
+        "field": "amcs1",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0IM",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0IM",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0IM",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0KS",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0KS",
+        "field": "amcs9",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0KS",
+        "field": "amcs4",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0KS",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0KS",
+        "field": "amcs11",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0KS",
+        "field": "amcs10",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0KS",
+        "field": "amcs3",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0KS",
+        "field": "amcs13",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0KS",
+        "field": "amcs1",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0KS",
+        "field": "amcs15",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0KS",
+        "field": "amcs12",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0KS",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0KS",
+        "field": "amcs14",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0KS",
+        "field": "amcs16",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0KS",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0KS",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A041",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A041",
+        "field": "amcs4",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A041",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A041",
+        "field": "amcs3",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A041",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A041",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A041",
+        "field": "amcs1",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A041",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0XP",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0XP",
+        "field": "amcs4",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0XP",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0XP",
+        "field": "amcs3",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0XP",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0XP",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0XP",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0XP",
+        "field": "amcs1",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0XR",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0XR",
+        "field": "amcs1",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A009",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A009",
+        "field": "amcs4",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A009",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A009",
+        "field": "amcs3",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A009",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A009",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A009",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A009",
+        "field": "amcs1",
+        "old": null,
+        "new": 0
+      }
+    ],
+    "compaction_bytes_saved": 1091127
+  },
+  "comparison": {
+    "source": "maps/reference/GS2vF_ver195-8.w3x",
+    "output": "maps/diagnostics/GS2vF_ver195-12_compare1958.w3x",
+    "source_sha256": "2a2a7a6238d2eed850901c66b2fd3b496a31a774ca1903480305acab9ba561bf",
+    "result_sha256": "f672003da67a41dec6101d4c68e4286e5ce79db61469f7c5a8111c219549b0c0",
+    "source_bytes": 9054705,
+    "result_bytes": 9054608,
+    "active_files": 1069,
+    "changed_files": [
+      "war3map.j",
+      "war3map.w3a",
+      "war3map.w3i",
+      "war3mapSkin.w3a",
+      "(attributes)"
+    ],
+    "runtime_only_version_labels_changed": true,
+    "helper_abilities": [
+      "A0XP",
+      "A009",
+      "A01O",
+      "A00J",
+      "A0KS",
+      "A0DD",
+      "A0DF",
+      "A041",
+      "A0EQ",
+      "A0IM",
+      "A0XR",
+      "A08X",
+      "A011"
+    ],
+    "ability_field_changes": [
+      {
+        "file": "war3map.w3a",
+        "id": "A00J",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A00J",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A00J",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A00J",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A011",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A01O",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A01O",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A01O",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A01O",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A08X",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0CV",
+        "field": "aare2",
+        "old": null,
+        "new": 300.0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0CV",
+        "field": "aare1",
+        "old": null,
+        "new": 300.0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0CV",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0CV",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0CV",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0CV",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0DD",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0DD",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0DD",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0DD",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0DF",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0DF",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0DF",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0DF",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0EQ",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0EQ",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0EQ",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0EQ",
+        "field": "amcs4",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0EQ",
+        "field": "amcs3",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0EQ",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0EQ",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0IM",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0IM",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0IM",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0IM",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0KS",
+        "field": "amcs9",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0KS",
+        "field": "amcs11",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0KS",
+        "field": "amcs15",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0KS",
+        "field": "amcs14",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0KS",
+        "field": "amcs16",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0KS",
+        "field": "amcs12",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0KS",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0KS",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0KS",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0KS",
+        "field": "amcs10",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0KS",
+        "field": "amcs13",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0KS",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A041",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A041",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A041",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A041",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0XP",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0XP",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0XP",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0XP",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A0XR",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A009",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A009",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A009",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A009",
+        "field": "amcs4",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A009",
+        "field": "amcs3",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A009",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3map.w3a",
+        "id": "A009",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A00J",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A00J",
+        "field": "amcs4",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A00J",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A00J",
+        "field": "amcs3",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A00J",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A00J",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A00J",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A00J",
+        "field": "amcs1",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A011",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A011",
+        "field": "amcs1",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A01O",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A01O",
+        "field": "amcs4",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A01O",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A01O",
+        "field": "amcs3",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A01O",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A01O",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A01O",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A01O",
+        "field": "amcs1",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A08X",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A08X",
+        "field": "amcs1",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0CV",
+        "field": "aare6",
+        "old": null,
+        "new": 300.0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0CV",
+        "field": "aare5",
+        "old": null,
+        "new": 300.0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0CV",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0CV",
+        "field": "amcs4",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0CV",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0CV",
+        "field": "aare7",
+        "old": null,
+        "new": 300.0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0CV",
+        "field": "amcs3",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0CV",
+        "field": "aare2",
+        "old": null,
+        "new": 300.0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0CV",
+        "field": "amcs1",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0CV",
+        "field": "aare1",
+        "old": null,
+        "new": 300.0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0CV",
+        "field": "aare8",
+        "old": null,
+        "new": 300.0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0CV",
+        "field": "aare3",
+        "old": null,
+        "new": 300.0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0CV",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0CV",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0CV",
+        "field": "aare4",
+        "old": null,
+        "new": 300.0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0CV",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0DD",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0DD",
+        "field": "amcs4",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0DD",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0DD",
+        "field": "amcs3",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0DD",
+        "field": "amcs1",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0DD",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0DD",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0DD",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0DF",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0DF",
+        "field": "amcs4",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0DF",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0DF",
+        "field": "amcs3",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0DF",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0DF",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0DF",
+        "field": "amcs1",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0DF",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0EQ",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0EQ",
+        "field": "amcs4",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0EQ",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0EQ",
+        "field": "amcs3",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0EQ",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0EQ",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0EQ",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0EQ",
+        "field": "amcs1",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0IM",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0IM",
+        "field": "amcs4",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0IM",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0IM",
+        "field": "amcs3",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0IM",
+        "field": "amcs1",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0IM",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0IM",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0IM",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0KS",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0KS",
+        "field": "amcs9",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0KS",
+        "field": "amcs4",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0KS",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0KS",
+        "field": "amcs11",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0KS",
+        "field": "amcs10",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0KS",
+        "field": "amcs3",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0KS",
+        "field": "amcs13",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0KS",
+        "field": "amcs1",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0KS",
+        "field": "amcs15",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0KS",
+        "field": "amcs12",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0KS",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0KS",
+        "field": "amcs14",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0KS",
+        "field": "amcs16",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0KS",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0KS",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A041",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A041",
+        "field": "amcs4",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A041",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A041",
+        "field": "amcs3",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A041",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A041",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A041",
+        "field": "amcs1",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A041",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0XP",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0XP",
+        "field": "amcs4",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0XP",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0XP",
+        "field": "amcs3",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0XP",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0XP",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0XP",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0XP",
+        "field": "amcs1",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0XR",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A0XR",
+        "field": "amcs1",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A009",
+        "field": "amcs7",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A009",
+        "field": "amcs4",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A009",
+        "field": "amcs5",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A009",
+        "field": "amcs3",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A009",
+        "field": "amcs2",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A009",
+        "field": "amcs6",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A009",
+        "field": "amcs8",
+        "old": null,
+        "new": 0
+      },
+      {
+        "file": "war3mapSkin.w3a",
+        "id": "A009",
+        "field": "amcs1",
+        "old": null,
+        "new": 0
+      }
+    ],
+    "compaction_bytes_saved": 1091429
+  }
+}

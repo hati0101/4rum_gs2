@@ -1,0 +1,26 @@
+{
+  "source_1958_sha256": "2a2a7a6238d2eed850901c66b2fd3b496a31a774ca1903480305acab9ba561bf",
+  "source_1959_sha256": "97515216c86ab4903316182a1b73d52d4e1c736a0159811d8479587db6be816c",
+  "historical_patch_reproduces_1959_byte_exact": true,
+  "changed_files": [
+    "war3map.j",
+    "war3map.w3i",
+    "war3map.wct",
+    "(attributes)"
+  ],
+  "unchanged_reported_hero_combat_functions": [
+    "GS2FB_Area",
+    "GS2FB_Spell",
+    "GS2FB_Damaged",
+    "GS2FB_Reduce",
+    "GS2FB_End",
+    "Trig_Backstab_Actions",
+    "Trig_Backstab_Atk_Actions",
+    "Trig_Backstab_Atk_Conditions",
+    "Trig_Mind_Banish_Actions",
+    "Trig_DrA_Special_4_Actions"
+  ],
+  "changed_reported_hero_kill_callback": "Trig_DrA_Special_3_Actions: fresh start-position cleanup only",
+  "unexplained_client_freeze_reproduced": false,
+  "review_limit": "Static and mocked checks cannot clear 195-9 of all engine-side regressions; comparison map removes all its runtime changes."
+}

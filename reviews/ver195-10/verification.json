@@ -1,0 +1,31 @@
+{
+  "source_sha256": "97515216c86ab4903316182a1b73d52d4e1c736a0159811d8479587db6be816c",
+  "result_sha256": "c369129a5566263e316774adf7bd0272494e1eb59e5bfb53633dab773a288a3f",
+  "source_bytes": 9055868,
+  "result_bytes": 9054403,
+  "active_files": 1069,
+  "changed_files": [
+    "war3map.j",
+    "war3map.w3a",
+    "war3map.w3i",
+    "war3mapSkin.w3a",
+    "(attributes)"
+  ],
+  "ability_changed": "A0CV",
+  "levels": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "explicit_mana_cost": 0,
+  "explicit_radius": 300,
+  "other_ability_objects_unchanged": true,
+  "runtime_only_version_labels_changed": true,
+  "wct_blocks": 903,
+  "compaction_bytes_saved": 1092592
+}

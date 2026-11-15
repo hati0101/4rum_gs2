@@ -1,0 +1,568 @@
+--- 195-8/war3map.j
++++ 195-9/war3map.j
+@@ -1734,7 +1734,34 @@
+     integer GS2_AuditDamageCleaned=0
+     integer GS2_AuditDamagePeak=0
+     integer GS2_AuditDamageLastChecks=0
++    string array GS1959_Text
++    boolean array GS1959_TextValid
++    real array GS1959_BarRatio
++    real array GS1959_BarHeight
++    boolean array GS1959_BarValid
++    boolean GS1959_LayoutValid = false
++    real GS1959_LayoutRight = 0.0
+ endglobals
++function GS1959_PickRandomOwned takes group g returns unit
++    local boolean alreadyOwned = bj_wantDestroyGroup
++    local unit result = GroupPickRandomUnit(g)
++    if not alreadyOwned then
++        call DestroyGroup(g)
++    endif
++    set g = null
++    return result
++endfunction
++function GS1959_ResetUI takes nothing returns nothing
++    local integer i = 0
++    loop
++        exitwhen i >= 40
++        set GS1959_TextValid[i] = false
++        set GS1959_BarValid[i] = false
++        set i = i+1
++    endloop
++    set GS1959_LayoutValid = false
++endfunction
++
+ function GS2PERF_PandaChance takes unit u returns integer
+     if GetUnitTypeId(u)!='Npbm' then
+         return 0
+@@ -1766,10 +1793,6 @@
+     local timer t=GetExpiredTimer()
+     local integer k=GetHandleId(t)
+     local effect e=LoadEffectHandle(GS181_Fx,k,0)
+-    if e==null then
+-        set t=null
+-        return
+-    endif
+     call FlushChildHashtable(GS181_Fx,k)
+     call PauseTimer(t)
+     call DestroyTimer(t)
+@@ -1785,6 +1808,9 @@
+     local unit source=LoadUnitHandle(GS181_Flak,k,0)
+     local integer sid=GetHandleId(source)
+     if source==null then
++        call FlushChildHashtable(GS181_Flak,k)
++        call PauseTimer(t)
++        call DestroyTimer(t)
+         set t=null
+         return
+     endif
+@@ -4098,7 +4124,22 @@
+     call BlzFrameSetEnable(f, false)
+ endfunction
+ function GSTF_SetText takes string name, integer i, string s returns nothing
+-    call BlzFrameSetText(BlzGetFrameByName(name, i), "|cffffffff" + s + "|r")
++    local integer key = i
++    if name == "GSTF_SkCd" then
++        set key = 20+i
++    elseif name != "GSTF_Lvl" then
++        call BlzFrameSetText(BlzGetFrameByName(name,i),"|cffffffff"+s+"|r")
++        return
++    endif
++    if not GS1959_TextValid[key] or GS1959_Text[key] != s then
++        if name == "GSTF_SkCd" and s == "" then
++            call BlzFrameSetText(BlzGetFrameByName(name,i),"")
++        else
++            call BlzFrameSetText(BlzGetFrameByName(name,i),"|cffffffff"+s+"|r")
++        endif
++        set GS1959_Text[key] = s
++        set GS1959_TextValid[key] = true
++    endif
+ endfunction
+ function GSTF_SkillOf takes integer t, integer s returns integer
+     if t == 'URa1' then
+@@ -8798,7 +8839,7 @@
+     if ( not ( GetUnitPointValue(GetTriggerUnit()) >= 1250 ) ) then
+         return false
+     endif
+-    if ( not ( IsUnitInGroup(GetTriggerUnit(), GetUnitsOfPlayerAll(Player(PLAYER_NEUTRAL_AGGRESSIVE))) == true ) ) then
++    if ( not ( GetOwningPlayer(GetTriggerUnit()) == Player(PLAYER_NEUTRAL_AGGRESSIVE) ) ) then
+         return false
+     endif
+     return true
+@@ -12793,17 +12834,18 @@
+ function Trig_Dark_Summoning_Actions takes nothing returns nothing
+     local unit u = GetSpellTargetUnit()
+     call TriggerSleepAction( 0.10 )
+-    call CreateNUnitsAtLoc( 1, 'ewsp', GetOwningPlayer(u), GetUnitLoc(GetTriggerUnit()), bj_UNIT_FACING )
++    call GS2V84_CreateNUnitsAtLoc_3( 1, 'ewsp', GetOwningPlayer(u), GetUnitLoc(GetTriggerUnit()), bj_UNIT_FACING )
+     call UnitApplyTimedLifeBJ( 3.00, 'BTLF', GetLastCreatedUnit() )
+     call UnitAddAbilityBJ( 'A0C7', GetLastCreatedUnit() )
+-    call IssuePointOrderByIdLoc( GetLastCreatedUnit(), 852220, GetUnitLoc(u) )
++    call GS2V84_IssuePointOrderByIdLoc_2( GetLastCreatedUnit(), 852220, GetUnitLoc(u) )
+     if GetPlayerTechCountSimple('R042', GetTriggerPlayer()) == 1 then
+     call TriggerSleepAction( 0.90 )
+-    call CreateNUnitsAtLoc( 1, 'ewsp', GetOwningPlayer(u), GetUnitLoc(u), bj_UNIT_FACING )
++    call GS2V84_CreateNUnitsAtLoc_3( 1, 'ewsp', GetOwningPlayer(u), GetUnitLoc(u), bj_UNIT_FACING )
+     call UnitApplyTimedLifeBJ( 1.00, 'BTLF', GetLastCreatedUnit() )
+     call UnitAddAbilityBJ( 'A0DN', GetLastCreatedUnit() )
+     call IssueTargetOrderBJ( GetLastCreatedUnit(), "doom", u )
+     endif
++    set u = null
+ endfunction
+ function Trig_Spell_Brake_Conditions takes nothing returns boolean
+     if ( not ( GetSpellAbilityId() == 'A0C9' ) ) then
+@@ -13046,7 +13088,7 @@
+     return true
+ endfunction
+ function Trig_DaW_Special_1_Actions takes nothing returns nothing
+-    call CreateNUnitsAtLoc( 1, 'ewsp', GetOwningPlayer(udg_Hero_DaW), GetPlayerStartLocationLoc(GetOwningPlayer(udg_Hero_DaW)), bj_UNIT_FACING )
++    call GS2V84_CreateNUnitsAtLoc_3( 1, 'ewsp', GetOwningPlayer(udg_Hero_DaW), GetPlayerStartLocationLoc(GetOwningPlayer(udg_Hero_DaW)), bj_UNIT_FACING )
+     call UnitApplyTimedLifeBJ( 75.00, 'BTLF', GetLastCreatedUnit() )
+     call UnitAddAbilityBJ( 'A0UU', GetLastCreatedUnit() )
+     call UnitAddAbilityBJ( 'A0UV', GetLastCreatedUnit() )
+@@ -15495,6 +15537,12 @@
+     call PolledWait( 0.75 )
+     call SetUnitPositionLoc( caster, targetloc )
+     call SetUnitPositionLoc( target, casterloc )
++    call RemoveLocation(casterloc)
++    call RemoveLocation(targetloc)
++    set casterloc = null
++    set targetloc = null
++    set caster = null
++    set target = null
+ endfunction
+ function Trig_Apocalypse_Referee_Conditions takes nothing returns boolean
+     if ( not ( GetSpellAbilityId() == 'A08D' ) ) then
+@@ -16110,7 +16158,7 @@
+     return true
+ endfunction
+ function Trig_MoW_Special_2_Actions takes nothing returns nothing
+-    call CreateNUnitsAtLoc( 1, 'e01U', GetOwningPlayer(udg_Hero_MoW[1]), GetPlayerStartLocationLoc(GetOwningPlayer(udg_Hero_MoW[1])), bj_UNIT_FACING )
++    call GS2V84_CreateNUnitsAtLoc_3( 1, 'e01U', GetOwningPlayer(udg_Hero_MoW[1]), GetPlayerStartLocationLoc(GetOwningPlayer(udg_Hero_MoW[1])), bj_UNIT_FACING )
+     call UnitApplyTimedLifeBJ( 60.00, 'BTLF', GetLastCreatedUnit() )
+ endfunction
+ function Trig_MoW_Special_3_Conditions takes nothing returns boolean
+@@ -16123,7 +16171,7 @@
+     return true
+ endfunction
+ function Trig_MoW_Special_3_Actions takes nothing returns nothing
+-    call CreateNUnitsAtLoc( 1, 'ewsp', GetOwningPlayer(GetSpellAbilityUnit()), GetUnitLoc(GetSpellAbilityUnit()), bj_UNIT_FACING )
++    call GS2V84_CreateNUnitsAtLoc_3( 1, 'ewsp', GetOwningPlayer(GetSpellAbilityUnit()), GetUnitLoc(GetSpellAbilityUnit()), bj_UNIT_FACING )
+     set udg_Hero_MoW_StarfallCaster = GetLastCreatedUnit()
+     call UnitAddAbilityBJ( 'A0G9', GetLastCreatedUnit() )
+     call SetUnitAbilityLevelSwapped( 'A0G9', GetLastCreatedUnit(), GetUnitAbilityLevelSwapped('A0GA', GetSpellAbilityUnit()) )
+@@ -19047,7 +19095,7 @@
+     return true
+ endfunction
+ function Trig_ToK_Special_2_Actions takes nothing returns nothing
+-    call CreateNUnitsAtLoc( 1, 'ewsp', GetOwningPlayer(GetSpellAbilityUnit()), GetPlayerStartLocationLoc(GetOwningPlayer(GetTriggerUnit())), bj_UNIT_FACING )
++    call GS2V84_CreateNUnitsAtLoc_3( 1, 'ewsp', GetOwningPlayer(GetSpellAbilityUnit()), GetPlayerStartLocationLoc(GetOwningPlayer(GetTriggerUnit())), bj_UNIT_FACING )
+     call UnitAddAbilityBJ( 'A0YH', GetLastCreatedUnit() )
+     call UnitApplyTimedLifeBJ( ( 4.00 + ( 2.00 * I2R(GetUnitAbilityLevelSwapped('A0ZH', GetTriggerUnit())) ) ), 'BTLF', GetLastCreatedUnit() )
+ endfunction
+@@ -19201,6 +19249,8 @@
+     call UnitApplyTimedLifeBJ( 3.00, 'BTLF', GetLastCreatedUnit() )
+     call UnitAddAbilityBJ( 'A05B', GetLastCreatedUnit() )
+     call IssueImmediateOrderBJ( GetLastCreatedUnit(), "stomp" )
++    call RemoveLocation(Loc)
++    set Loc = null
+ endfunction
+ function Trig_Black_Shaker_Select_Conditions takes nothing returns boolean
+     if ( not ( GetUnitTypeId(GetTriggerUnit()) == 'Naka' ) ) then
+@@ -21650,14 +21700,14 @@
+     return false
+ endfunction
+ function Trig_Drow_Night_Init_Actions takes nothing returns nothing
+-    call CreateNUnitsAtLoc( 1, 'e018', GetOwningPlayer(GetTriggerUnit()), GetPlayerStartLocationLoc(GetOwningPlayer(GetTriggerUnit())), bj_UNIT_FACING )
++    call GS2V84_CreateNUnitsAtLoc_3( 1, 'e018', GetOwningPlayer(GetTriggerUnit()), GetPlayerStartLocationLoc(GetOwningPlayer(GetTriggerUnit())), bj_UNIT_FACING )
+ endfunction
+ function Trig_Drow_Night_Actions takes nothing returns nothing
+     local integer i = 1
+     loop
+       exitwhen i > 12
+       if ( GetUnitTypeId( udg_HeroPlayer[i] ) == 'Hant' ) then
+-        call CreateNUnitsAtLoc( 1, 'e018', ConvertedPlayer(i), GetPlayerStartLocationLoc(ConvertedPlayer(i)), bj_UNIT_FACING )
++        call GS2V84_CreateNUnitsAtLoc_3( 1, 'e018', ConvertedPlayer(i), GetPlayerStartLocationLoc(ConvertedPlayer(i)), bj_UNIT_FACING )
+       endif
+       set i = i + 1
+     endloop
+@@ -24288,7 +24338,7 @@
+ endfunction
+ function Trig_TrB_Select_Actions takes nothing returns nothing
+     set udg_Hero_TrB = GetTriggerUnit()
+-    call CreateNUnitsAtLoc( 1, 'e01B', GetOwningPlayer(GetTriggerUnit()), GetPlayerStartLocationLoc(GetOwningPlayer(GetTriggerUnit())), bj_UNIT_FACING )
++    call GS2V84_CreateNUnitsAtLoc_3( 1, 'e01B', GetOwningPlayer(GetTriggerUnit()), GetPlayerStartLocationLoc(GetOwningPlayer(GetTriggerUnit())), bj_UNIT_FACING )
+     set udg_Hero_TrB_Caster = GetLastCreatedUnit()
+ endfunction
+ function Trig_TrB_Skil_Effect_Func001Func003C takes nothing returns boolean
+@@ -24976,7 +25026,7 @@
+     call SetStartLocPrio( 9, 3, 8, MAP_LOC_PRIO_HIGH )
+ endfunction
+ function GS2_ShowVersion68 takes nothing returns nothing
+-    call DisplayTimedTextToForce(GetPlayersAll(), 15.00, "가디언 스피리츠 II 195-8")
++    call DisplayTimedTextToForce(GetPlayersAll(), 15.00, "가디언 스피리츠 II 195-9")
+     call DisplayTimedTextToForce(GetPlayersAll(), 30.00, "|cffffcc00카카오톡 오픈채팅 : 가디언 스피리츠2|r")
+     call DisplayTimedTextToForce(GetPlayersAll(),30.00,"|cffffcc00[편의 기능] Caps Lock 키로 스코어보드를 펼치거나 접을 수 있습니다. 기존 마우스 클릭도 사용할 수 있습니다.|r")
+     call DestroyTimer(GetExpiredTimer())
+@@ -27668,7 +27718,7 @@
+         call SelectUnit(shop,true)
+         call PanCameraToTimed(GetUnitX(shop),GetUnitY(shop),0.2)
+     endif
+-    call DisplayTimedTextToPlayer(p,0,0,8,"[195-8] 11시 상인 1 / 5시 상인 2 · 상인 1은 8종 / 상인 2는 5종 판매. -특성상점 / -특성상점2")
++    call DisplayTimedTextToPlayer(p,0,0,8,"[195-9] 11시 상인 1 / 5시 상인 2 · 상인 1은 8종 / 상인 2는 5종 판매. -특성상점 / -특성상점2")
+     set shop=null
+     set p=null
+ endfunction
+@@ -28147,10 +28197,12 @@
+     local integer i = 0
+     local integer s
+     local integer c
++    call GS1959_ResetUI()
+     call BlzFrameSetSize(root, GSTF_W(), 5 * (GSTF_H() + GSTF_Gap()))
+     loop
+         exitwhen i > 4
+         set slot = BlzCreateFrameByType("BACKDROP", "GSTF_Slot", root, "", i)
++        call BlzFrameSetPoint(slot,FRAMEPOINT_TOPRIGHT,root,FRAMEPOINT_TOPRIGHT,0.0,-i*(GSTF_H()+GSTF_Gap()))
+         call BlzFrameSetSize(slot, GSTF_W(), GSTF_H())
+         call BlzFrameSetTexture(slot, "Textures\\Black32.blp", 0, true)
+         call BlzFrameSetAlpha(slot, 160)
+@@ -28232,16 +28284,29 @@
+     set g = null
+ endfunction
+ function GSTF_SetBar takes string name, integer i, real h, real ratio returns nothing
+-    local framehandle f = BlzGetFrameByName(name, i)
++    local integer key = i
++    local framehandle f
++    if name == "GSTF_Mp" then
++        set key = 5+i
++    endif
++    if ratio > 1.0 then
++        set ratio = 1.0
++    elseif ratio <= 0.001 then
++        set ratio = 0.0
++    endif
++    if GS1959_BarValid[key] and GS1959_BarRatio[key] == ratio and GS1959_BarHeight[key] == h then
++        return
++    endif
++    set f = BlzGetFrameByName(name,i)
+     if ratio > 0.001 then
+-        if ratio > 1.0 then
+-            set ratio = 1.0
+-        endif
+-        call BlzFrameSetSize(f, GSTF_BarW() * ratio, h)
+-        call BlzFrameSetVisible(f, true)
+-    else
+-        call BlzFrameSetVisible(f, false)
+-    endif
++        call BlzFrameSetSize(f,GSTF_BarW()*ratio,h)
++        call BlzFrameSetVisible(f,true)
++    else
++        call BlzFrameSetVisible(f,false)
++    endif
++    set GS1959_BarRatio[key] = ratio
++    set GS1959_BarHeight[key] = h
++    set GS1959_BarValid[key] = true
+     set f = null
+ endfunction
+ function GSTF_FillSkill takes integer i, integer s, unit u returns nothing
+@@ -28251,6 +28316,7 @@
+     local real cd
+     local framehandle f = BlzGetFrameByName("GSTF_Sk", c)
+     local boolean ready = false
++    local string cooldownText = ""
+     local string texture
+     if a == 0 then
+         call BlzFrameSetVisible(f, false)
+@@ -28263,7 +28329,6 @@
+         call BlzFrameSetTexture(f,texture,0,true)
+         set GS167_SkillTexture[c]=texture
+     endif
+-    call BlzFrameSetText(BlzGetFrameByName("GSTF_SkCd", c), "")
+     set lvl = GetUnitAbilityLevel(u, a)
+     if lvl == 0 then
+         call BlzFrameSetAlpha(f, 45)
+@@ -28276,7 +28341,7 @@
+         endif
+         if cd > 0.0 then
+             call BlzFrameSetAlpha(f, 110)
+-            call GSTF_SetText("GSTF_SkCd", c, I2S(R2I(cd) + 1))
++            set cooldownText = I2S(R2I(cd) + 1)
+         elseif GetUnitState(u, UNIT_STATE_MANA) < BlzGetUnitAbilityManaCost(u, a, lvl - 1) then
+             call BlzFrameSetAlpha(f, 150)
+         else
+@@ -28284,6 +28349,7 @@
+             set ready = true
+         endif
+     endif
++    call GSTF_SetText("GSTF_SkCd", c, cooldownText)
+     if s == 3 then
+         set f = BlzGetFrameByName("GSTF_UltGlow", i)
+         call BlzFrameSetVisible(f, ready)
+@@ -29364,7 +29430,7 @@
+ return
+ endif
+ if (udg_RandHero[RandHero] == false) and (GS2V84_CountUnitsInGroupOwned(GetUnitsOfTypeIdAll( udg_Hero[RandHero] )) == 0) then
+-set udg_HeroPlayer[GetConvertedPlayerId(RandPlayer)] = CreateUnitAtLoc( RandPlayer, udg_Hero[RandHero], GetPlayerStartLocationLoc(RandPlayer), bj_UNIT_FACING )
++set udg_HeroPlayer[GetConvertedPlayerId(RandPlayer)] = GS2V84_CreateUnitAtLoc_2( RandPlayer, udg_Hero[RandHero], GetPlayerStartLocationLoc(RandPlayer), bj_UNIT_FACING )
+ set udg_RandHero[RandHero] = true
+     if (IsPlayerAlly(RandPlayer,udg_Force[1])) then
+     call GS2V84_CreateUnitAtLoc_2(RandPlayer, udg_HeroSpeciel[RandHero], GetRectCenter(gg_rct_G_Home), bj_UNIT_FACING)
+@@ -32114,7 +32180,7 @@
+     return true
+ endfunction
+ function Trig_Full_Inv_Get_Func003C takes nothing returns boolean
+-    if ( not ( GS2V84_DistanceBetweenPoints_0(GetUnitLoc(GetTriggerUnit()), GetItemLoc(GetOrderTargetItem())) >= 170.00 ) ) then
++    if ( not ( GS2V84_DistanceBetweenPoints_01(GetUnitLoc(GetTriggerUnit()), GetItemLoc(GetOrderTargetItem())) >= 170.00 ) ) then
+         return false
+     endif
+     return true
+@@ -33518,7 +33584,7 @@
+     else
+     endif
+     if ( Trig_DiK_Special_Func006C() ) then
+-        call CreateNUnitsAtLoc( 1, 'ewsp', GetOwningPlayer(GetTriggerUnit()), GetPlayerStartLocationLoc(GetOwningPlayer(GetTriggerUnit())), bj_UNIT_FACING )
++        call GS2V84_CreateNUnitsAtLoc_3( 1, 'ewsp', GetOwningPlayer(GetTriggerUnit()), GetPlayerStartLocationLoc(GetOwningPlayer(GetTriggerUnit())), bj_UNIT_FACING )
+         call UnitApplyTimedLifeBJ( 60.00, 'BTLF', GetLastCreatedUnit() )
+         call UnitAddAbilityBJ( 'A12X', GetLastCreatedUnit() )
+     else
+@@ -33612,7 +33678,7 @@
+     return true
+ endfunction
+ function Trig_DrA_Special_3_Actions takes nothing returns nothing
+-    call CreateNUnitsAtLoc( 1, 'ewsp', GetOwningPlayer(GetKillingUnitBJ()), GetPlayerStartLocationLoc(GetOwningPlayer(GetKillingUnitBJ())), bj_UNIT_FACING )
++    call GS2V84_CreateNUnitsAtLoc_3( 1, 'ewsp', GetOwningPlayer(GetKillingUnitBJ()), GetPlayerStartLocationLoc(GetOwningPlayer(GetKillingUnitBJ())), bj_UNIT_FACING )
+     call UnitApplyTimedLifeBJ( 45.00, 'BTLF', GetLastCreatedUnit() )
+     call UnitAddAbilityBJ( 'S002', GetLastCreatedUnit() )
+     if ( Trig_DrA_Special_3_Func004C() ) then
+@@ -37183,7 +37249,7 @@
+         else
+         endif
+         if ( rand <= chance ) then
+-        call CreateNUnitsAtLoc( 1, 'e029', GetOwningPlayer(GetAttacker()), GetPlayerStartLocationLoc(GetOwningPlayer(GetAttacker())), bj_UNIT_FACING )
++        call GS2V84_CreateNUnitsAtLoc_3( 1, 'e029', GetOwningPlayer(GetAttacker()), GetPlayerStartLocationLoc(GetOwningPlayer(GetAttacker())), bj_UNIT_FACING )
+         call UnitApplyTimedLifeBJ( 1.00, 'BTLF', GetLastCreatedUnit() )
+         endif
+     else
+@@ -37294,7 +37360,7 @@
+     local real y = 40 * SinBJ(udg_Hero_ThL_ChargeAngle) 
+     local unit u = udg_Hero_ThL
+     local item i = GS2V84_CreateItemLoc_1('texp', Location(GetUnitX(u)+x, GetUnitY(u)+y))
+-    if GS2V84_DistanceBetweenPoints_0(Location(GetUnitX(u)+x, GetUnitY(u)+y), GetItemLoc(i)) < 20 then
++    if GS2V84_DistanceBetweenPoints_01(Location(GetUnitX(u)+x, GetUnitY(u)+y), GetItemLoc(i)) < 20 then
+     call SetUnitX(u,GetItemX(i))
+     call SetUnitY(u,GetItemY(i))
+     call SetUnitAnimation( u, "walk fast" )
+@@ -37374,7 +37440,7 @@
+ endfunction
+ function Trig_ToK_Select_Actions takes nothing returns nothing
+     call GS2_AuditDamageSubscribe(gg_trg_Reincarnation, GetTriggerUnit())
+-    call CreateNUnitsAtLoc( 1, 'e01S', GetOwningPlayer(GetTriggerUnit()), GetPlayerStartLocationLoc(GetOwningPlayer(GetTriggerUnit())), bj_UNIT_FACING )
++    call GS2V84_CreateNUnitsAtLoc_3( 1, 'e01S', GetOwningPlayer(GetTriggerUnit()), GetPlayerStartLocationLoc(GetOwningPlayer(GetTriggerUnit())), bj_UNIT_FACING )
+ endfunction
+ function Trig_Earth_Shake_Actions takes nothing returns nothing
+     set udg_Hero_ToW_ESPoint = GetSpellTargetLoc()
+@@ -37683,14 +37749,14 @@
+     loop
+         exitwhen bj_forLoopAIndex > bj_forLoopAIndexEnd
+         if ( Trig_Black_Shaker_Night_Func001Func001C() ) then
+-            call CreateNUnitsAtLoc( 1, 'e01D', ConvertedPlayer(GetForLoopIndexA()), GetPlayerStartLocationLoc(ConvertedPlayer(GetForLoopIndexA())), bj_UNIT_FACING )
+-            call CreateNUnitsAtLoc( 1, 'e01F', ConvertedPlayer(GetForLoopIndexA()), GetPlayerStartLocationLoc(ConvertedPlayer(GetForLoopIndexA())), bj_UNIT_FACING )
++            call GS2V84_CreateNUnitsAtLoc_3( 1, 'e01D', ConvertedPlayer(GetForLoopIndexA()), GetPlayerStartLocationLoc(ConvertedPlayer(GetForLoopIndexA())), bj_UNIT_FACING )
++            call GS2V84_CreateNUnitsAtLoc_3( 1, 'e01F', ConvertedPlayer(GetForLoopIndexA()), GetPlayerStartLocationLoc(ConvertedPlayer(GetForLoopIndexA())), bj_UNIT_FACING )
+             if ( Trig_Black_Shaker_Night_Func001Func001Func004C() ) then
+                 call UnitAddAbilityBJ( 'S004', GetLastCreatedUnit() )
+                 call SetUnitAbilityLevelSwapped( 'S004', GetLastCreatedUnit(), GetUnitAbilityLevelSwapped('A04U', udg_HeroPlayer[GetForLoopIndexA()]) )
+             else
+             endif
+-            call CreateNUnitsAtLoc( 1, 'e037', ConvertedPlayer(GetForLoopIndexA()), GetPlayerStartLocationLoc(ConvertedPlayer(GetForLoopIndexA())), bj_UNIT_FACING )
++            call GS2V84_CreateNUnitsAtLoc_3( 1, 'e037', ConvertedPlayer(GetForLoopIndexA()), GetPlayerStartLocationLoc(ConvertedPlayer(GetForLoopIndexA())), bj_UNIT_FACING )
+             if ( Trig_Black_Shaker_Night_Func001Func001Func006C() ) then
+                 call UnitAddAbilityBJ( 'A0K7', GetLastCreatedUnit() )
+             else
+@@ -37825,14 +37891,14 @@
+         call PlaySoundBJ( gg_snd_KurenoBlackSurge )
+         call GS2V84_CreateNUnitsAtLoc_3(1, 'ewsp', GetOwningPlayer(GetTriggerUnit()), GetUnitLoc(GetTriggerUnit()), bj_UNIT_FACING)
+         call UnitApplyTimedLifeBJ( 3.00, 'BTLF', GetLastCreatedUnit() )
+-        call CreateNUnitsAtLoc( 1, 'e01D', GetOwningPlayer(GetTriggerUnit()), GetPlayerStartLocationLoc(GetOwningPlayer(GetTriggerUnit())), bj_UNIT_FACING )
++        call GS2V84_CreateNUnitsAtLoc_3( 1, 'e01D', GetOwningPlayer(GetTriggerUnit()), GetPlayerStartLocationLoc(GetOwningPlayer(GetTriggerUnit())), bj_UNIT_FACING )
+         call UnitAddAbilityBJ( 'S00K', GetLastCreatedUnit() )
+         call UnitAddAbilityBJ( 'S004', GetLastCreatedUnit() )
+         call SetUnitAbilityLevelSwapped( 'S004', GetLastCreatedUnit(), GetUnitAbilityLevelSwapped('A04U', GetTriggerUnit()) )
+         call UnitApplyTimedLifeBJ( 30.00, 'BTLF', GetLastCreatedUnit() )
+-        call CreateNUnitsAtLoc( 1, 'e01F', GetOwningPlayer(GetTriggerUnit()), GetPlayerStartLocationLoc(GetOwningPlayer(GetTriggerUnit())), bj_UNIT_FACING )
++        call GS2V84_CreateNUnitsAtLoc_3( 1, 'e01F', GetOwningPlayer(GetTriggerUnit()), GetPlayerStartLocationLoc(GetOwningPlayer(GetTriggerUnit())), bj_UNIT_FACING )
+         call UnitApplyTimedLifeBJ( 30.00, 'BTLF', GetLastCreatedUnit() )
+-        call CreateNUnitsAtLoc( 1, 'e037', GetOwningPlayer(GetTriggerUnit()), GetPlayerStartLocationLoc(GetOwningPlayer(GetTriggerUnit())), bj_UNIT_FACING )
++        call GS2V84_CreateNUnitsAtLoc_3( 1, 'e037', GetOwningPlayer(GetTriggerUnit()), GetPlayerStartLocationLoc(GetOwningPlayer(GetTriggerUnit())), bj_UNIT_FACING )
+         call UnitApplyTimedLifeBJ( 30.00, 'BTLF', GetLastCreatedUnit() )
+         if ( Trig_Black_Serge_Func002Func013C() ) then
+             call UnitAddAbilityBJ( 'A0K7', GetLastCreatedUnit() )
+@@ -41034,9 +41100,9 @@
+         call UnitRemoveBuffsBJ( bj_REMOVEBUFFS_ALL, udg_HeroPlayer[GetConvertedPlayerId(cast_player)] )
+         call SetUnitInvulnerable( udg_HeroPlayer[GetConvertedPlayerId(cast_player)], false )
+         if ( IsUnitAlly(GetTriggerUnit(), udg_Force[1]) == true ) then
+-        call UnitDamageTargetBJ( GroupPickRandomUnit(GetUnitsOfPlayerAll(udg_Force[2])), udg_HeroPlayer[GetConvertedPlayerId(cast_player)], 1000000000.00, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_DIVINE )
++        call UnitDamageTargetBJ( GS1959_PickRandomOwned(GetUnitsOfPlayerAll(udg_Force[2])), udg_HeroPlayer[GetConvertedPlayerId(cast_player)], 1000000000.00, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_DIVINE )
+         else
+-        call UnitDamageTargetBJ( GroupPickRandomUnit(GetUnitsOfPlayerAll(udg_Force[1])), udg_HeroPlayer[GetConvertedPlayerId(cast_player)], 1000000000.00, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_DIVINE )
++        call UnitDamageTargetBJ( GS1959_PickRandomOwned(GetUnitsOfPlayerAll(udg_Force[1])), udg_HeroPlayer[GetConvertedPlayerId(cast_player)], 1000000000.00, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_DIVINE )
+         endif
+         else
+         call SetUnitLifeBJ( udg_HeroPlayer[GetConvertedPlayerId(cast_player)], ( GetUnitStateSwap(UNIT_STATE_LIFE, udg_HeroPlayer[GetConvertedPlayerId(cast_player)]) - udg_Hero_TrB_DamageTaken[GetConvertedPlayerId(cast_player)] ) )
+@@ -41260,7 +41326,7 @@
+     call TextTag( "카사노바!" , GetTriggerUnit() , 10 , 255 , 255 , 150, 3 )
+ endfunction
+ function Trig_Vampires_Lord_Special_4_Learn_Actions takes nothing returns nothing
+-    call CreateNUnitsAtLoc( 1, 'e00I', GetTriggerPlayer(), GetPlayerStartLocationLoc(GetTriggerPlayer()), bj_UNIT_FACING )
++    call GS2V84_CreateNUnitsAtLoc_3( 1, 'e00I', GetTriggerPlayer(), GetPlayerStartLocationLoc(GetTriggerPlayer()), bj_UNIT_FACING )
+     set udg_Hero_VaL_NightUnit = GetLastCreatedUnit()
+     if ( Trig_Vampires_Lord_Special_4_Learn_Func003C() ) then
+     else
+@@ -45215,7 +45281,7 @@
+ 
+ 
+ function config takes nothing returns nothing
+-    call SetMapName( "가디언 스피리츠 II 195-8" )
++    call SetMapName( "가디언 스피리츠 II 195-9" )
+     call SetMapDescription( "가츠 최종파이널 픽스\n\nWarcraft III Reforged 최종 수정본\n영웅·특성·아이템·시스템 오류 수정 및 안정화 반영\n\n|cffffcc00카카오톡 오픈채팅 : 가디언 스피리츠2|r" )
+     call SetPlayers( 10 )
+     call SetTeams( 10 )
+@@ -45376,8 +45442,8 @@
+     call GSTI_RestoreStock('IT31')
+     call RemoveItemFromStock(GSTI_Shops[1],'IT32')
+     call GSTI_RestoreStock('IT32')
+-    call CreateQuestBJ(bj_QUESTTYPE_OPT_DISCOVERED,"195-8 특성 아이템","기본 특성 아이템 13종을 판매합니다.|n|n맵 11시 상인 1과 5시 상인 2에서 양팀 모두 구매할 수 있습니다. 각 품목은 게임 전체에 1개뿐이며, 구매 성공 시 재입고되지 않습니다.|n-특성상점 / -특성상점2로 위치를 확인할 수 있습니다.|n|n구매 비용: 900 골드 + 특성 1.|n경제·교환 항목은 제공하지 않습니다.","ReplaceableTextures\\CommandButtons\\BTNMedalionOfCourage.blp")
+-    call DisplayTimedTextToForce(GetPlayersAll(),15,"|cffffcc00[195-8]|r 기본 특템 13종 · 11시 상인 1 / 5시 상인 2 · -특성상점 / -특성상점2 · 상세 내용 F9")
++    call CreateQuestBJ(bj_QUESTTYPE_OPT_DISCOVERED,"195-9 특성 아이템","기본 특성 아이템 13종을 판매합니다.|n|n맵 11시 상인 1과 5시 상인 2에서 양팀 모두 구매할 수 있습니다. 각 품목은 게임 전체에 1개뿐이며, 구매 성공 시 재입고되지 않습니다.|n-특성상점 / -특성상점2로 위치를 확인할 수 있습니다.|n|n구매 비용: 900 골드 + 특성 1.|n경제·교환 항목은 제공하지 않습니다.","ReplaceableTextures\\CommandButtons\\BTNMedalionOfCourage.blp")
++    call DisplayTimedTextToForce(GetPlayersAll(),15,"|cffffcc00[195-9]|r 기본 특템 13종 · 11시 상인 1 / 5시 상인 2 · -특성상점 / -특성상점2 · 상세 내용 F9")
+     call DestroyTimer(GetExpiredTimer())
+ endfunction
+ 
+@@ -45467,6 +45533,9 @@
+     local boolean shock=LoadBoolean(GS181_Rain,k,6)
+     local real x
+     local real y
++    call FlushChildHashtable(GS181_Rain,k)
++    call PauseTimer(t)
++    call DestroyTimer(t)
+     if caster==null then
+         set aura=null
+         set casterOwner=null
+@@ -45474,9 +45543,6 @@
+         set t=null
+         return
+     endif
+-    call FlushChildHashtable(GS181_Rain,k)
+-    call PauseTimer(t)
+-    call DestroyTimer(t)
+     if GS181_Live(caster) and GetOwningPlayer(caster)==casterOwner then
+         set x=GetUnitX(caster)
+         set y=GetUnitY(caster)
+@@ -47879,7 +47945,7 @@
+     call AddSpecialEffectTargetUnitBJ( "chest", GetTriggerUnit(), "Abilities\\Spells\\Human\\Avatar\\AvatarCaster.mdl" )
+     call d_effect(GetLastCreatedEffectBJ(),1)
+     if ( Trig_Avartar_Active_Func003C() ) then
+-        call CreateNUnitsAtLoc( 1, 'e016', GetOwningPlayer(GetTriggerUnit()), GetPlayerStartLocationLoc(GetTriggerPlayer()), bj_UNIT_FACING )
++        call GS2V84_CreateNUnitsAtLoc_3( 1, 'e016', GetOwningPlayer(GetTriggerUnit()), GetPlayerStartLocationLoc(GetTriggerPlayer()), bj_UNIT_FACING )
+         call UnitApplyTimedLifeBJ( ( 5.00 + ( 2.00 * I2R(GetUnitAbilityLevelSwapped('A11H', GetSpellAbilityUnit())) ) ), 'BTLF', GetLastCreatedUnit() )
+         call UnitAddAbilityBJ( 'S00C', GetLastCreatedUnit() )
+     else
+@@ -49773,8 +49839,8 @@
+     set udg_Hero_BlS = GetTriggerUnit()
+     call GS116_BlSSnakeShadow(GetTriggerUnit())
+     if ( Trig_Black_Shaker_Select_Func002C() ) then
+-        call CreateNUnitsAtLoc( 1, 'e01D', GetOwningPlayer(GetTriggerUnit()), GetPlayerStartLocationLoc(GetOwningPlayer(GetTriggerUnit())), bj_UNIT_FACING )
+-        call CreateNUnitsAtLoc( 1, 'e01F', GetOwningPlayer(GetTriggerUnit()), GetPlayerStartLocationLoc(GetOwningPlayer(GetTriggerUnit())), bj_UNIT_FACING )
++        call GS2V84_CreateNUnitsAtLoc_3( 1, 'e01D', GetOwningPlayer(GetTriggerUnit()), GetPlayerStartLocationLoc(GetOwningPlayer(GetTriggerUnit())), bj_UNIT_FACING )
++        call GS2V84_CreateNUnitsAtLoc_3( 1, 'e01F', GetOwningPlayer(GetTriggerUnit()), GetPlayerStartLocationLoc(GetOwningPlayer(GetTriggerUnit())), bj_UNIT_FACING )
+     else
+     endif
+ endfunction
+@@ -52941,16 +53007,18 @@
+     if h > 0 then
+         set right = 0.4 + 0.3 * w / h
+     endif
+-    call BlzFrameClearAllPoints(root)
+-    call BlzFrameSetAbsPoint(root, FRAMEPOINT_TOPRIGHT, right - 0.004, GSTF_Top())
++    if not GS1959_LayoutValid or GS1959_LayoutRight != right then
++        call BlzFrameClearAllPoints(root)
++        call BlzFrameSetAbsPoint(root, FRAMEPOINT_TOPRIGHT, right - 0.004, GSTF_Top())
++        set GS1959_LayoutRight = right
++        set GS1959_LayoutValid = true
++    endif
+     loop
+         exitwhen pid > 11 or k > 4
+         set p = Player(pid)
+         set u = udg_HeroPlayer[pid + 1]
+         if u != null and IsUnitType(u, UNIT_TYPE_HERO) and GSTF_IsTeammate(p, lp) then
+             set slot = BlzGetFrameByName("GSTF_Slot", k)
+-            call BlzFrameClearAllPoints(slot)
+-            call BlzFrameSetPoint(slot, FRAMEPOINT_TOPRIGHT, root, FRAMEPOINT_TOPRIGHT, 0.0, -k * (GSTF_H() + GSTF_Gap()))
+             call BlzFrameSetVisible(slot, true)
+             call GSTF_FillSlot(k, p, u)
+             set k = k + 1
+@@ -53137,9 +53205,9 @@
+         call SetPlayerHandicapXPBJ( ConvertedPlayer(GetForLoopIndexA()), 117.00 )
+         call SetPlayerFlagBJ( PLAYER_STATE_GIVES_BOUNTY, true, ConvertedPlayer(GetForLoopIndexA()) )
+         call AdjustPlayerStateBJ( 800, ConvertedPlayer(GetForLoopIndexA()), PLAYER_STATE_RESOURCE_GOLD )
+-        call CreateNUnitsAtLoc( 1, 'ewsp', ConvertedPlayer(GetForLoopIndexA()), GetPlayerStartLocationLoc(ConvertedPlayer(GetForLoopIndexA())), bj_UNIT_FACING )
++        call GS2V84_CreateNUnitsAtLoc_3( 1, 'ewsp', ConvertedPlayer(GetForLoopIndexA()), GetPlayerStartLocationLoc(ConvertedPlayer(GetForLoopIndexA())), bj_UNIT_FACING )
+         call UnitApplyTimedLifeBJ( 150.00, 'BTLF', GetLastCreatedUnit() )
+-        call CreateNUnitsAtLoc( 1, 'ewsp', ConvertedPlayer(GetForLoopIndexA()), GetPlayerStartLocationLoc(ConvertedPlayer(GetForLoopIndexA())), bj_UNIT_FACING )
++        call GS2V84_CreateNUnitsAtLoc_3( 1, 'ewsp', ConvertedPlayer(GetForLoopIndexA()), GetPlayerStartLocationLoc(ConvertedPlayer(GetForLoopIndexA())), bj_UNIT_FACING )
+         set udg_DamageSource[GetForLoopIndexA()] = GetLastCreatedUnit()
+         call TriggerRegisterPlayerChatEvent( gg_trg_Repick, ConvertedPlayer(GetForLoopIndexA()), "-랜덤", true )
+         call TriggerRegisterPlayerChatEvent( gg_trg_Repick, ConvertedPlayer(GetForLoopIndexA()), "-foseja", true )
+@@ -55236,7 +55304,7 @@
+     call ConditionalTriggerExecute( gg_trg_Libido_Dead )
+     call PolledWait( 1.00 )
+     if ( Trig_Libido_Func019001() ) then
+-        call CreateNUnitsAtLoc( 1, 'e01S', GetOwningPlayer(udg_Hero_DaP_LibidoTarget), GetPlayerStartLocationLoc(GetOwningPlayer(udg_Hero_DaP_LibidoTarget)), bj_UNIT_FACING )
++        call GS2V84_CreateNUnitsAtLoc_3( 1, 'e01S', GetOwningPlayer(udg_Hero_DaP_LibidoTarget), GetPlayerStartLocationLoc(GetOwningPlayer(udg_Hero_DaP_LibidoTarget)), bj_UNIT_FACING )
+     else
+         call DoNothing(  )
+     endif
+@@ -55250,7 +55318,7 @@
+     call ConditionalTriggerExecute( gg_trg_Libido_Dead )
+     call PolledWait( 0.10 )
+     if ( Trig_Libido_Func025001() ) then
+-        call CreateNUnitsAtLoc( 1, 'e01S', GetOwningPlayer(udg_Hero_DaP_LibidoTarget), GetPlayerStartLocationLoc(GetOwningPlayer(udg_Hero_DaP_LibidoTarget)), bj_UNIT_FACING )
++        call GS2V84_CreateNUnitsAtLoc_3( 1, 'e01S', GetOwningPlayer(udg_Hero_DaP_LibidoTarget), GetPlayerStartLocationLoc(GetOwningPlayer(udg_Hero_DaP_LibidoTarget)), bj_UNIT_FACING )
+     else
+         call DoNothing(  )
+     endif
+@@ -55264,7 +55332,7 @@
+     call ConditionalTriggerExecute( gg_trg_Libido_Dead )
+     call PolledWait( 0.10 )
+     if ( Trig_Libido_Func031001() ) then
+-        call CreateNUnitsAtLoc( 1, 'e01S', GetOwningPlayer(udg_Hero_DaP_LibidoTarget), GetPlayerStartLocationLoc(GetOwningPlayer(udg_Hero_DaP_LibidoTarget)), bj_UNIT_FACING )
++        call GS2V84_CreateNUnitsAtLoc_3( 1, 'e01S', GetOwningPlayer(udg_Hero_DaP_LibidoTarget), GetPlayerStartLocationLoc(GetOwningPlayer(udg_Hero_DaP_LibidoTarget)), bj_UNIT_FACING )
+     else
+         call DoNothing(  )
+     endif
+@@ -56216,7 +56284,7 @@
+ function GSRI_OnChat takes nothing returns nothing
+     if GetTriggerPlayer() == GetLocalPlayer() then
+         if GetEventPlayerChatString() == "-range" then
+-            call DisplayTimedTextToPlayer(GetLocalPlayer(),0,0,20,"GSRI ver195-8 keys="+I2S(GSRI_KeyCount)+" shows="+I2S(GSRI_ShowCount)+" range="+R2S(GSRI_LastRange)+" last="+GSRI_Reason)
++            call DisplayTimedTextToPlayer(GetLocalPlayer(),0,0,20,"GSRI ver195-9 keys="+I2S(GSRI_KeyCount)+" shows="+I2S(GSRI_ShowCount)+" range="+R2S(GSRI_LastRange)+" last="+GSRI_Reason)
+         endif
+         if GetEventPlayerChatString() == "-range off" then
+             set GSRI_PendingSlot = -1
+@@ -58338,14 +58406,14 @@
+     if ( Trig_Full_Inv_Get_Func003C() ) then
+         call IssueTargetItemOrder( GetTriggerUnit(), "move", GetOrderTargetItem() )
+     else
+-        call SetUnitFacingTimed( GetTriggerUnit(), GS2V84_AngleBetweenPoints_0(GetUnitLoc(GetTriggerUnit()), GetItemLoc(GetOrderTargetItem())), 0.01 )
++        call SetUnitFacingTimed( GetTriggerUnit(), GS2V84_AngleBetweenPoints_01(GetUnitLoc(GetTriggerUnit()), GetItemLoc(GetOrderTargetItem())), 0.01 )
+     endif
+     call PolledWait( 0.01 )
+     call UnitAddAbilityBJ( 'A0W3', GetTriggerUnit() )
+     loop
+     exitwhen i==null or GetItemTypeId(i)==0 or IsItemOwned(i)
+     if ( Trig_Full_Inv_Get_Func010C() ) then
+-        if ( GS2V84_DistanceBetweenPoints_0(GetUnitLoc(GetTriggerUnit()), GetItemLoc( i )) <= 170.00 ) then
++        if ( GS2V84_DistanceBetweenPoints_01(GetUnitLoc(GetTriggerUnit()), GetItemLoc( i )) <= 170.00 ) then
+         set udg_ItemTaken[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))] = i
+         call SetItemLifeBJ( udg_ItemTaken[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))], 500.00 )
+         call SetItemUserData( udg_ItemTaken[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))], R2I(GetItemLifeBJ(udg_ItemTaken[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))])) )

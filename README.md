@@ -5,6 +5,24 @@
 - 원작: 4rum Community ([4rum.co.kr](http://4rum.co.kr))
 - 대상 게임 버전: Warcraft III: Reforged 2.0 이상 (리포지드 월드 에디터로 편집)
 
+## 최신 수정본과 전체 변경 기록
+
+최신 배포본은 **196**입니다. 사용자가 시험한 196 파일을 내용 변경 없이 게시했습니다.
+
+- **최신 맵:** [`GS2vF_ver196.w3x`](maps/release/GS2vF_ver196.w3x)
+- **ZIP 바로 다운로드:** [GS2vF_ver196.zip](https://raw.githubusercontent.com/hati0101/4rum_gs2/main/downloads/GS2vF_ver196.zip)
+- 대지 수호자 W 특성: 해로운 마법 효과 해제 + 1.5초 마법 면역. 기존 W 효과 5초 유지. 레인딜라 W 상향 제안은 미반영입니다.
+- 사용자 W 작동 확인 제보가 있습니다. 자동 모사 81개·하네스 59개 통과는 실제 전체 스킬/멀티 안정성 검증과 구분합니다. [196 변경·검증 범위](reviews/ver196-release/README.md).
+- 이전 195-13과 철회 기록은 비교 자료로 보존합니다. 196은 대화에서 제공한 시험본 계보이며, 현재 main의 195-13에서 새로 재빌드한 파일이 아닙니다.
+
+- **최초 F8 대비 전체 수정 메모:** [텍스트 다운로드](https://github.com/hati0101/4rum_gs2/raw/refs/heads/main/F8_to_latest_all_changes.txt) / [압축본 다운로드](https://github.com/hati0101/4rum_gs2/raw/refs/heads/main/F8_to_latest_all_changes.zip). UTF-8 BOM 텍스트로 Windows 메모장에서 열 수 있습니다.
+- 비교 기준은 저장소의 `maps/GS2vF_ver19.w3x`이며, 내부 이름은 **vF_8FKfix [R2 TEST +G5]**입니다. 확인 가능한 누적 변경 전부를 실제 맵 데이터로 비교했고, 기록이 없는 중간 버전의 의도는 추측하지 않았습니다.
+- 메모에는 기능 요약, 기존 변경 기록, 객체 필드 변경 전체, 문자열 전체 변경, 런타임/에디터 스크립트 전체 차이, 리소스 및 파일 검증 목록이 있습니다. 분량이 크므로 GitHub 미리보기보다 다운로드를 권장합니다.
+- 트리거 최적화 검토와 검증 한계: [`reviews/performance138/README.md`](reviews/performance138/README.md).
+- 이전 안정화 수정의 검증과 한계: [`reviews/ver138/README.md`](reviews/ver138/README.md).
+
+- 프로그램 종료 응답 없음 비교용: [ver140 종료 진단 맵](maps/diagnostics/GS2vF_ver140_exitdiag.w3x) / [비교 방법](maps/diagnostics/README.md). 사거리 표시를 시작하지 않는 진단용이며 일반 최신본은 196입니다.
+
 ## 구성
 
 ```
@@ -24,8 +42,24 @@ CHANGELOG.md 버전별 수정 내역
 
 | 파일 | 설명 |
 |---|---|
+| `maps/release/GS2vF_ver196.w3x` | **최신 배포 맵** — 대지 수호자 W 특성 1.5초 마법 면역 |
+| `maps/release/GS2vF_ver195-13.w3x` | 이전 수정 맵 — 투마 W 실제 시전자 경로 변경 / 실전 재검증 필요 |
+| `maps/release/GS2vF_ver195-11.w3x` | 이전 보강본 — 투마 W 실전 미해결 확인 — 특성 보조 능력 마나 설정 보강, 멈춤 원인 미확정 |
+| `maps/diagnostics/GS2vF_ver195-12_compare1958.w3x` | **원인 비교 진단용** — 195-8 실행 코드 / 195-11과 같은 객체 |
+| `maps/release/GS2vF_ver195-10.w3x` | 이전 수정 맵 — 투마 내부 폭발 능력 마나·범위 명시 |
+| `maps/release/GS2vF_ver195-9.w3x` | 이전 최적화 맵 — 195-8 기준 누수/검색/팀원 패널 비용 보강 |
+| `maps/reference/GS2vF_ver195-8.w3x` | 사용자 제공 봇 제거·전투 정리 분산본 |
+| `maps/reference/GS2vF_ver195-7.w3x` | 사용자 제공 마지막 실전 플레이본 |
+| `maps/release/GS2vF_ver146.w3x` | 이전 수정 맵 — 성역 레벨별 2/3/4초 직접 무적 추가 |
+| `maps/release/GS2vF_ver145.w3x` | 비교용 이전 맵 — 부츠의 잘못된 인퍼널 원본을 실제 아이템 투명화로 수정 |
+| `maps/release/GS2vF_ver144.w3x` | **부츠 소환 오류 있음 — ver146 사용 권장** — 카이 특성 쿨다운·성역·바람의 부츠 수정 (실게임 확인 필요) |
+| `maps/release/GS2vF_ver143.w3x` | 이전 비교본 — ver139 기능 그대로, 활성 파일 보존 및 이전 MPQ 공간 정리 |
+| `maps/release/GS2vF_ver139.w3x` | 이전 최적화 비교본 — ver138_opt와 동일한 최적화, 인게임 제목/안내를 ver139로 변경 |
+| `maps/release/GS2vF_ver138_opt.w3x` | 이전 최적화 비교본 — 종료 타이머 저장소 누수 및 반복 위치/이펙트 처리 보강 (실게임 성능 미측정) |
+| `maps/release/GS2vF_ver138_fix.w3x` | 이전 안정화 수정본 — ver138 + 사거리 표시 동기화 위험 보강 + 피와케 E 스킨 필드 보정 (멀티플레이 테스트 필요) |
+| `maps/release/GS2vF_ver137_DoomLord_skin_fix.w3x` | ver137 둠로드 스킨 경로 호환 수정본 |
 | `maps/GS2vF_ver19.w3x` | 원본 (vF_8FKfix [R2 TEST +G5]) |
-| `maps/release/GS2vF_ver52_fix.w3x` | **배포용 (최신, ver52 기준)** — ver52 + 천둥 일격 기반 스킬 4레벨 피해 제한 수정 |
+| `maps/release/GS2vF_ver52_fix.w3x` | 배포용 (ver52 기준) — ver52 + 천둥 일격 기반 스킬 4레벨 피해 제한 수정 |
 | `maps/GS2vF_ver52.w3x` | ver52 원본 (공동 작업자 버전: ver19 patch3 + 밸런스·툴팁·스크립트 수정) |
 | `maps/release/GS2vF_ver19_patch4.w3x` | 배포용 (ver19 기준) — patch3 + 천둥 일격 기반 스킬 4레벨 피해 제한 수정 |
 | `maps/release/GS2vF_ver19_patch3.w3x` | 배포용 — patch2 + 팀원 패널 Q W E R 스킬·패시브·궁극기 강조·부활 시간 |

@@ -1,0 +1,5 @@
+PASS: native damage/slow/duration/targets/rank metadata explicitly pinned in base and skin for all 8 ranks
+PASS: 60 cases: 4 skill levels x 3 research counts x 5 native success/failure modes; locals survive poisoned event/BJ state and failed orders never report acceptance
+PASS: one-time initialization and post-GUI action replacement; no per-cast timer or new global damage listener
+PASS: all other skills/traits/items/recipes/range preview preserved; only burst runtime, initialization and version text differ
+LIMIT: actual damage and slow application in Warcraft require an engine test; this suite cannot certify that outcome
