@@ -1,0 +1,2 @@
+PASS: Chiu direct script graph has no gold mutation; indirect engine/death transactions remain unverified
+PASS: Glen base visual and protection are independent of R07X; Glen/Chiu bodies unchanged

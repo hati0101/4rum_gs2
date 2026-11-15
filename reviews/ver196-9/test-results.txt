@@ -1,0 +1,9 @@
+PASS: only 9 allowed existing function bodies changed; Glen/Chiu/combat/transform/restoration behavior preserved
+PASS: only the added backtick binding removed; F8/native medal frame registrations preserved, no overlay frame added
+PASS: 20 click/hero/reclick mock cycles with overwritten native selection; deferred select + button focus reset; real engine unverified
+PASS: 2 owners x 3 hidden heroes; each hint once, correct panda wording; random + sale wired, no revive/transform hook
+PASS: W native input range changed only on A13E, actual A13J damage/reach/cost/cooldown untouched; UI 500; hero names/stats unchanged
+PASS: extracted W contact tick: 100 updates => group create/destroy 100/100 -> 0/0 (one fixed init group); timing/effect schedule unchanged
+LIMIT: no Warcraft III engine/UI/multiplayer/FPS test executed; manual repeated medal and far-click breath tests required
+PASS: actual FireDrunk action: 24 near/boundary/far/zero aim cases, origin unchanged, direction retained, payload target <=500, rank/lifetime unchanged
+PASS: modified runtime/custom-editor functions match; GUI FireDrunk event/condition retained with post-init replacement action

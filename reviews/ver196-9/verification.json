@@ -1,0 +1,21 @@
+{
+  "source_sha256": "d7fd2492fa1115985b6ad2b2e876749d469037c17e5dba7d117c2ad60ed4e7a5",
+  "result_sha256": "fd29a9234f663b998942f350fb69d1853b7b03412cf244df37cb323943218029",
+  "result_bytes": 9110449,
+  "active_files": 1069,
+  "unchanged_files": 1062,
+  "changed_files": [
+    "war3map.j",
+    "war3map.w3a",
+    "war3map.w3i",
+    "war3map.w3u",
+    "war3map.wct",
+    "war3mapSkin.w3a",
+    "(attributes)"
+  ],
+  "editor_blocks": 903,
+  "compaction_bytes_saved": 1212495,
+  "no_active_resource_deleted": true,
+  "branch": "fix/196-9-handoff",
+  "published_to_main": false
+}

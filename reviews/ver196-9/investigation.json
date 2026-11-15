@@ -1,0 +1,186 @@
+{
+  "chiu": {
+    "report": "One alleged 200 gold loss; death/purchase/research context unknown.",
+    "direct_call_graph_roots": [
+      "Trig_Blood_Strike_DM_Actions",
+      "Trig_Blood_Strike_Start_Actions",
+      "Trig_Blood_Strike_Timer_Actions",
+      "Trig_Blood_Strike_Sp_Actions"
+    ],
+    "reachable_functions": [
+      "AbsoluteDamage",
+      "GS2V84_CreateNUnitsAtLoc_3",
+      "TextTag",
+      "Trig_Blood_Strike_DM_Actions",
+      "Trig_Blood_Strike_DM_Func010C",
+      "Trig_Blood_Strike_DM_Func010Func001C",
+      "Trig_Blood_Strike_DM_Func011C",
+      "Trig_Blood_Strike_DM_Func011Func001C",
+      "Trig_Blood_Strike_DM_Func012C",
+      "Trig_Blood_Strike_DM_Func012Func001C",
+      "Trig_Blood_Strike_DM_Func013C",
+      "Trig_Blood_Strike_DM_Func013Func001C",
+      "Trig_Blood_Strike_DM_Func014C",
+      "Trig_Blood_Strike_Sp_Actions",
+      "Trig_Blood_Strike_Start_Actions",
+      "Trig_Blood_Strike_Timer_Actions"
+    ],
+    "gold_mutations_in_direct_call_graph": {},
+    "limit": "Damage can synchronously fire death/reward/reflection callbacks; engine purchase/research costs are outside a direct call graph. No in-game reproduction. Do not call the report disproven.",
+    "unchanged": true
+  },
+  "glen": {
+    "report": "2-3 intermittent missing ultimate visuals, without ultimate trait; defense not measured.",
+    "ability": "A0WG",
+    "spawned_unit": "u00E",
+    "base_visual": "A151 / OrcSelectionAura.mdx",
+    "base_auras": [
+      "A0SX / B0B4",
+      "A039 / B05U"
+    ],
+    "trait": "R07X enables A0KD +20% allied movement speed; not a prerequisite for base visuals.",
+    "entry_handler": "function Trig_Vanguard_Actions takes nothing returns nothing\n    call UnitApplyTimedLifeBJ( ( 6.00 + ( 2.00 * I2R(GetUnitAbilityLevelSwapped('A0WG', udg_Hero_RoC)) ) ), 'BTLF', GetTriggerUnit() )\n    call SetUnitAbilityLevelSwapped( 'A0SX', GetTriggerUnit(), GetUnitAbilityLevelSwapped('A0WG', udg_Hero_RoC) )\n    call SetUnitAbilityLevelSwapped( 'A039', GetTriggerUnit(), GetUnitAbilityLevelSwapped('A0WG', udg_Hero_RoC) )\n    call MakeUnitFollow(GetTriggerUnit(),udg_Hero_RoC,30)\nendfunction",
+    "follow": "function MakeUnitFollow takes unit u, unit target, integer time returns nothing\n    local timer t = CreateTimer()\n    local integer r = time * 25\n    call SaveUnitHandleBJ( u, GetHandleIdBJ(t), StringHashBJ(\"Follow1\"), GetLastCreatedHashtableBJ() )\n    call SaveUnitHandleBJ( target, GetHandleIdBJ(t), StringHashBJ(\"Follow2\"), GetLastCreatedHashtableBJ() )\n    call SaveIntegerBJ( r, GetHandleIdBJ(t), StringHashBJ(\"Follow3\"), GetLastCreatedHashtableBJ() )\n    call TimerStart(t, 0.04, true, function MakeUnitFollow_Sub)\nendfunction",
+    "follow_tick": "function MakeUnitFollow_Sub takes nothing returns nothing\n    local timer t = GetExpiredTimer()\n    local hashtable data = GetLastCreatedHashtableBJ()\n    local integer key = GetHandleId(t)\n    local unit follower = LoadUnitHandle(data, key, StringHash(\"Follow1\"))\n    local unit target = LoadUnitHandle(data, key, StringHash(\"Follow2\"))\n    local integer remaining = LoadInteger(data, key, StringHash(\"Follow3\"))\n    if remaining >= 0 and IsUnitAliveBJ(target) and IsUnitAliveBJ(follower) then\n        call SetUnitPosition(follower, GetUnitX(target), GetUnitY(target))\n        call SetUnitFacing(follower, GetUnitFacing(target))\n        call SaveInteger(data, key, StringHash(\"Follow3\"), remaining-1)\n    else\n        call RemoveUnit(follower)\n        call FlushChildHashtable(data, key)\n        call PauseTimer(t)\n        call DestroyTimer(t)\n    endif\n    set follower = null\n    set target = null\n    set data = null\n    set t = null\nendfunction",
+    "risks_not_proven_causes": [
+      "AUls native summon occurrence/ability cancellation cannot be observed statically.",
+      "Single global udg_Hero_RoC is used by entry handler; actual misbinding was not reproduced.",
+      "Native spawned follower is removed on target/follower death or 30-second follow deadline; native timed life remains 8/10/12 seconds.",
+      "Legacy defense refunds health after DAMAGED and may wait .01 seconds; no rewrite authorized without evidence."
+    ],
+    "last_created_hashtable": {
+      "InitHashtableBJ_call_sites": [
+        "Trig_Set_Hashtable_Actions"
+      ],
+      "direct_bj_lastCreatedHashtable_writes": [],
+      "conclusion": "Only one BJ initializer found at the map 1-second setup. Shared-table clobber was NOT established; MakeUnitFollow is unchanged."
+    },
+    "unchanged": true
+  },
+  "performance": {
+    "report": "196-8 Tuma/Earth Panda 1v1 later-game intermittent hitches; not a whole-client freeze.",
+    "screenshot_match_unconfirmed": true,
+    "screenshot": {
+      "elapsed": 1783,
+      "tracked": 296,
+      "peak": 347,
+      "registered": 2187,
+      "cleaned": 1891,
+      "last_batch": "41/64"
+    },
+    "screenshot_limit": "One snapshot proves neither a leak nor the absence of bursts.",
+    "reviewed": [
+      "GS1959_PickRandomOwned",
+      "GS1959_ResetUI",
+      "GS294_BurnTick",
+      "GS19513_FlameBurstAction",
+      "ES16_Z",
+      "ES16_QTick",
+      "ES16_QVisual",
+      "ES16_WEnd",
+      "ES16_WVisual",
+      "ESR6_End",
+      "ESR6_Position",
+      "ESR6_Start",
+      "ESR6_Tick",
+      "ES16_WTick",
+      "ES16_Init",
+      "ES15_ShieldEnd",
+      "ES15_Tick"
+    ],
+    "confirmed_repeated_work": "ES15_Tick allocates and destroys a temporary contact group every .05 seconds while W is active and contact is pending. Replaced with one persistent cleared group.",
+    "visual_cleanup": "ES16_QTick destroys its 5 effects/timer and flushes state after step 10. ESR6_End destroys 6 shield effects. ES16_Z reuses a location. Tuma W already uses timed life; active visual/resource files preserved.",
+    "limit": "No FPS/frametime/engine handle measurements, no confirmed root cause of reported hitches."
+  },
+  "economy_gold_sites": {
+    "Trig_Gold_Present_Actions": [
+      "call AdjustPlayerStateBJ( 1200, GetOwningPlayer(GetTriggerUnit()), PLAYER_STATE_RESOURCE_GOLD )"
+    ],
+    "Trig_Single_Gold_Actions": [
+      "call AdjustPlayerStateBJ( amount, GetTriggerPlayer(), PLAYER_STATE_RESOURCE_GOLD )"
+    ],
+    "Trig_Pack_Horse_Limit_Actions": [
+      "call AdjustPlayerStateBJ( 200, GetOwningPlayer(GetTriggerUnit()), PLAYER_STATE_RESOURCE_GOLD )"
+    ],
+    "Trig_Gold_Give_Actions": [
+      "call AdjustPlayerStateBJ( GS2_Ver1_Income(udg_GiveGoldAmount[1], udg_GoldBonusTimer[1] > 0), udg_SP_Player[i], PLAYER_STATE_RESOURCE_GOLD )",
+      "call AdjustPlayerStateBJ( GS2_Ver1_Income(udg_GiveGoldAmount[2], udg_GoldBonusTimer[2] > 0), udg_SP_Player[i], PLAYER_STATE_RESOURCE_GOLD )"
+    ],
+    "Trig_Special_Point_Actions": [
+      "call AdjustPlayerStateBJ( 300, GetOwningPlayer(GetTriggerUnit()), PLAYER_STATE_RESOURCE_GOLD )",
+      "call AdjustPlayerStateBJ( 300, GetOwningPlayer(GetTriggerUnit()), PLAYER_STATE_RESOURCE_GOLD )",
+      "call AdjustPlayerStateBJ( 300, GetOwningPlayer(GetTriggerUnit()), PLAYER_STATE_RESOURCE_GOLD )"
+    ],
+    "Trig_Hi_Spceial_Point_Actions": [
+      "call AdjustPlayerStateBJ( 300, GetOwningPlayer(GetTriggerUnit()), PLAYER_STATE_RESOURCE_GOLD )",
+      "call AdjustPlayerStateBJ( 300, GetOwningPlayer(GetTriggerUnit()), PLAYER_STATE_RESOURCE_GOLD )",
+      "call AdjustPlayerStateBJ( 300, GetOwningPlayer(GetTriggerUnit()), PLAYER_STATE_RESOURCE_GOLD )",
+      "call AdjustPlayerStateBJ( 300, GetOwningPlayer(GetTriggerUnit()), PLAYER_STATE_RESOURCE_GOLD )"
+    ],
+    "Trig_Death_Hero_Actions": [
+      "call AdjustPlayerStateBJ( GetHeroLevel(DeadHero)* 10,KillPlayer,PLAYER_STATE_RESOURCE_GOLD)",
+      "call AdjustPlayerStateBJ(150, KillPlayer, PLAYER_STATE_RESOURCE_GOLD)",
+      "call AdjustPlayerStateBJ(150, KillPlayer, PLAYER_STATE_RESOURCE_GOLD)",
+      "call AdjustPlayerStateBJ(R2I(HeroGold),GetOwningPlayer(FirstOfGroup(udg_Assi_Group[GetConvertedPlayerId(DeadPlayer)])),PLAYER_STATE_RESOURCE_GOLD)",
+      "call AdjustPlayerStateBJ(R2I(HeroGold),GetOwningPlayer(FirstOfGroup(udg_Assi_Group[GetConvertedPlayerId(DeadPlayer)])),PLAYER_STATE_RESOURCE_GOLD)",
+      "call AdjustPlayerStateBJ(R2I(HeroGold),KillPlayer,PLAYER_STATE_RESOURCE_GOLD)",
+      "call SetPlayerStateBJ(DeadPlayer, PLAYER_STATE_RESOURCE_GOLD, ( GetPlayerState(DeadPlayer, PLAYER_STATE_RESOURCE_GOLD) - R2I(HeroGold) ) )",
+      "call AdjustPlayerStateBJ(R2I(HeroGold),GetOwningPlayer(FirstOfGroup(udg_Assi_Group[GetConvertedPlayerId(DeadPlayer)])),PLAYER_STATE_RESOURCE_GOLD)",
+      "call AdjustPlayerStateBJ(R2I(HeroGold),GetOwningPlayer(FirstOfGroup(udg_Assi_Group[GetConvertedPlayerId(DeadPlayer)])),PLAYER_STATE_RESOURCE_GOLD)",
+      "call AdjustPlayerStateBJ(R2I(HeroGold),KillPlayer,PLAYER_STATE_RESOURCE_GOLD)",
+      "call SetPlayerStateBJ(DeadPlayer, PLAYER_STATE_RESOURCE_GOLD, ( GetPlayerState(DeadPlayer, PLAYER_STATE_RESOURCE_GOLD) - R2I(HeroGold) ) )"
+    ],
+    "Trig_Creep_Killing_Func002Func001Func002A": [
+      "call AdjustPlayerStateBJ( GetUnitPointValue(GetDyingUnit()), GetEnumPlayer(), PLAYER_STATE_RESOURCE_GOLD )"
+    ],
+    "Trig_Creep_Killing_Func002Func001Func004A": [
+      "call AdjustPlayerStateBJ( GetUnitPointValue(GetDyingUnit()), GetEnumPlayer(), PLAYER_STATE_RESOURCE_GOLD )"
+    ],
+    "Trig_Creep_Killing_Func003Func003Func005A": [
+      "call AdjustPlayerStateBJ( ( udg_Creep_Gold / udg_Creep_Cnt ), GetEnumPlayer(), PLAYER_STATE_RESOURCE_GOLD )"
+    ],
+    "Trig_Creep_Killing_Func003Func003Func008A": [
+      "call AdjustPlayerStateBJ( ( udg_Creep_Gold / udg_Creep_Cnt ), GetEnumPlayer(), PLAYER_STATE_RESOURCE_GOLD )"
+    ],
+    "Trig_Vampires_Lord_Special_2_Phoenix_Actions": [
+      "call AdjustPlayerStateBJ( 350, GetOwningPlayer(udg_Hero_PhM_PhoenixKiller), PLAYER_STATE_RESOURCE_GOLD )"
+    ],
+    "GS2S_Learn": [
+      "call AdjustPlayerStateBJ(300, GetOwningPlayer(u), PLAYER_STATE_RESOURCE_GOLD)"
+    ],
+    "GS2S_Research": [
+      "call AdjustPlayerStateBJ(1200, p, PLAYER_STATE_RESOURCE_GOLD)"
+    ],
+    "GSTI_OnSale": [
+      "call SetPlayerState(p,PLAYER_STATE_RESOURCE_GOLD,GetPlayerState(p,PLAYER_STATE_RESOURCE_GOLD)+LoadInteger(GSTI_Data,kind,52))",
+      "call SetPlayerState(p,PLAYER_STATE_RESOURCE_GOLD,GetPlayerState(p,PLAYER_STATE_RESOURCE_GOLD)+LoadInteger(GSTI_Data,kind,52))"
+    ],
+    "GS2FB_Transform": [
+      "call SetPlayerState(owner, PLAYER_STATE_RESOURCE_GOLD, GetPlayerState(owner, PLAYER_STATE_RESOURCE_GOLD) + 300 * refunded)"
+    ],
+    "Trig_Fighters_Coin_Actions": [
+      "call AdjustPlayerStateBJ( ( 120 - ( 20 * udg_MBDeaths[udg_SP_Number[GetConvertedPlayerId(GetOwningPlayer(GetDyingUnit()))]] ) ), udg_SP_Player[GetForLoopIndexA()], PLAYER_STATE_RESOURCE_GOLD )",
+      "call AdjustPlayerStateBJ( ( 120 - ( 20 * udg_MBDeaths[udg_SP_Number[GetConvertedPlayerId(GetOwningPlayer(GetDyingUnit()))]] ) ), udg_SP_Player[GetForLoopIndexA()], PLAYER_STATE_RESOURCE_GOLD )"
+    ],
+    "Trig_Fell_Prince_Special_2_Actions": [
+      "call AdjustPlayerStateBJ( 200, GetOwningPlayer(GetKillingUnitBJ()), PLAYER_STATE_RESOURCE_GOLD )"
+    ],
+    "Trig_Vampires_Lord_Special_Actions": [
+      "call AdjustPlayerStateBJ( 350, GetOwningPlayer(GetKillingUnitBJ()), PLAYER_STATE_RESOURCE_GOLD )"
+    ],
+    "Trig_Initialize_Actions": [
+      "call AdjustPlayerStateBJ( 800, ConvertedPlayer(GetForLoopIndexA()), PLAYER_STATE_RESOURCE_GOLD )"
+    ],
+    "Trig_Leaving_Game_Actions": [
+      "local integer g = R2I(I2R(GetPlayerState(GetTriggerPlayer(), PLAYER_STATE_RESOURCE_GOLD)) * 0.8)",
+      "call AdjustPlayerStateBJ( ( g / i ), udg_SP_Player[GetForLoopIndexA()], PLAYER_STATE_RESOURCE_GOLD )",
+      "call AdjustPlayerStateBJ( ( g / i ), udg_SP_Player[GetForLoopIndexA()], PLAYER_STATE_RESOURCE_GOLD )"
+    ],
+    "Trig_Building_Destroy_Gold_Actions": [
+      "call AdjustPlayerStateBJ( ( gold / CountPlayersInForceBJ(udg_P_Group) ), ConvertedPlayer(LoopX), PLAYER_STATE_RESOURCE_GOLD )"
+    ],
+    "Trig_Item_Buy_Actions": [
+      "call AdjustPlayerStateBJ(1100, GetOwningPlayer(hero), PLAYER_STATE_RESOURCE_GOLD)"
+    ]
+  }
+}

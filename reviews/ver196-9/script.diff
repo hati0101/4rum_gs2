@@ -1,0 +1,285 @@
+--- 196-8/war3map.j
++++ 196-9/war3map.j
+@@ -1766,7 +1766,97 @@
+     boolean E1967_Covered = false
+     boolean E1967_WasVisible = false
+     integer E1968_IconClicks = 0
++    boolean array GS1969_HintLizard
++    boolean array GS1969_HintPanda
++    boolean array GS1969_HintWolf
++    group GS1969_WTargets = null
++    integer GS1969_TraitSelected = 0
++    integer GS1969_TraitImmediate = 0
++    integer GS1969_TraitDeferred = 0
++    boolean GS1969_InitDone = false
+ endglobals
++function GS1969_HiddenHint takes unit h returns nothing
++    local player p=GetOwningPlayer(h)
++    local integer pid=GetPlayerId(p)
++    local integer id=GetUnitTypeId(h)
++    local string text=""
++    if pid<0 or pid>=12 or IsUnitIllusion(h) then
++        set p=null
++        return
++    endif
++    if id=='Ofar' and not GS1969_HintLizard[pid] then
++        set GS1969_HintLizard[pid]=true
++        set text="이 영웅은 숨겨진 변신이 있습니다. 조건은 F9에서 확인하세요."
++    elseif id=='Npbm' and not GS1969_HintPanda[pid] then
++        set GS1969_HintPanda[pid]=true
++        set text="이 영웅은 두 가지 숨겨진 변신이 있습니다. 조건은 F9에서 확인하세요."
++    elseif id=='Hdgo' and not GS1969_HintWolf[pid] then
++        set GS1969_HintWolf[pid]=true
++        set text="이 영웅은 숨겨진 변신이 있습니다. 조건은 F9에서 확인하세요."
++    endif
++    if text!="" then
++        call DisplayTimedTextToPlayer(p,0,0,15,text)
++    endif
++    set p=null
++endfunction
++function GS1969_HintSold takes nothing returns nothing
++    call GS1969_HiddenHint(GetSoldUnit())
++endfunction
++function GS1969_SelectionWatch takes nothing returns nothing
++    local player p=GetTriggerPlayer()
++    local unit c=E1966_Controller[GetPlayerId(p)+1]
++    if p==GetLocalPlayer() and GetTriggerUnit()==c then
++        set GS1969_TraitSelected=GS1969_TraitSelected+1
++    endif
++    set p=null
++    set c=null
++endfunction
++function GS1969_FireDrunk takes nothing returns nothing
++    local unit caster=GetTriggerUnit()
++    local real x=GetUnitX(caster)
++    local real y=GetUnitY(caster)
++    local real tx=GetSpellTargetX()
++    local real ty=GetSpellTargetY()
++    local real dx=tx-x
++    local real dy=ty-y
++    local real distance=SquareRoot(dx*dx+dy*dy)
++    local unit dummy
++    // The payload keeps its original 500 cast range and 550 effect length.
++    // Clamp only the dummy's aim point, not its damage/effect dimensions.
++    if distance>500.0 then
++        set tx=x+dx*500.0/distance
++        set ty=y+dy*500.0/distance
++    endif
++    set dummy=CreateUnit(GetOwningPlayer(caster),'e02N',x,y,Atan2(dy,dx)*bj_RADTODEG)
++    set bj_lastCreatedUnit=dummy
++    call UnitApplyTimedLife(dummy,'BTLF',0.50)
++    call SetUnitAbilityLevel(dummy,'A13J',GetUnitAbilityLevel(caster,'A022'))
++    call IssuePointOrder(dummy,"breathoffrost",tx,ty)
++    set caster=null
++    set dummy=null
++endfunction
++function GS1969_Init takes nothing returns nothing
++    local trigger selected
++    local integer i=0
++    if GS1969_InitDone then
++        return
++    endif
++    set GS1969_InitDone=true
++    set GS1969_WTargets=CreateGroup()
++    // Also installs the action after GUI initialization on an editor rebuild.
++    call TriggerClearActions(gg_trg_FireDrunk)
++    call TriggerAddAction(gg_trg_FireDrunk,function GS1969_FireDrunk)
++    set selected=CreateTrigger()
++    loop
++        exitwhen i>=12
++        call TriggerRegisterPlayerUnitEvent(selected,Player(i),EVENT_PLAYER_UNIT_SELECTED,null)
++        set i=i+1
++    endloop
++    call TriggerAddAction(selected,function GS1969_SelectionWatch)
++    call TriggerAddAction(gg_trg_Select_Hero,function GS1969_HintSold)
++    set selected=null
++endfunction
++
+ function GS1959_PickRandomOwned takes group g returns unit
+     local boolean alreadyOwned = bj_wantDestroyGroup
+     local unit result = GroupPickRandomUnit(g)
+@@ -25064,7 +25154,7 @@
+     call SetStartLocPrio( 9, 3, 8, MAP_LOC_PRIO_HIGH )
+ endfunction
+ function GS2_ShowVersion68 takes nothing returns nothing
+-    call DisplayTimedTextToForce(GetPlayersAll(), 15.00, "가디언 스피리츠 II 196-8")
++    call DisplayTimedTextToForce(GetPlayersAll(), 15.00, "가디언 스피리츠 II 196-9")
+     call DisplayTimedTextToForce(GetPlayersAll(), 30.00, "|cffffcc00카카오톡 오픈채팅 : 가디언 스피리츠2|r")
+     call DisplayTimedTextToForce(GetPlayersAll(),30.00,"|cffffcc00[편의 기능] Caps Lock 키로 스코어보드를 펼치거나 접을 수 있습니다. 기존 마우스 클릭도 사용할 수 있습니다.|r")
+     call DestroyTimer(GetExpiredTimer())
+@@ -26584,6 +26674,9 @@
+ endfunction
+ function GSRI_Range takes unit u, integer id, integer lv returns real
+     local integer offset
++    if GSRI_Item==null and GetUnitTypeId(u)=='N01L' and (id=='A13E' or id=='A022') then
++        return 500.0
++    endif
+     if GSRI_Item==null and GetUnitTypeId(u)=='HE15' then
+         if id=='AE1q' then
+             return 375.0
+@@ -27768,7 +27861,7 @@
+         call SelectUnit(shop,true)
+         call PanCameraToTimed(GetUnitX(shop),GetUnitY(shop),0.2)
+     endif
+-    call DisplayTimedTextToPlayer(p,0,0,8,"[196-8] 11시 상인 1 / 5시 상인 2 · 상인 1은 8종 / 상인 2는 5종 판매. -특성상점 / -특성상점2")
++    call DisplayTimedTextToPlayer(p,0,0,8,"[196-9] 11시 상인 1 / 5시 상인 2 · 상인 1은 8종 / 상인 2는 5종 판매. -특성상점 / -특성상점2")
+     set shop=null
+     set p=null
+ endfunction
+@@ -29481,6 +29574,7 @@
+ endif
+ if (udg_RandHero[RandHero] == false) and (GS2V84_CountUnitsInGroupOwned(GetUnitsOfTypeIdAll( udg_Hero[RandHero] )) == 0) then
+ set udg_HeroPlayer[GetConvertedPlayerId(RandPlayer)] = GS2V84_CreateUnitAtLoc_2( RandPlayer, udg_Hero[RandHero], GetPlayerStartLocationLoc(RandPlayer), bj_UNIT_FACING )
++call GS1969_HiddenHint(udg_HeroPlayer[GetConvertedPlayerId(RandPlayer)])
+ set udg_RandHero[RandHero] = true
+     if (IsPlayerAlly(RandPlayer,udg_Force[1])) then
+     call GS2V84_CreateUnitAtLoc_2(RandPlayer, udg_HeroSpeciel[RandHero], GetRectCenter(gg_rct_G_Home), bj_UNIT_FACING)
+@@ -35889,10 +35983,7 @@
+     endif
+ endfunction
+ function Trig_FireDrunk_Actions takes nothing returns nothing
+-    call GS2V84_CreateNUnitsAtLoc_3(1, 'e02N', GetOwningPlayer(GetTriggerUnit()), GetUnitLoc(GetTriggerUnit()), GS2V84_AngleBetweenPointsUnits(GetTriggerUnit(), GetLastCreatedUnit()))
+-    call UnitApplyTimedLifeBJ( 0.50, 'BTLF', GetLastCreatedUnit() )
+-    call SetUnitAbilityLevelSwapped( 'A13J', GetLastCreatedUnit(), GetUnitAbilityLevelSwapped('A022', GetTriggerUnit()) )
+-    call GS2V84_IssuePointOrderLocBJ_2(GetLastCreatedUnit(), "breathoffrost", GetSpellTargetLoc())
++    call GS1969_FireDrunk()
+ endfunction
+ function Trig_Hidden_Drunk_Learn_Actions takes nothing returns nothing
+     if ( Trig_Hidden_Drunk_Learn_Func002C() ) then
+@@ -45442,7 +45533,7 @@
+ 
+ 
+ function config takes nothing returns nothing
+-    call SetMapName( "가디언 스피리츠 II 196-8" )
++    call SetMapName( "가디언 스피리츠 II 196-9" )
+     call SetMapDescription( "가츠 최종파이널 픽스\n\nWarcraft III Reforged 최종 수정본\n영웅·특성·아이템·시스템 오류 수정 및 안정화 반영\n\n|cffffcc00카카오톡 오픈채팅 : 가디언 스피리츠2|r" )
+     call SetPlayers( 10 )
+     call SetTeams( 10 )
+@@ -45605,8 +45696,8 @@
+     call GSTI_RestoreStock('IT31')
+     call RemoveItemFromStock(GSTI_Shops[1],'IT32')
+     call GSTI_RestoreStock('IT32')
+-    call CreateQuestBJ(bj_QUESTTYPE_OPT_DISCOVERED,"196-8 특성 아이템","기본 특성 아이템 13종을 판매합니다.|n|n맵 11시 상인 1과 5시 상인 2에서 양팀 모두 구매할 수 있습니다. 각 품목은 게임 전체에 1개뿐이며, 구매 성공 시 재입고되지 않습니다.|n-특성상점 / -특성상점2로 위치를 확인할 수 있습니다.|n|n구매 비용: 900 골드 + 특성 1.|n경제·교환 항목은 제공하지 않습니다.","ReplaceableTextures\\CommandButtons\\BTNMedalionOfCourage.blp")
+-    call DisplayTimedTextToForce(GetPlayersAll(),15,"|cffffcc00[196-8]|r 기본 특템 13종 · 11시 상인 1 / 5시 상인 2 · -특성상점 / -특성상점2 · 상세 내용 F9")
++    call CreateQuestBJ(bj_QUESTTYPE_OPT_DISCOVERED,"196-9 특성 아이템","기본 특성 아이템 13종을 판매합니다.|n|n맵 11시 상인 1과 5시 상인 2에서 양팀 모두 구매할 수 있습니다. 각 품목은 게임 전체에 1개뿐이며, 구매 성공 시 재입고되지 않습니다.|n-특성상점 / -특성상점2로 위치를 확인할 수 있습니다.|n|n구매 비용: 900 골드 + 특성 1.|n경제·교환 항목은 제공하지 않습니다.","ReplaceableTextures\\CommandButtons\\BTNMedalionOfCourage.blp")
++    call DisplayTimedTextToForce(GetPlayersAll(),15,"|cffffcc00[196-9]|r 기본 특템 13종 · 11시 상인 1 / 5시 상인 2 · -특성상점 / -특성상점2 · 상세 내용 F9")
+     call DestroyTimer(GetExpiredTimer())
+ endfunction
+ 
+@@ -56451,7 +56542,7 @@
+ function GSRI_OnChat takes nothing returns nothing
+     if GetTriggerPlayer() == GetLocalPlayer() then
+         if GetEventPlayerChatString() == "-range" then
+-            call DisplayTimedTextToPlayer(GetLocalPlayer(),0,0,20,"GSRI ver196-8 keys="+I2S(GSRI_KeyCount)+" shows="+I2S(GSRI_ShowCount)+" range="+R2S(GSRI_LastRange)+" last="+GSRI_Reason)
++            call DisplayTimedTextToPlayer(GetLocalPlayer(),0,0,20,"GSRI ver196-9 keys="+I2S(GSRI_KeyCount)+" shows="+I2S(GSRI_ShowCount)+" range="+R2S(GSRI_LastRange)+" last="+GSRI_Reason)
+         endif
+         if GetEventPlayerChatString() == "-range off" then
+             set GSRI_PendingSlot = -1
+@@ -59956,10 +60047,23 @@
+ endfunction
+ 
+ function E1964_Refresh takes nothing returns nothing
++    local framehandle button
++    local player p=GetLocalPlayer()
+     if E1964_SelectPending then
+         set E1964_SelectPending=false
+-        call ESUI_SelectTraits(GetLocalPlayer())
+-    endif
++        // Release native button focus after its own click processing has completed.
++        set button=BlzGetFrameByName("IdleWorkerButton",0)
++        if button!=null and GetUnitTypeId(udg_HeroPlayer[GetPlayerId(p)+1])=='HE15' then
++            call BlzFrameSetEnable(button,false)
++            call BlzFrameSetEnable(button,true)
++        endif
++        call ESUI_SelectTraits(p)
++        if IsUnitSelected(E1966_Controller[GetPlayerId(p)+1],p) then
++            set GS1969_TraitDeferred=GS1969_TraitDeferred+1
++        endif
++    endif
++    set button=null
++    set p=null
+ endfunction
+ 
+ function GSRI_Tick takes nothing returns nothing
+@@ -60274,6 +60378,9 @@
+     if GetTriggerPlayer()==GetLocalPlayer() then
+         set E1968_IconClicks=E1968_IconClicks+1
+         call ESUI_SelectTraits(GetTriggerPlayer())
++        if IsUnitSelected(E1966_Controller[GetPlayerId(GetTriggerPlayer())+1],GetTriggerPlayer()) then
++            set GS1969_TraitImmediate=GS1969_TraitImmediate+1
++        endif
+         set E1964_SelectPending=true
+     endif
+ endfunction
+@@ -60299,7 +60406,6 @@
+     loop
+         exitwhen i>=12
+         call BlzTriggerRegisterPlayerKeyEvent(key,Player(i),OSKEY_F8,0,false)
+-        call BlzTriggerRegisterPlayerKeyEvent(key,Player(i),OSKEY_OEM_3,0,false)
+         set button=BlzGetOriginFrame(ORIGIN_FRAME_COMMAND_BUTTON,i)
+         if button!=null then
+             call SaveInteger(GSRI_Data,GetHandleId(button),190,i)
+@@ -62701,7 +62807,7 @@
+                 set n=LoadInteger(ES15_Data,k,1)
+                 call ES15_Armor(h)
+                 if LoadReal(ES15_Data,k,10)>now and not LoadBoolean(ES15_Data,k,11) then
+-                    set g=CreateGroup()
++                    set g=GS1969_WTargets
+                     call GroupEnumUnitsInRange(g,GetUnitX(h),GetUnitY(h),150.0,null)
+                     set v=FirstOfGroup(g)
+                     loop
+@@ -62714,7 +62820,7 @@
+                         endif
+                         set v=FirstOfGroup(g)
+                     endloop
+-                    call DestroyGroup(g)
++                    call GroupClear(g)
+                 endif
+             endif
+             if LoadReal(ES15_Data,k,10)<=now then
+@@ -62783,7 +62889,7 @@
+     call SaveReal(ES15_Data,GetHandleId(h),4,ES15_Now())
+     call MultiboardSetItemIconBJ(udg_MB,1,udg_SP_Number[pid]+1,"ReplaceableTextures\\CommandButtons\\BTNEarthBrewmaster.blp")
+     call SelectUnitForPlayerSingle(h,p)
+-    call DisplayTimedTextToPlayer(p,0,0,20,"[GS2 196-8] 판다렌 대지 수호자 변신. Q/W/E/R 습득, F8 특성. -어스도움 / -어스진단")
++    call DisplayTimedTextToPlayer(p,0,0,20,"[GS2 196-9] 판다렌 대지 수호자 변신. Q/W/E/R 습득, F8 특성. -어스도움 / -어스진단")
+     set p=null
+     set h=null
+     set controller=null
+@@ -62809,8 +62915,9 @@
+     set h=udg_HeroPlayer[pid]
+     set c=E1966_Controller[pid]
+     set nativeIcon=BlzGetFrameByName("IdleWorkerButton",0)
+-    call DisplayTimedTextToPlayer(p,0,0,30,"[특성 진단 196-8] 영웅="+I2S(GetUnitTypeId(h))+" / 창="+I2S(GetUnitTypeId(c))+" / 소유="+ETW_ProbeBool(GetOwningPlayer(c)==p)+" / 건물="+ETW_ProbeBool(IsUnitType(c,UNIT_TYPE_STRUCTURE))+" / 일꾼="+ETW_ProbeBool(IsUnitType(c,UNIT_TYPE_PEON)))
++    call DisplayTimedTextToPlayer(p,0,0,30,"[특성 진단 196-9] 영웅="+I2S(GetUnitTypeId(h))+" / 창="+I2S(GetUnitTypeId(c))+" / 소유="+ETW_ProbeBool(GetOwningPlayer(c)==p)+" / 건물="+ETW_ProbeBool(IsUnitType(c,UNIT_TYPE_STRUCTURE))+" / 일꾼="+ETW_ProbeBool(IsUnitType(c,UNIT_TYPE_PEON)))
+     call DisplayTimedTextToPlayer(p,0,0,30,"[특성 입력] 기본 아이콘="+I2S(GetHandleId(nativeIcon))+" / 스크립트 클릭="+I2S(E1968_IconClicks)+" / 창 선택="+ETW_ProbeBool(IsUnitSelected(c,p)))
++    call DisplayTimedTextToPlayer(p,0,0,30,"[특성 선택 추적] 즉시성공="+I2S(GS1969_TraitImmediate)+" / 지연성공="+I2S(GS1969_TraitDeferred)+" / 실제선택이벤트="+I2S(GS1969_TraitSelected)+" / 선택대기="+ETW_ProbeBool(E1964_SelectPending))
+     set h=null
+     set c=null
+     set nativeIcon=null
+@@ -62836,7 +62943,7 @@
+         call DisplayTimedTextToPlayer(p,0,0,10,"-어스돌은 기본 시노부 1레벨 상태에서 사용하세요.")
+     elseif GetUnitTypeId(h)=='HE15' then
+         if text=="-어스감속검사" then
+-            call DisplayTimedTextToPlayer(p,0,0,15,"196-8의 W 특성은 1.5초 마법 면역입니다. 현재 상태는 -어스진단으로 확인할 수 있습니다.")
++            call DisplayTimedTextToPlayer(p,0,0,15,"196-9의 W 특성은 1.5초 마법 면역입니다. 현재 상태는 -어스진단으로 확인할 수 있습니다.")
+         elseif text=="-어스특성창" then
+             call ESUI_SelectTraits(p)
+         elseif text=="-어스최대" then
+@@ -62856,7 +62963,7 @@
+             call BlzEndUnitAbilityCooldown(h,'AE1r')
+         elseif text=="-어스진단" then
+             call DisplayTimedTextToPlayer(p,0,0,20,"[어스] 석갑 "+I2S(LoadInteger(ES15_Data,k,1))+" / 석갑 방어 "+R2S(LoadReal(ES15_Data,k,2))+" / 보호막 "+R2S(LoadReal(ES15_Data,k,20))+" / 궁 방어 "+R2S(LoadReal(ES15_Data,k,23)))
+-            call DisplayTimedTextToPlayer(p,0,0,20,"[196-8 W] 연구="+I2S(GetPlayerTechCount(p,'RE12',true))+" / 마법 면역="+ETW_ProbeBool(IsUnitType(h,UNIT_TYPE_MAGIC_IMMUNE))+" / 잔여="+R2SW(RMaxBJ(0.0,LoadReal(ES15_Data,k,12)-ES15_Now()),0,2))
++            call DisplayTimedTextToPlayer(p,0,0,20,"[196-9 W] 연구="+I2S(GetPlayerTechCount(p,'RE12',true))+" / 마법 면역="+ETW_ProbeBool(IsUnitType(h,UNIT_TYPE_MAGIC_IMMUNE))+" / 잔여="+R2SW(RMaxBJ(0.0,LoadReal(ES15_Data,k,12)-ES15_Now()),0,2))
+         elseif SubString(text,0,StringLength("-어스특성"))=="-어스특성" then
+             set i=S2I(SubString(text,StringLength("-어스특성"),StringLength(text)))
+             if i>=1 and i<=5 then
+@@ -62906,6 +63013,7 @@
+     call ETW_TooltipInit()
+     call EAB_VoiceInit()
+     call ES16_Init()
++    call GS1969_Init()
+     loop
+         exitwhen i>=bj_MAX_PLAYER_SLOTS
+         call TriggerRegisterPlayerUnitEvent(research,Player(i),EVENT_PLAYER_UNIT_RESEARCH_FINISH,null)
